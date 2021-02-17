@@ -7,21 +7,55 @@ public class PlayerController : MonoBehaviour
     private Player player;
     private Movement2D movement2D;
     public GameObject attackBounds;
-    private BoxCollider2D collider;
+    private KeyCode item1 = KeyCode.Alpha1;
+    private KeyCode item2 = KeyCode.Alpha2;
+    private KeyCode item3 = KeyCode.Alpha3;
+    private KeyCode item4 = KeyCode.Alpha4;
+    private KeyCode skill1 = KeyCode.Mouse0;
+    private KeyCode skill2 = KeyCode.Mouse1;
+    private KeyCode skill3 = KeyCode.Q;
+    private KeyCode skill4 = KeyCode.E;
 
     private void Awake()
     {
         player = GetComponent<Player>();
         movement2D = GetComponent<Movement2D>();
-        collider = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
     {
         Move();
         Rotate();
-        if (Input.GetMouseButtonDown(0))
-            Attack();
+
+        if (Input.GetKeyDown(item1))
+            player.Equip(0);
+        else if (Input.GetKeyDown(item2))
+            player.Equip(1);
+        else if (Input.GetKeyDown(item3))
+            player.Equip(2);
+        else if (Input.GetKeyDown(item4))
+            player.Equip(3);
+
+        if (Input.GetKeyDown(skill1))
+        {
+            player.ChangeSkill();
+            Attack(player.skills[0]);
+        }
+        else if (Input.GetKeyDown(skill2))
+        {
+            player.ChangeSkill();
+            Attack(player.skills[1]);
+        }
+        else if (Input.GetKeyDown(skill3))
+        {
+            player.ChangeSkill();
+            Attack(player.skills[2]);
+        }
+        else if (Input.GetKeyDown(skill4))
+        {
+            player.ChangeSkill();
+            Attack(player.skills[3]);
+        }
     }
 
     private void Move()
@@ -38,13 +72,15 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
     }
 
-    private void Attack()
+    private void Attack(Skill skill)
     {
-        Vector2 newPos = new Vector2(0, collider.bounds.max.y);
+        Vector2 newPos = new Vector2(0, 1);
         GameObject clone = Instantiate(attackBounds, transform);
         clone.transform.localPosition = newPos;
-
-        SkillStatus.DamageCalc(player.status, player, player.skill.skillStatus);
+        HitDetection hitDetection = clone.GetComponent<HitDetection>();
+        hitDetection.attacker = gameObject;
+        hitDetection.skill = skill;
+        hitDetection.Init();
     }
 
 }
