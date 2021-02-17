@@ -2,6 +2,7 @@
 
 public enum Type { fire = 0, water, dark, bright };
 
+[System.Serializable]
 public class SkillStatus
 {
     public Type type;
