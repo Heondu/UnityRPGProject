@@ -1,16 +1,41 @@
 ﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour, ILivingEntity
-{
-    public Status status = new Status(0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+public enum EnemyState { STATE_NULL = 0, STATE_PATROL, STATE_CHASE, STATE_ATTACK }
 
-    public void TakeDamage(float damage)
+public class Enemy : MonoBehaviour
+{
+    private Movement movement;
+    private Attack attack;
+    private EnemyController enemyController;
+    private EnemyState state = EnemyState.STATE_PATROL;
+
+    private void Awake()
     {
-        Debug.Log($"{name} : {damage}");
+        movement = GetComponent<Movement>();
+        attack = GetComponent<Attack>();
+        enemyController = GetComponent<EnemyController>();
     }
 
-    public Status GetStatus()
+    private void Update()
     {
-        return status;
+        ChangeState(enemyController.Operate());
+
+        switch (state)
+        {
+            case EnemyState.STATE_PATROL:
+                movement.Execute(enemyController.GetAxis());
+                break;
+            case EnemyState.STATE_CHASE:
+                movement.Execute(enemyController.GetAxis());
+                break;
+            case EnemyState.STATE_ATTACK:
+                attack.Execute();
+                break;
+        }
+    }
+
+    private void ChangeState(EnemyState state)
+    {
+        this.state = state; 
     }
 }

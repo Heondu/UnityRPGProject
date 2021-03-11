@@ -1,47 +1,22 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour, ILivingEntity
+public class Player : MonoBehaviour
 {
-    public Status status = new Status(0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    public Item item = null;
-    public int[] changeItems = new int[4];
-    public Skill[] skills = new Skill[4];
-    public int[] changeSkills = new int[4];
+    private Movement movement;
+    private Attack attack;
+    private PlayerInput playerInput;
+    private Status status;
 
-    public void TakeDamage(float damage)
+    private void Awake()
     {
-        Debug.Log($"{name} : {damage}");
+        movement = GetComponent<Movement>();
+        attack = GetComponent<Attack>();
+        playerInput = GetComponent<PlayerInput>();
     }
 
-    public Status GetStatus()
+    private void Update()
     {
-        return status;
-    }
-
-
-    [ContextMenu("Equip")]
-    public void Equip(int index)
-    {
-        if (item != null)
-            Status.StatusCalc(status, item.status, false);
-        item = ItemDatabase.instance.itemDB[changeItems[index]];
-        Status.StatusCalc(status, item.status, true);
-    }
-
-    [ContextMenu("Unequip")]
-    public void Unequip(int index)
-    {
-        if (item != null)
-            Status.StatusCalc(status, item.status, false);
-        item = null;
-    }
-
-    [ContextMenu("ChangeSkill")]
-    public void ChangeSkill()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            skills[i] = SkillDatabase.instance.skillDB[changeSkills[i]];
-        }
+        if (playerInput.IsMove()) movement.Execute(playerInput.GetAxis());
+        if (playerInput.IsAttack()) attack.Execute();
     }
 }
