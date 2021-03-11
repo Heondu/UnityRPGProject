@@ -214,11 +214,10 @@ GameObject:
   m_Component:
   - component: {fileID: 535044175}
   - component: {fileID: 535044176}
+  - component: {fileID: 535044178}
+  - component: {fileID: 535044177}
   - component: {fileID: 535044174}
   - component: {fileID: 535044173}
-  - component: {fileID: 535044177}
-  - component: {fileID: 535044179}
-  - component: {fileID: 535044178}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -235,11 +234,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 535044172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d7f3003eee2214d8de19b14ca75f09, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fb7e5a52f898224db0e02debbb0891a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackBounds: {fileID: 9132694539775042643, guid: 09137e30dbba6c64f9272db919a91c7e,
-    type: 3}
+  speed: 5
 --- !u!114 &535044174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,102 +247,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 535044172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b79e219e6143e846b0aaa9db915efe4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ed7bd3b79082a34d8b80efcefdcd543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status:
-    ATK: 1
-    criticalHitChance: 0
-    globalCriticalMultiplier: 0
-    DEF: 0
-    HP: 0
-    SPI: 10
-    fireTypeStrength: 0
-    waterTypeStrength: 0
-    darkTypeStrength: 0
-    brightTypeStrength: 0
-    fireTypeREG: 0
-    waterTypeREG: 0
-    darkTypeREG: 0
-    brightTypeREG: 0
-    durabilityNegation: 0
-    damageMultiplier: 0
-    ATKMultiplier: 0
-  item:
-    name: 
-    status:
-      ATK: 0
-      criticalHitChance: 0
-      globalCriticalMultiplier: 0
-      DEF: 0
-      HP: 0
-      SPI: 0
-      fireTypeStrength: 0
-      waterTypeStrength: 0
-      darkTypeStrength: 0
-      brightTypeStrength: 0
-      fireTypeREG: 0
-      waterTypeREG: 0
-      darkTypeREG: 0
-      brightTypeREG: 0
-      durabilityNegation: 0
-      damageMultiplier: 0
-      ATKMultiplier: 0
-  changeItems: 00000000010000000200000003000000
-  skills:
-  - name: 
-    skillStatus:
-      type: 0
-      typeStrenght: 0
-      magnitude: 0
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 0
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: 
-    skillStatus:
-      type: 0
-      typeStrenght: 0
-      magnitude: 0
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 0
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: 
-    skillStatus:
-      type: 0
-      typeStrenght: 0
-      magnitude: 0
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 0
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: 
-    skillStatus:
-      type: 0
-      typeStrenght: 0
-      magnitude: 0
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 0
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  changeSkills: 00000000010000000200000003000000
+  damage: 10
 --- !u!4 &535044175
 Transform:
   m_ObjectHideFlags: 0
@@ -398,7 +304,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 300cdb9212b765849a5007fb0c906ae6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: adb96904d981b484e804e28a1c5599fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -418,57 +324,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 535044172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06cfbd90dce38f4409035c4ea0b2201b, type: 3}
+  m_Script: {fileID: 11500000, guid: b9594b40dcbf5a741b97c054461f7793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
---- !u!61 &535044178
-BoxCollider2D:
+  up: 119
+  left: 97
+  down: 115
+  right: 100
+  attack: 323
+--- !u!114 &535044178
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535044172}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!50 &535044179
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535044172}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b79e219e6143e846b0aaa9db915efe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status:
+    ATK: 0
+    criticalHitChance: 0
+    globalCriticalMultiplier: 0
+    DEF: 0
+    HP: 0
+    SPI: 0
+    fireTypeStrength: 0
+    waterTypeStrength: 0
+    darkTypeStrength: 0
+    brightTypeStrength: 0
+    fireTypeREG: 0
+    waterTypeREG: 0
+    darkTypeREG: 0
+    brightTypeREG: 0
+    durabilityNegation: 0
+    damageMultiplier: 0
+    ATKMultiplier: 0
 --- !u!1 &942768841
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,9 +372,10 @@ GameObject:
   m_Component:
   - component: {fileID: 942768845}
   - component: {fileID: 942768844}
+  - component: {fileID: 942768847}
+  - component: {fileID: 942768846}
   - component: {fileID: 942768843}
   - component: {fileID: 942768842}
-  - component: {fileID: 942768846}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -489,53 +383,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &942768842
-BoxCollider2D:
+--- !u!114 &942768842
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942768841}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!50 &942768843
-Rigidbody2D:
-  serializedVersion: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb7e5a52f898224db0e02debbb0891a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+--- !u!114 &942768843
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942768841}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed7bd3b79082a34d8b80efcefdcd543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
 --- !u!212 &942768844
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -576,7 +449,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: adb96904d981b484e804e28a1c5599fb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -598,9 +471,21 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &942768846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942768841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418f8af70be4f5c4995b0267994e38a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &942768847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,25 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cac72a2aa7b8c43a4729f0246fb770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status:
-    ATK: 0
-    criticalHitChance: 0
-    globalCriticalMultiplier: 0
-    DEF: 0
-    HP: 0
-    SPI: 10
-    fireTypeStrength: 0
-    waterTypeStrength: 0
-    darkTypeStrength: 0
-    brightTypeStrength: 0
-    fireTypeREG: 0
-    waterTypeREG: 0
-    darkTypeREG: 0
-    brightTypeREG: 0
-    durabilityNegation: 0
-    damageMultiplier: 0
-    ATKMultiplier: 0
---- !u!1 &1666385102
+--- !u!1 &1007808828
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -638,31 +505,32 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1666385104}
-  - component: {fileID: 1666385103}
+  - component: {fileID: 1007808830}
+  - component: {fileID: 1007808829}
   m_Layer: 0
-  m_Name: ItemDatabase
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1666385103
+--- !u!114 &1007808829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666385102}
+  m_GameObject: {fileID: 1007808828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6b5d73e4ba31e41a83b8ee67cdd6cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bdfe6c77e7214c4fbbb93b8614a1051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDB:
-  - name: "\uAC80"
+  items:
+  - id: 0
+    name: 
     status:
-      ATK: 3
+      ATK: 0
       criticalHitChance: 0
       globalCriticalMultiplier: 0
       DEF: 0
@@ -679,9 +547,10 @@ MonoBehaviour:
       durabilityNegation: 0
       damageMultiplier: 0
       ATKMultiplier: 0
-  - name: "\uD65C"
+  - id: 0
+    name: 
     status:
-      ATK: 4
+      ATK: 0
       criticalHitChance: 0
       globalCriticalMultiplier: 0
       DEF: 0
@@ -698,147 +567,13 @@ MonoBehaviour:
       durabilityNegation: 0
       damageMultiplier: 0
       ATKMultiplier: 0
-  - name: "\uC9C0\uD321\uC774"
-    status:
-      ATK: 5
-      criticalHitChance: 0
-      globalCriticalMultiplier: 0
-      DEF: 0
-      HP: 0
-      SPI: 0
-      fireTypeStrength: 0
-      waterTypeStrength: 0
-      darkTypeStrength: 0
-      brightTypeStrength: 0
-      fireTypeREG: 0
-      waterTypeREG: 0
-      darkTypeREG: 0
-      brightTypeREG: 0
-      durabilityNegation: 0
-      damageMultiplier: 0
-      ATKMultiplier: 0
-  - name: "\uBABD\uB465\uC774"
-    status:
-      ATK: 6
-      criticalHitChance: 0
-      globalCriticalMultiplier: 0
-      DEF: 0
-      HP: 0
-      SPI: 0
-      fireTypeStrength: 0
-      waterTypeStrength: 0
-      darkTypeStrength: 0
-      brightTypeStrength: 0
-      fireTypeREG: 0
-      waterTypeREG: 0
-      darkTypeREG: 0
-      brightTypeREG: 0
-      durabilityNegation: 0
-      damageMultiplier: 0
-      ATKMultiplier: 0
---- !u!4 &1666385104
+--- !u!4 &1007808830
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666385102}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1720613772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1720613774}
-  - component: {fileID: 1720613773}
-  m_Layer: 0
-  m_Name: SkillDatabase
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1720613773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720613772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e92c9b2b475b9346b1ec4ead6f2e5a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillDB:
-  - name: "\uBAB8\uD1B5\uBC15\uCE58\uAE30"
-    skillStatus:
-      type: 0
-      typeStrenght: 0
-      magnitude: 1
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 2
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: "\uD280\uC5B4\uC624\uB974\uAE30"
-    skillStatus:
-      type: 1
-      typeStrenght: 0
-      magnitude: 2
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 2
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: "\uC9F8\uB824\uBCF4\uAE30"
-    skillStatus:
-      type: 2
-      typeStrenght: 0
-      magnitude: 3
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 2
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
-  - name: "\uB2E8\uB2E8\uD574\uC9C0\uAE30"
-    skillStatus:
-      type: 3
-      typeStrenght: 0
-      magnitude: 4
-      isAbleCriticalHit: 0
-      randDirection: 0
-      isGuidedMissile: 0
-      cast: 0
-      coolTime: 2
-      boundsMultiplier: 0
-      rangeMultiplier: 0
-      speedMultiplier: 0
---- !u!4 &1720613774
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720613772}
+  m_GameObject: {fileID: 1007808828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}

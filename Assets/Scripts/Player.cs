@@ -5,7 +5,8 @@ public class Player : MonoBehaviour
     private Movement movement;
     private Attack attack;
     private PlayerInput playerInput;
-    private Status status;
+    [SerializeField]
+    private Status status = new Status();
 
     private void Awake()
     {

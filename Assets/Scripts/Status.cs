@@ -1,4 +1,5 @@
-﻿public class Status
+﻿[System.Serializable]
+public class Status
 {
     public float ATK;                      //공격력
     public float criticalHitChance;        //치명타 확률
