@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ILivingEntity
 {
     private Movement movement;
     private Attack attack;
     private PlayerInput playerInput;
     private PlayerItem playerItem;
     [SerializeField]
-    private Status status;
+    public Status status;
+    private int HP = 0;
+    private int maxHP = 100;
 
     private void Awake()
     {
@@ -15,8 +17,8 @@ public class Player : MonoBehaviour
         attack = GetComponent<Attack>();
         playerInput = GetComponent<PlayerInput>();
         playerItem = GetComponent<PlayerItem>();
-
-        status.Init();
+        HP = maxHP;
+        status.StatusCalc();
     }
 
     private void Update()
@@ -25,9 +27,20 @@ public class Player : MonoBehaviour
         if (playerInput.IsAttack()) attack.Execute(status.damage);
     }
 
-    [ContextMenu("Init")]
-    private void Init()
+    [ContextMenu("StatusCalc")]
+    public void StatusCalc()
     {
-        status.Init();
+        playerItem.StatusCalc();
+    }
+
+    public void TakeDamage(int damage)
+    {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<ItemScript>() != null)
+            collision.GetComponent<ItemScript>().Use(playerItem);
     }
 }

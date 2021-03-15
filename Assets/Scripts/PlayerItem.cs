@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
+    private Player player;
+
     [SerializeField]
     private Item weapon;
     [SerializeField]
@@ -10,16 +12,28 @@ public class PlayerItem : MonoBehaviour
     [SerializeField]
     private Item accessories;
     [SerializeField]
-    private List<Item> itemList = new List<Item>(); 
+    private List<Item> itemList = new List<Item>();
 
-    [ContextMenu("Equip")]
-    private void Equip()
+    private void Awake()
     {
-        if (DataManager.Exists(DataManager.weapon, "name", weapon.name))
-            weapon = DataManager.itemDB[weapon.name];
-        if (DataManager.Exists(DataManager.armor, "name", armor.name))
-            armor = DataManager.itemDB[armor.name];
-        if (DataManager.Exists(DataManager.accessories, "name", accessories.name))
-            accessories = DataManager.itemDB[accessories.name];
+        player = GetComponent<Player>();
+    }
+
+    public void Equip(Item item)
+    {
+        if (DataManager.Exists(DataManager.weapon, "name", item.name))
+            weapon = item;
+        if (DataManager.Exists(DataManager.armor, "name", item.name))
+            armor = item;
+        if (DataManager.Exists(DataManager.accessories, "name", item.name))
+            accessories = item;
+
+        StatusCalc();
+    }
+
+    public void StatusCalc()
+    {
+        Item[] items = { weapon, armor, accessories };
+        player.status.StatusCalc(items);
     }
 }

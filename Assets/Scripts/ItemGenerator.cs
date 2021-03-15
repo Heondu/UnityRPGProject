@@ -1,44 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyItem : MonoBehaviour
+public class ItemGenerator
 {
-    private Enemy enemy;
     [SerializeField]
-    private Item item;
-    private Dictionary<string, object> rarity;
-    private Dictionary<string, object> rarityAdd;
-    private List<string> itemList = new List<string>();
-    private List<string> additionalList = new List<string>();
-    string rarityType = "Normal";
+    private static Item item;
+    private static Dictionary<string, object> rarity;
+    private static Dictionary<string, object> rarityAdd;
+    private static List<string> itemList = new List<string>();
+    private static List<string> additionalList = new List<string>();
+    private static string rarityType = "Normal";
 
-    private void Awake()
+    public static Item DropItem(int rarityMin, int rarityMax, string type)
     {
-        enemy = GetComponent<Enemy>();
-    }
-
-    [ContextMenu("ItemDrop")]
-    private void ItemDrop()
-    {
-        Filtering();
-        RandomRarity();
+        Filtering(rarityMin, rarityMax);
+        RandomRarity(type);
         ItemInit();
         Additional();
+        return item;
     }
 
-    private void Filtering()
+    private static void Filtering(int rarityMin, int rarityMax)
     {
         for (int i = 0; i < DataManager.item.Count; i++)
         {
-            if ((int)enemy.monlvl["raritymin"] <= (int)DataManager.item[i]["rarity"] &&
-                (int)enemy.monlvl["raritymax"] >= (int)DataManager.item[i]["rarity"])
+            if (rarityMin <= (int)DataManager.item[i]["rarity"] &&
+                rarityMax >= (int)DataManager.item[i]["rarity"])
                 itemList.Add(DataManager.item[i]["name"].ToString());
         }
     }
 
-    private void RandomRarity()
+    private static void RandomRarity(string type)
     {
-        rarity = DataManager.Find(DataManager.rarity, "Function", enemy.monster["class"]);
+        rarity = DataManager.Find(DataManager.rarity, "Function", type);
         int[] sort = { (int)rarity["Legendary"], (int)rarity["Unique"], (int)rarity["Rare"], (int)rarity["Magic"], (int)rarity["HiQuality"], (int)rarity["Normal"] };
         string[] types = { "Legendary", "Unique", "Rare", "Magic", "HiQuality", "Normal" };
         for (int i = 0; i < sort.Length - 1; i++) {
@@ -60,17 +54,16 @@ public class EnemyItem : MonoBehaviour
         else if (rand <= sort[3]) rarityType = types[3];
         else if (rand <= sort[4]) rarityType = types[4];
         else if (rand <= sort[5]) rarityType = types[5];
-        Debug.Log($"{rand}, {rarityType}");
     }
 
-    private void ItemInit()
+    private static void ItemInit()
     {
         item = DataManager.itemDB[itemList[Random.Range(0, itemList.Count)]];
         item.rarityType = rarityType;
         item.stat = Random.Range(item.statMin, item.statMax);
     }
 
-    private void Additional()
+    private static void Additional()
     {
         rarityAdd = DataManager.Find(DataManager.rarity, "Function", "rarityAdd");
         int rand = Random.Range(0, 100);
