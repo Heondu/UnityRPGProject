@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ItemList>
-	<Item ID="0" Name="검" ATK="3" criticalHitChance="0" globalCriticalMultiplier="0" DEF="0" HP="0" SPI="0" fireTypeStrength="0" waterTypeStrength="0" darkTypeStrength="0" brightTypeStrength="0" fireTypeREG="0" waterTypeREG="0" darkTypeREG="0" brightTypeREG="0" durabilityNegation="0" damageMultiplier="0" ATKMultiplier="0"/>
-	<Item ID="1" Name="활" ATK="4" criticalHitChance="0" globalCriticalMultiplier="0" DEF="0" HP="0" SPI="0" fireTypeStrength="0" waterTypeStrength="0" darkTypeStrength="0" brightTypeStrength="0" fireTypeREG="0" waterTypeREG="0" darkTypeREG="0" brightTypeREG="0" durabilityNegation="0" damageMultiplier="0" ATKMultiplier="0"/>
-</ItemList>

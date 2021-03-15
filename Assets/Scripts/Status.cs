@@ -1,21 +1,34 @@
-﻿[System.Serializable]
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
 public class Status
 {
-    public float ATK;                      //공격력
-    public float criticalHitChance;        //치명타 확률
-    public float globalCriticalMultiplier; //치명타 배율
-    public float DEF;                      //방어력
-    public float HP;                       //체력
-    public float SPI;                      //정신력
-    public float fireTypeStrength;         //화 속성 강화
-    public float waterTypeStrength;        //수 속성 강화
-    public float darkTypeStrength;         //암 속성 강화
-    public float brightTypeStrength;       //명 속성 강화
-    public float fireTypeREG;              //화 속성 저항
-    public float waterTypeREG;             //수 속성 저항
-    public float darkTypeREG;              //암 속성 저항
-    public float brightTypeREG;            //명 속성 저항
-    public float durabilityNegation;       //방어 무시
-    public float damageMultiplier;         //받는 피해 배율
-    public float ATKMultiplier;            //입히는 피해 배율
+    public int strength;
+    public int agility;
+    public int intelligence;
+    public int endurance;
+    public int damage;
+    public int fixDam;
+    public int critChance;
+    public int avoidance;
+    public int accuracy;
+    public int reduceMana;
+    public int reduceCooltime;
+    public int defence;
+    public int allResist;
+    private const float statusMultiplier = 0.05f;
+
+    public void Init()
+    {
+        damage = strength;
+        fixDam = Mathf.RoundToInt(strength * statusMultiplier);
+        critChance = Mathf.RoundToInt(agility * statusMultiplier);
+        avoidance = Mathf.RoundToInt(agility * statusMultiplier);
+        accuracy = Mathf.RoundToInt(agility * statusMultiplier);
+        reduceMana = Mathf.RoundToInt(intelligence * statusMultiplier);
+        reduceCooltime = Mathf.RoundToInt(intelligence * statusMultiplier);
+        defence = endurance;
+        allResist = Mathf.RoundToInt(endurance * statusMultiplier);
+    }
 }

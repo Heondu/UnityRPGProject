@@ -1,0 +1,18 @@
+﻿name,spawnable,type,status,rarity,statMin,statMax,cost
+Steel Ring,1,ring,allResist,2,3,5,400
+Silver Ring,1,ring,allResist,3,5,7,1500
+Gold Ring,1,ring,allResist,5,7,9,4500
+Jade Ring,1,ring,allResist,7,9,11,10500
+Diamond Ring,1,ring,allResist,9,11,15,24000
+,,,,,,,
+Steel Neclace,1,necklace,allResist,3,7,9,750
+Silver Necklace,1,necklace,allResist,4,9,11,5500
+Gold Necklace,1,necklace,allResist,6,11,15,10700
+Jade Necklace,1,necklace,allResist,8,15,20,25500
+Diamond Necklace,1,necklace,allResist,10,20,25,46500
+,,,,,,,
+Steel Bracelet,1,bracelet,allResist,2,3,5,400
+Silver Bracelet,1,bracelet,allResist,3,5,7,1500
+Gold Bracelet,1,bracelet,allResist,5,7,9,4500
+Jade Bracelet,1,bracelet,allResist,7,9,11,10500
+Diamond Bracelet,1,bracelet,allResist,9,11,15,24000

@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField]
-    private int damage;
-
-    public void Execute()
+    public void Execute(int damage)
     {
         Debug.Log($"[공격] 데미지 {damage}!");
     }
