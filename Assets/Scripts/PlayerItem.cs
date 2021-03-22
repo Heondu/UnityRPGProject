@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
-    private Player player;
+    private Status status;
 
     [SerializeField]
     private Item weapon;
@@ -16,7 +16,7 @@ public class PlayerItem : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponent<Player>();
+        status = GetComponent<Status>();
     }
 
     public void Equip(Item item)
@@ -31,9 +31,10 @@ public class PlayerItem : MonoBehaviour
         StatusCalc();
     }
 
+    [ContextMenu("StatusCalc")]
     public void StatusCalc()
     {
         Item[] items = { weapon, armor, accessories };
-        player.status.StatusCalc(items);
+        status.StatusCalc(items);
     }
 }

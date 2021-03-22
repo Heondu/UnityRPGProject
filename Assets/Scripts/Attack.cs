@@ -2,12 +2,28 @@
 
 public class Attack : MonoBehaviour
 {
+    private Rotation rotation;
+
+    private void Awake()
+    {
+        rotation = GetComponent<Rotation>();
+    }
+
     public void Execute(int damage)
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, 3);
-        if (collider.gameObject != gameObject && collider.GetComponent<ILivingEntity>() != null)
-            collider.GetComponent<ILivingEntity>().TakeDamage(damage);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, transform.localScale, transform.rotation.z);
+        foreach(Collider2D collider in colliders)
+        {
+            if (collider.gameObject != transform.root.gameObject)
+            {
+                ILivingEntity entity = collider.GetComponent<ILivingEntity>();
 
-        Debug.Log($"[공격] 데미지 {damage}!");
+                if (entity != null)
+                {
+                    entity.TakeDamage(damage);
+                    Debug.Log($"[공격] 데미지 {damage}!");
+                }
+            }
+        }
     }
 }

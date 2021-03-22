@@ -2,67 +2,101 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Status
+public class StringFloat : SerializableDictionary<string, float> { }
+
+public class Status : MonoBehaviour
 {
-    public int strength;
-    public int agility;
-    public int intelligence;
-    public int endurance;
-    public int damage;
-    public int fixDam;
-    public int critChance;
-    public int avoidance;
-    public int accuracy;
-    public int reduceMana;
-    public int reduceCooltime;
-    public int defence;
-    public int allResist;
+    public StringFloat status;
+    private string[] statusString = { "strength", "agility", "intelligence", "endurance", "damage", "fixDam",
+                                    "fireDamage", "coldDamage", "darkDamage", "lightDamage", "critChance",
+                                    "critAvoid", "critDamage", "avoidance", "accuracy", "reduceMana", "reduceCooltime",
+                                    "defence", "fireResist", "coldResist", "darkResist", "lightResist", "allResist" };
+    private string[] statusPerString = { "strength%", "agility%", "intelligence%", "endurance%", "damage%", "fixDam%",
+                                    "fireDamage%", "coldDamage%", "darkDamage%", "lightDamage%", "critChance%",
+                                    "critAvoid%", "critDamage%", "avoidance%", "accuracy%", "reduceMana%", "reduceCooltime%",
+                                    "defence%", "fireResist%", "coldResist%", "darkResist%", "lightResist%", "allResist%" };
     private const float statusMultiplier = 0.05f;
-    private Dictionary<string, int> status = new Dictionary<string, int>();
+
+    private void Awake()
+    {
+        Init();
+    }
 
     private void Init()
     {
-        status["damage"] = strength;
-        status["fixDam"] = Mathf.RoundToInt(strength * statusMultiplier);
-        status["critChance"] = Mathf.RoundToInt(agility * statusMultiplier);
-        status["avoidance"] = Mathf.RoundToInt(agility * statusMultiplier);
-        status["accuracy"] = Mathf.RoundToInt(agility * statusMultiplier);
-        status["reduceMana"] = Mathf.RoundToInt(intelligence * statusMultiplier);
-        status["reduceCooltime"] = Mathf.RoundToInt(intelligence * statusMultiplier);
-        status["defence"] = endurance;
-        status["allResist"] = Mathf.RoundToInt(endurance * statusMultiplier);
+        status["strength"] = 10;
+        for (int i = 1; i < statusString.Length; i++)
+        {
+            status[statusString[i]] = 0;
+        }
+        for (int i = 0; i < statusPerString.Length; i++)
+        {
+            status[statusPerString[i]] = 0;
+        }
     }
 
-    public void Apply()
+    private void DeriveStatusCalc()
     {
-        damage = status["damage"];
-        fixDam = status["fixDam"];
-        critChance = status["critChance"];
-        avoidance = status["avoidance"];
-        accuracy = status["accuracy"];
-        reduceMana = status["reduceMana"];
-        reduceCooltime = status["reduceCooltime"];
-        defence = status["defence"];
-        allResist = status["allResist"];
+        status["damage"] += status["strength"];
+        status["fixDam"] += status["strength"] * statusMultiplier;
+        status["critChance"] += status["agility"] * statusMultiplier;
+        status["avoidance"] += status["agility"] * statusMultiplier;
+        status["accuracy"] += status["agility"] * statusMultiplier;
+        status["reduceMana"] += status["intelligence"] * statusMultiplier;
+        status["reduceCooltime"] += status["intelligence"] * statusMultiplier;
+        status["defence"] += status["endurance"];
+        status["allResist"] += status["endurance"] * statusMultiplier;
+    }
+
+    private void PercentStatusCalc()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            status[statusString[i]] = status[statusString[i]] * (1 + status[statusPerString[i]] / 100);
+        }
+        DeriveStatusCalc();
+        for (int i = 4; i < statusString.Length; i++)
+        {
+            status[statusString[i]] = status[statusString[i]] * (1 + status[statusPerString[i]] / 100);
+        }
+    }
+
+    private void ItemStatusCalc(Item[] items)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].name != "")
+            {
+                status[items[i].status] += items[i].stat;
+
+                for (int j = 0; j < items[i].statusAdd.Length; j++)
+                {
+                    status[items[i].statusAdd[j]] += items[i].statAdd[j];
+                }
+            }
+        }
+    }
+
+    private void Round()
+    {
+        for (int i = 0; i < statusString.Length; i++)
+        {
+            status[statusString[i]] = Mathf.Round(status[statusString[i]]);
+        }
     }
 
     public void StatusCalc()
     {
         Init();
-        Apply();
+        PercentStatusCalc();
+        Round();
     }
 
     public void StatusCalc(Item[] items)
     {
         Init();
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i].name != "")
-            {
-                if (items[i].status.Contains("%")) status[items[i].status] *= items[i].stat;
-                else status[items[i].status] += items[i].stat;
-            }
-        }
-        Apply();
+        ItemStatusCalc(items);
+        PercentStatusCalc();
+        Round();
     }
 }

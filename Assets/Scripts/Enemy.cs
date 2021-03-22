@@ -8,24 +8,21 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private Movement movement;
     private Attack attack;
     private EnemyController enemyController;
+    private Health health;
     private EnemyState state = EnemyState.STATE_PATROL;
     [SerializeField]
     private string name;
-    [SerializeField]
     private Status status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
     public Dictionary<string, object> monlvl = new Dictionary<string, object>();
-    private int HP = 0;
-    private int maxHP = 10;
-    [SerializeField]
-    private GameObject item;
 
     private void Awake()
     {
         movement = GetComponent<Movement>();
-        attack = GetComponent<Attack>();
+        attack = GetComponentInChildren<Attack>();
         enemyController = GetComponent<EnemyController>();
-        HP = maxHP;
+        health = GetComponent<Health>();
+        status = GetComponent<Status>();
         Init();
     }
 
@@ -42,7 +39,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
                 movement.Execute(enemyController.GetAxis());
                 break;
             case EnemyState.STATE_ATTACK:
-                attack.Execute(status.damage);
+                attack.Execute((int)status.status["damage"]);
                 break;
         }
     }
@@ -56,20 +53,18 @@ public class Enemy : MonoBehaviour, ILivingEntity
     {
         monster = DataManager.Find(DataManager.monster, "name", name);
         monlvl = DataManager.Find(DataManager.monlvl, "Level", monster["monlvl"]);
-        status.strength = (int)monlvl["strength"];
-        status.agility = (int)monlvl["agility"];
-        status.intelligence = (int)monlvl["intelligence"];
-        status.endurance = (int)monlvl["endurance"];
+        status.status["strength"] = (int)monlvl["strength"];
+        status.status["agility"] = (int)monlvl["agility"];
+        status.status["intelligence"] = (int)monlvl["intelligence"];
+        status.status["endurance"] = (int)monlvl["endurance"];
         status.StatusCalc();
     }
 
     public void TakeDamage(int damage)
     {
-        HP = Mathf.Max(0, HP - damage);
-        if (HP ==  0)
+        if (health.HPCalc(damage, false) ==  0)
         {
-            GameObject clone = Instantiate(item, transform.position, Quaternion.identity);
-            clone.GetComponent<ItemScript>().item = ItemGenerator.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString());
+            ItemGenerator.Instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);
             Destroy(gameObject);
         }
     }

@@ -1,9 +1,6 @@
-﻿public enum Type { fire = 0, water, dark, bright };
-
-[System.Serializable]
+﻿[System.Serializable]
 public class SkillStatus
 {
-    public Type type;
     public float typeStrenght;
     public float magnitude;
     public bool isAbleCriticalHit;
