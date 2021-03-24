@@ -19,4 +19,11 @@ public class Rotation : MonoBehaviour
         float y = distance * Mathf.Sin(angle);
         transform.localPosition = new Vector3(x, y, 0);
     }
+
+    public static float GetAngle(Vector3 pos)
+    {
+        Vector2 dir = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - pos).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        return angle - 90;
+    }
 }

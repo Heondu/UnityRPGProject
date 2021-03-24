@@ -11,7 +11,11 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private KeyCode right = KeyCode.D;
     [SerializeField]
-    private KeyCode attack = KeyCode.Mouse0;
+    private KeyCode skill1 = KeyCode.Mouse0;
+    [SerializeField]
+    private KeyCode skill2 = KeyCode.Mouse1;
+    [SerializeField]
+    private KeyCode skill3 = KeyCode.Mouse2;
 
     public bool IsMove()
     {
@@ -20,8 +24,18 @@ public class PlayerInput : MonoBehaviour
 
     public bool IsAttack()
     {
-        if (Input.GetKeyDown(attack)) return true;
+        if (Input.GetKeyDown(skill1)) return true;
+        if (Input.GetKeyDown(skill2)) return true;
+        if (Input.GetKeyDown(skill3)) return true;
         return false;
+    }
+
+    public int GetSkillIndex()
+    {
+        if (Input.GetKeyDown(skill1)) return 0;
+        if (Input.GetKeyDown(skill2)) return 1;
+        if (Input.GetKeyDown(skill3)) return 2;
+        return -1;
     }
 
     public Vector3 GetAxis()

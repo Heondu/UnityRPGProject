@@ -6,11 +6,11 @@ public class Player : MonoBehaviour, ILivingEntity
     private Attack attack;
     private PlayerInput playerInput;
     private PlayerItem playerItem;
+    private PlayerSkill playerSkill;
     private PlayerAnimator playerAnimator;
+    private PlayerStatus playerStatus;
     private Rotation rotation;
     public Status status;
-    private int HP = 0;
-    private int maxHP = 100;
 
     private void Awake()
     {
@@ -18,22 +18,23 @@ public class Player : MonoBehaviour, ILivingEntity
         attack = GetComponentInChildren<Attack>();
         playerInput = GetComponent<PlayerInput>();
         playerItem = GetComponent<PlayerItem>();
+        playerSkill = GetComponent<PlayerSkill>();
         playerAnimator = GetComponent<PlayerAnimator>();
+        playerStatus = GetComponent<PlayerStatus>();
         rotation = GetComponentInChildren<Rotation>();
         status = GetComponent<Status>();
-        HP = maxHP;
-        status.StatusCalc();
+        StatusCalculator.StatusCalc(status.status, playerStatus.fourStatus);
     }
 
     private void Update()
     {
         playerAnimator.Movement(playerInput.GetAxis());
         if (playerInput.IsMove()) movement.Execute(playerInput.GetAxis());
-        if (playerInput.IsAttack()) attack.Execute((int)status.status["damage"]);
+        if (playerInput.IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
         rotation.Rotate(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage()
     {
 
     }

@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private EnemyState state = EnemyState.STATE_PATROL;
     [SerializeField]
     private string name;
-    private Status status;
+    public Status status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
     public Dictionary<string, object> monlvl = new Dictionary<string, object>();
 
@@ -53,16 +53,12 @@ public class Enemy : MonoBehaviour, ILivingEntity
     {
         monster = DataManager.Find(DataManager.monster, "name", name);
         monlvl = DataManager.Find(DataManager.monlvl, "Level", monster["monlvl"]);
-        status.status["strength"] = (int)monlvl["strength"];
-        status.status["agility"] = (int)monlvl["agility"];
-        status.status["intelligence"] = (int)monlvl["intelligence"];
-        status.status["endurance"] = (int)monlvl["endurance"];
-        status.StatusCalc();
+        StatusCalculator.StatusCalc(status.status, monlvl);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage()
     {
-        if (health.HPCalc(damage, false) ==  0)
+        if (status.status["HP"] <=  0)
         {
             ItemGenerator.Instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);
             Destroy(gameObject);

@@ -20,8 +20,7 @@ public class Attack : MonoBehaviour
 
                 if (entity != null)
                 {
-                    entity.TakeDamage(damage);
-                    Debug.Log($"[공격] 데미지 {damage}!");
+                    entity.TakeDamage();
                 }
             }
         }

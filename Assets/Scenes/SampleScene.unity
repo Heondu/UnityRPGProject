@@ -224,6 +224,8 @@ GameObject:
   - component: {fileID: 535044183}
   - component: {fileID: 535044184}
   - component: {fileID: 535044174}
+  - component: {fileID: 535044185}
+  - component: {fileID: 535044186}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -341,7 +343,9 @@ MonoBehaviour:
   left: 97
   down: 115
   right: 100
-  attack: 323
+  skill1: 323
+  skill2: 324
+  skill3: 325
 --- !u!114 &535044178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,6 +523,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 10
+--- !u!114 &535044185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535044172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1202938d6ed25514e9a80d1df4f038c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillnames:
+  - 
+  - 
+  - 
+  skills: []
+  skillProjectile: {fileID: 8047951444142969397, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+    type: 3}
+  skillExplode: {fileID: 6880589391158962967, guid: 61bd48a0229bd654886484f2c3ae1b1f,
+    type: 3}
+  skillBuff: {fileID: 3508449156411040494, guid: 4fe9519deac9af0458e9ef3a030d72f5,
+    type: 3}
+  buffs: []
+--- !u!114 &535044186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535044172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2792ae07f520f6241849f7a6af407ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &802496888 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3411087862078359448, guid: 8823e6e158bb72e459f3be9b3a770681,
