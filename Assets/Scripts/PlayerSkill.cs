@@ -9,7 +9,14 @@ public class PlayerSkill : MonoBehaviour
     public List<Skill> buffs = new List<Skill>();
     public Timer[] skillCoolTimer = { new Timer(), new Timer(), new Timer() };
     public bool[] isSkillCool = { false, false, false };
-    private Timer timer = new Timer();
+
+    private void Awake()
+    {
+        for (int i = 0; i < skills.Length; i++)
+        {
+            skills[i].status["skill"] = "";
+        }
+    }
 
     private void Update()
     {
