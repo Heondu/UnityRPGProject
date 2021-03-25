@@ -79,16 +79,31 @@ public class StatusCalculator : MonoBehaviour
         {
             float value;
             if (skill.status["relatedStatus" + i].ToString() == "") continue;
+            if (skill.status["status" + i].ToString() == "none") continue;
             else if (skill.status["relatedStatus" + i].ToString() == "none") value = (int)skill.status["amount" + i];
             else value = Mathf.RoundToInt(executorStatus[skill.status["relatedStatus" + i].ToString()] * (float.Parse(skill.status["amount" + i].ToString()) / 100));
 
-            if ((int)skill.status["isPositive"] == 1)
-            {
-                Debug.Log(value);
-                executorStatus[skill.status["status" + i].ToString()] += value;
-                Debug.Log(executorStatus[skill.status["status" + i].ToString()]);
-            }
+            if ((int)skill.status["isPositive"] == 1) executorStatus[skill.status["status" + i].ToString()] += value;
             else if ((int)skill.status["isPositive"] == 0) targetStatus[skill.status["status" + i].ToString()] -= value;
+        }
+    }
+
+    public static void SkillsStatusCalc(StringFloat executorStatus, List<Skill> skills)
+    {
+        if (skills == null) return;
+
+        foreach (Skill skill in skills)
+        {
+            for (int i = 1; i <= 2; i++)
+            {
+                float value;
+                if (skill.status["relatedStatus" + i].ToString() == "") continue;
+                if (skill.status["status" + i].ToString() == "none") continue;
+                else if (skill.status["relatedStatus" + i].ToString() == "none") value = (int)skill.status["amount" + i];
+                else value = Mathf.RoundToInt(executorStatus[skill.status["relatedStatus" + i].ToString()] * (float.Parse(skill.status["amount" + i].ToString()) / 100));
+
+                if ((int)skill.status["isPositive"] == 1) executorStatus[skill.status["status" + i].ToString()] += value;
+            }
         }
     }
 
@@ -100,19 +115,12 @@ public class StatusCalculator : MonoBehaviour
         }
     }
 
-    public static void StatusCalc(StringFloat status, Dictionary<string, object> fourStatus, Item[] items = null, Skill[] skills = null)
+    public static void StatusCalc(StringFloat status, Dictionary<string, object> fourStatus, Item[] items = null, List<Skill> skills = null)
     {
         Init(status, fourStatus);
         if (items != null) ItemStatusCalc(status, items);
         PercentStatusCalc(status);
         Round(status);
+        SkillsStatusCalc(status, skills);
     }
-
-    //public static void StatusCalc(Item[] items)
-    //{
-    //    Init();
-    //    ItemStatusCalc(items);
-    //    PercentStatusCalc();
-    //    Round();
-    //}
 }

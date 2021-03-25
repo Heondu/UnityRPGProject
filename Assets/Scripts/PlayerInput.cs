@@ -15,20 +15,7 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private KeyCode skill2 = KeyCode.Mouse1;
     [SerializeField]
-    private KeyCode skill3 = KeyCode.Mouse2;
-
-    public bool IsMove()
-    {
-        return true;
-    }
-
-    public bool IsAttack()
-    {
-        if (Input.GetKeyDown(skill1)) return true;
-        if (Input.GetKeyDown(skill2)) return true;
-        if (Input.GetKeyDown(skill3)) return true;
-        return false;
-    }
+    private KeyCode skill3 = KeyCode.Q;
 
     public int GetSkillIndex()
     {

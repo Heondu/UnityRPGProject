@@ -1,36 +1,32 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SkillProjectile : MonoBehaviour
+public class SkillProjectile : SkillScript
 {
     [SerializeField]
-    private float radius;
-    private GameObject executor;
-    private Skill skill;
+    private float radius = 5;
     private GameObject target;
     private Movement movement;
-    private float speed = 6;
-    private float speedMin = 3;
+    private int penetrationCount = 0;
 
     private void Awake()
     {
         movement = GetComponent<Movement>();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         movement.Execute(transform.up);
-        movement.SetMoveSpeed(Mathf.Max(speedMin, speed));
         SetDir();
     }
 
-    public void Execute(float angle, GameObject executor, Skill skill)
+    public override void Execute(GameObject executor, Skill skill)
     {
+        base.Execute(executor, skill);
+        float angle = Rotation.GetAngle(executor.transform.position);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        this.executor = executor;
-        this.skill = skill;
         StartCoroutine("FindTarget");
-        StartCoroutine("SetSpeed");
     }
 
     private void SetDir()
@@ -41,16 +37,6 @@ public class SkillProjectile : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
-    }
-
-    private IEnumerator SetSpeed()
-    {
-        while (speed > speedMin)
-        {
-            speed -= 0.1f;
-
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 
     private void OnDrawGizmos()
@@ -86,10 +72,9 @@ public class SkillProjectile : MonoBehaviour
     {
         if (collision.gameObject == target)
         {
-            ILivingEntity entity = collision.GetComponent<ILivingEntity>();
-            StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collision.GetComponent<Status>().status, skill);
-            entity.TakeDamage();
-            Destroy(gameObject);
+            if (skill.status["name"].ToString() == "skill001") SkillSpawner.SkillSpawn(executor, DataManager.skillDB["skill002"], transform.position);
+            penetrationCount++;
+            if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
         }
     }
 }

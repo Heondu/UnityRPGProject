@@ -29,9 +29,26 @@ public class Player : MonoBehaviour, ILivingEntity
     private void Update()
     {
         playerAnimator.Movement(playerInput.GetAxis());
-        if (playerInput.IsMove()) movement.Execute(playerInput.GetAxis());
-        if (playerInput.IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
+        if (IsMove()) movement.Execute(playerInput.GetAxis());
+        if (IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
         rotation.Rotate(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+    }
+
+    private bool IsMove()
+    {
+        return true;
+    }
+
+    private bool IsAttack()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (playerInput.GetSkillIndex() == i)
+            {
+                if (playerSkill.isSkillCool[i] == false) return true;
+            }
+        }
+        return false;
     }
 
     public void TakeDamage()

@@ -1,25 +1,44 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillExplode : MonoBehaviour
+public class SkillExplode : SkillScript
 {
     [SerializeField]
-    private float radius;
+    private float radius = 5;
+    private int penetrationCount = 0;
 
-    public void Execute(Vector3 pos, GameObject executor, Skill skill)
+    protected override void Update()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, radius);
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.gameObject == executor) continue;
-            if (collider.gameObject == gameObject) continue;
+        base.Update();
+    }
 
-            ILivingEntity entity = collider.GetComponent<ILivingEntity>();
-            if (entity == null) continue;
-            StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
+    public override void Execute(GameObject executor, Skill skill)
+    {
+        base.Execute(executor, skill);
+        StartCoroutine("CoExecute");
+    }
+
+    private IEnumerator CoExecute()
+    {
+        while (true)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.gameObject == executor) continue;
+                if (collider.gameObject == gameObject) continue;
+
+                ILivingEntity entity = collider.GetComponent<ILivingEntity>();
+                if (entity == null) continue;
+                StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
+                entity.TakeDamage();
+
+                penetrationCount++;
+                if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
+            }
+
+            yield return new WaitForSeconds(float.Parse(skill.status["delay"].ToString()));
         }
-        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

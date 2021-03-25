@@ -28,6 +28,6 @@ public class PlayerItem : MonoBehaviour
     public void StatusCalc()
     {
         Item[] items = { weapon, armor, accessories };
-        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, items);
+        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, items, GetComponent<PlayerSkill>().buffs);
     }
 }

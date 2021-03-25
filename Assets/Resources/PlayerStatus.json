@@ -45,10 +45,11 @@
         "coldResist%",
         "darkResist%",
         "lightResist%",
-        "allResist%"
+        "allResist%",
+        "HP"
     ],
     "m_values": [
-        10.0,
+        60.0,
         0.0,
         0.0,
         0.0,
@@ -93,6 +94,7 @@
         0.0,
         0.0,
         0.0,
-        0.0
+        0.0,
+        10.0
     ]
 }

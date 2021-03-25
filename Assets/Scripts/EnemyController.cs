@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     private void Awake()
     {
         target = FindObjectOfType<Player>().gameObject;
+        RandSort();
     }
 
     public EnemyState Operate()
@@ -47,7 +48,11 @@ public class EnemyController : MonoBehaviour
     {
         if (IsPatrol())
         {
-            if (timer.IsTimeOut(PATROL_TIME)) currentDirNum = (currentDirNum + 1) % patrolDir.Length;
+            if (timer.IsTimeOut(PATROL_TIME))
+            {
+                RandSort();
+                currentDirNum = (currentDirNum + 1) % patrolDir.Length;
+            }
             return patrolDir[currentDirNum];
         }
         else if (IsChase()) return (target.transform.position - transform.position).normalized;
@@ -57,5 +62,17 @@ public class EnemyController : MonoBehaviour
     public float Distance()
     {
         return Vector3.Distance(transform.position, target.transform.position);
+    }
+
+    private void RandSort()
+    {
+        if (currentDirNum != 0) return;
+        for (int i = 0; i < patrolDir.Length; i++)
+        {
+            int randNum = Random.Range(0, patrolDir.Length);
+            Vector3 temp = patrolDir[randNum];
+            patrolDir[randNum] = patrolDir[i];
+            patrolDir[i] = temp;
+        }
     }
 }

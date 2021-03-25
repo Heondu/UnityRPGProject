@@ -3,6 +3,7 @@
 public class Timer
 {
     private float time = 0;
+    public float GetTime => time;
 
     public bool IsTimeOut(float limitTime)
     {

@@ -540,12 +540,6 @@ MonoBehaviour:
   - 
   - 
   skills: []
-  skillProjectile: {fileID: 8047951444142969397, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-    type: 3}
-  skillExplode: {fileID: 6880589391158962967, guid: 61bd48a0229bd654886484f2c3ae1b1f,
-    type: 3}
-  skillBuff: {fileID: 3508449156411040494, guid: 4fe9519deac9af0458e9ef3a030d72f5,
-    type: 3}
   buffs: []
 --- !u!114 &535044186
 MonoBehaviour:

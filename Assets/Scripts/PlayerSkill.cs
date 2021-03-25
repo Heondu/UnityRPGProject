@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSkill : MonoBehaviour
@@ -7,13 +6,15 @@ public class PlayerSkill : MonoBehaviour
     [SerializeField]
     private string[] skillnames = new string[3];
     public Skill[] skills = new Skill[3];
-    [SerializeField]
-    private GameObject skillProjectile;
-    [SerializeField]
-    private GameObject skillExplode;
-    [SerializeField]
-    private GameObject skillBuff;
     public List<Skill> buffs = new List<Skill>();
+    public Timer[] skillCoolTimer = { new Timer(), new Timer(), new Timer() };
+    public bool[] isSkillCool = { false, false, false };
+    private Timer timer = new Timer();
+
+    private void Update()
+    {
+        Cooltime();
+    }
 
     [ContextMenu("ChangeSkill")]
     private void ChangeSkill()
@@ -38,38 +39,31 @@ public class PlayerSkill : MonoBehaviour
 
     public void Execute(int index, GameObject executor)
     {
-        if (!DataManager.Exists(DataManager.skills, "name", skillnames[index])) return;
-
-        if (index == 0)
-        {
-            GameObject clone = Instantiate(skillProjectile, transform.position, Quaternion.identity);
-            clone.GetComponent<SkillProjectile>().Execute(Rotation.GetAngle(executor.transform.position), executor, skills[index]);
-        }
-        else if (index == 1)
-        {
-            GameObject clone = Instantiate(skillExplode, transform.position, Quaternion.identity);
-            clone.GetComponent<SkillExplode>().Execute(executor.transform.position, executor, skills[index]);
-        }
-        else if (index == 2)
+        SkillScript skill = SkillSpawner.SkillSpawn(executor, skills[index], transform.position);
+        isSkillCool[index] = true;
+        if (skills[index].status["type"].ToString() == "buff")
         {
             buffs.Add(skills[index]);
-            GameObject clone = Instantiate(skillBuff, Vector3.zero, Quaternion.identity);
-            clone.GetComponent<SkillBuff>().Execute(executor, skills[index]);
-            clone.GetComponent<SkillBuff>().SetCallBack(RemoveBuff);
+            skill.SetCallBack(RemoveBuff);
+        }
+    }
+
+    private void Cooltime()
+    {
+        for (int i = 0; i < isSkillCool.Length; i++)
+        {
+            if (isSkillCool[i])
+            {
+                if (skillCoolTimer[i].IsTimeOut(float.Parse(skills[i].status["cooltime"].ToString())))
+                {
+                    isSkillCool[i] = false;
+                }
+            }
         }
     }
 
     private void RemoveBuff(Skill skill)
     {
-        Debug.Log(skill.status["name"]);
-        for (int i = 0; i < buffs.Count; i++)
-        {
-            Debug.Log(buffs[i]);
-        }
         buffs.Remove(skill);
-        for (int i = 0; i < buffs.Count; i++)
-        {
-            Debug.Log(buffs[i]);
-        }
     }
 }

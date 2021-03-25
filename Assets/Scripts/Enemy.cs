@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private Health health;
     private EnemyState state = EnemyState.STATE_PATROL;
     [SerializeField]
-    private string name;
+    public string name;
     public Status status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
     public Dictionary<string, object> monlvl = new Dictionary<string, object>();
