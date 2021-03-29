@@ -16,11 +16,11 @@ public class UICooltimeViewer : MonoBehaviour
         for (int i = 0; i < cooltimeImages.Length; i++)
         {
             if (playerSkill.isSkillCool[i])
-                cooltimeImages[i].fillAmount = 1 - playerSkill.skillCoolTimer[i].GetTime / float.Parse(playerSkill.skills[i].status["cooltime"].ToString());
+                cooltimeImages[i].fillAmount = 1 - playerSkill.skillCoolTimer[i].GetTime / playerSkill.skills[i].cooltime;
             else cooltimeImages[i].fillAmount = 0;
 
-            if (playerSkill.skills[i].status["skill"].ToString() != "")
-                skillText[i].text = playerSkill.skills[i].status["skill"].ToString();
+            if (playerSkill.skills[i].skill != "")
+                skillText[i].text = playerSkill.skills[i].skill;
         }
     }
 }

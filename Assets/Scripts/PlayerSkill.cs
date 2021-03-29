@@ -12,10 +12,13 @@ public class PlayerSkill : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < skills.Length; i++)
+        for (int i = 0; i < 3; i++)
         {
-            skills[i].status["skill"] = "";
+            skills[i] = new Skill();
+            skills[i].skill = "";
         }
+
+        ChangeSkill();
     }
 
     private void Update()
@@ -31,24 +34,15 @@ public class PlayerSkill : MonoBehaviour
             if (DataManager.Exists(DataManager.skills, "name", skillnames[i]))
             {
                 skills[i] = DataManager.skillDB[skillnames[i]];
-                PrintSkill(i);
             }
-        }
-    }
-
-    private void PrintSkill(int index)
-    {
-        foreach (string key in skills[index].status.Keys)
-        {
-            Debug.Log($"[{skills[index].status["skill"]}] {key} : {skills[index].status[key]}");
         }
     }
 
     public void Execute(int index, GameObject executor)
     {
-        SkillScript skill = SkillSpawner.SkillSpawn(executor, skills[index], transform.position);
+        SkillScript skill = SkillLoader.SkillLoad(executor, skills[index], transform.position);
         isSkillCool[index] = true;
-        if (skills[index].status["type"].ToString() == "buff")
+        if (skills[index].type == "buff")
         {
             buffs.Add(skills[index]);
             skill.SetCallBack(RemoveBuff);
@@ -61,7 +55,7 @@ public class PlayerSkill : MonoBehaviour
         {
             if (isSkillCool[i])
             {
-                if (skillCoolTimer[i].IsTimeOut(float.Parse(skills[i].status["cooltime"].ToString())))
+                if (skillCoolTimer[i].IsTimeOut(skills[i].cooltime))
                 {
                     isSkillCool[i] = false;
                 }

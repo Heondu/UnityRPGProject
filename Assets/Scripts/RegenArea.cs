@@ -3,12 +3,7 @@
 public class RegenArea : MonoBehaviour
 {
     [SerializeField]
-    public Vector2 size;
-    public int regenNumMax;
+    public Vector2 position;
+    public int maxRegenNum;
     public string monType;
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, size);
-    }
 }

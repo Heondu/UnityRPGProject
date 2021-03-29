@@ -15,7 +15,7 @@ public class RegenManager : MonoBehaviour
         foreach (GameObject regen in regens)
         {
             RegenArea regenArea = regen.GetComponent<RegenArea>();
-            regen.AddComponent<RegenMonster>().SpawnMonster(regenArea.monType, regenArea.regenNumMax, regenArea.size);
+            regen.AddComponent<RegenMonster>().SpawnMonster(regenArea.monType, regenArea.maxRegenNum, regenArea.position);
         }
     }
 }

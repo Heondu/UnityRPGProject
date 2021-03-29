@@ -10,8 +10,8 @@ public class Movement : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    public void SetMoveSpeed(float speed)
+    public void Execute(Vector3 direction, float speed)
     {
-        this.speed = speed;
+        transform.position += direction * speed * Time.deltaTime;
     }
 }

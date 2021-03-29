@@ -4,7 +4,9 @@ using UnityEngine;
 public class SkillProjectile : SkillScript
 {
     [SerializeField]
-    private float radius = 5;
+    private string secondSkill;
+    [SerializeField]
+    private int radius;
     private GameObject target;
     private Movement movement;
     private int penetrationCount = 0;
@@ -17,7 +19,7 @@ public class SkillProjectile : SkillScript
     protected override void Update()
     {
         base.Update();
-        movement.Execute(transform.up);
+        movement.Execute(transform.up, skill.speed);
         SetDir();
     }
 
@@ -36,7 +38,7 @@ public class SkillProjectile : SkillScript
         Vector2 dir = (target.transform.position - transform.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * skill.guide);
     }
 
     private void OnDrawGizmos()
@@ -72,9 +74,9 @@ public class SkillProjectile : SkillScript
     {
         if (collision.gameObject == target)
         {
-            if (skill.status["name"].ToString() == "skill001") SkillSpawner.SkillSpawn(executor, DataManager.skillDB["skill002"], transform.position);
+            if (secondSkill != "") SkillLoader.SkillLoad(executor, DataManager.skillDB[secondSkill], transform.position);
             penetrationCount++;
-            if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
+            if (skill.penetration <= penetrationCount) Destroy(gameObject);
         }
     }
 }

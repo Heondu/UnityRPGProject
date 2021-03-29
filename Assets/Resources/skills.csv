@@ -1,8 +1,8 @@
 ﻿skill,name,rarity,exp,material,weaponClass,classBonus,bonusAmount%,prefabName,prefabOnHit,type,position,element,cooltime,relatedStatus1,status1,amount1,perlvl1,relatedStatus2,status2,amount2,perlvl2,isPositive,repeat,indeterminacy,delay,speed,size,lifetime,guide,penetration
-Guided Arrow,skill001,1,1,ore,bow,,,0,1,projectile,hero,light,0.5,none,none,0,0,,,,,0,1,0,0,3,1,10,0.3,5
-Guided Arrow Hit,skill002,1,1,ore,bow,range,10,1,,explode,this,light,0,damage,HP,300,15,,,,,0,3,0.3,0,3,1,0,0,0
-Swamp,skill003,5,2,herb,staff,amount,20,2,,explode,pointer,dark,15,damage,HP,15,3,intelligence,defence,10,1,0,1,0,0.5,0,1,10,0,100
-DontDestroyBuff,skill004,15,5,monster,none,,,3,,buff,hero,none,200,strength,strength,15,1,defence,defence,15,1,1,1,0,0,0,1,120,0,0
+Guided Arrow,skill001,1,1,ore,bow,,0,0,1,projectile,hero,light,0.5,none,none,0,0,,,0,0,0,1,0,0,10,1,10,0.3,5
+Guided Arrow Hit,skill002,1,1,ore,bow,range,10,1,0,explode,this,light,0,damage,HP,300,15,,,0,0,0,3,0.3,0,3,1,0,0,0
+Swamp,skill003,5,2,herb,staff,amount,20,2,0,explode,pointer,dark,15,damage,HP,15,3,intelligence,defence,10,1,0,1,0,0.5,0,1,10,0,100
+DontDestroyBuff,skill004,15,5,monster,none,,0,3,0,buff,hero,none,200,strength,strength,15,1,defence,defence,15,1,1,1,0,0,0,1,120,0,0
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-HealingPotion1,skill900,1,1,none,none,,,heal,,explode,hero,none,30,none,HP,300,,,,,,1,1,0,0,0,,0,0,0
+HealingPotion1,skill900,1,1,none,none,,0,heal,0,explode,hero,none,30,none,HP,300,0,,,0,0,1,1,0,0,0,0,0,0,0

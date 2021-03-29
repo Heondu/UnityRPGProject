@@ -75,16 +75,21 @@ public class StatusCalculator : MonoBehaviour
 
     public static void SkillStatusCalc(StringFloat executorStatus, StringFloat targetStatus, Skill skill)
     {
-        for (int i = 1; i <= 2; i++)
+        for (int i = 0; i <= 1; i++)
         {
             float value;
-            if (skill.status["relatedStatus" + i].ToString() == "") continue;
-            if (skill.status["status" + i].ToString() == "none") continue;
-            else if (skill.status["relatedStatus" + i].ToString() == "none") value = (int)skill.status["amount" + i];
-            else value = Mathf.RoundToInt(executorStatus[skill.status["relatedStatus" + i].ToString()] * (float.Parse(skill.status["amount" + i].ToString()) / 100));
+            if (skill.relatedStatus[i] == "") continue;
+            if (skill.status[i] == "none") continue;
+            else if (skill.relatedStatus[i] == "none") value = skill.amount[i];
+            else value = Mathf.RoundToInt(executorStatus[skill.relatedStatus[i]] * (skill.amount[i] / 100));
 
-            if ((int)skill.status["isPositive"] == 1) executorStatus[skill.status["status" + i].ToString()] += value;
-            else if ((int)skill.status["isPositive"] == 0) targetStatus[skill.status["status" + i].ToString()] -= value;
+            if (skill.isPositive == 1)
+            {
+                Debug.Log($"{skill.skill} : {value}");
+                executorStatus[skill.status[i]] += value;
+                Debug.Log($"Executor : {executorStatus[skill.status[i]]}");
+            }
+            else if (skill.isPositive == 0) targetStatus[skill.status[i]] -= value;
         }
     }
 
@@ -97,12 +102,12 @@ public class StatusCalculator : MonoBehaviour
             for (int i = 1; i <= 2; i++)
             {
                 float value;
-                if (skill.status["relatedStatus" + i].ToString() == "") continue;
-                if (skill.status["status" + i].ToString() == "none") continue;
-                else if (skill.status["relatedStatus" + i].ToString() == "none") value = (int)skill.status["amount" + i];
-                else value = Mathf.RoundToInt(executorStatus[skill.status["relatedStatus" + i].ToString()] * (float.Parse(skill.status["amount" + i].ToString()) / 100));
+                if (skill.relatedStatus[i] == "") continue;
+                if (skill.status[i] == "none") continue;
+                else if (skill.relatedStatus[i] == "none") value = skill.amount[i];
+                else value = Mathf.RoundToInt(executorStatus[skill.relatedStatus[i]] * (skill.amount[i] / 100));
 
-                if ((int)skill.status["isPositive"] == 1) executorStatus[skill.status["status" + i].ToString()] += value;
+                if (skill.isPositive == 1) executorStatus[skill.status[i]] += value;
             }
         }
     }

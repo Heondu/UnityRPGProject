@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -213,6 +214,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c54eaab9df8a847b1853563ef455c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -605,7 +619,88 @@ MonoBehaviour:
   - skill001
   - skill003
   - skill004
-  skills: []
+  skills:
+  - skill: 
+    name: 
+    rarity: 0
+    exp: 0
+    material: 
+    weaponClass: 
+    classBonus: 
+    bonusAmount: 0
+    prefabName: 
+    prefabOnHit: 
+    type: 
+    position: 
+    element: 
+    cooltime: 0
+    relatedStatus: []
+    status: []
+    amount: 
+    perlvl: 
+    isPositive: 0
+    repeat: 0
+    indeterminacy: 0
+    delay: 0
+    speed: 0
+    size: 0
+    lifetime: 0
+    guide: 0
+    penetration: 0
+  - skill: 
+    name: 
+    rarity: 0
+    exp: 0
+    material: 
+    weaponClass: 
+    classBonus: 
+    bonusAmount: 0
+    prefabName: 
+    prefabOnHit: 
+    type: 
+    position: 
+    element: 
+    cooltime: 0
+    relatedStatus: []
+    status: []
+    amount: 
+    perlvl: 
+    isPositive: 0
+    repeat: 0
+    indeterminacy: 0
+    delay: 0
+    speed: 0
+    size: 0
+    lifetime: 0
+    guide: 0
+    penetration: 0
+  - skill: 
+    name: 
+    rarity: 0
+    exp: 0
+    material: 
+    weaponClass: 
+    classBonus: 
+    bonusAmount: 0
+    prefabName: 
+    prefabOnHit: 
+    type: 
+    position: 
+    element: 
+    cooltime: 0
+    relatedStatus: []
+    status: []
+    amount: 
+    perlvl: 
+    isPositive: 0
+    repeat: 0
+    indeterminacy: 0
+    delay: 0
+    speed: 0
+    size: 0
+    lifetime: 0
+    guide: 0
+    penetration: 0
   buffs: []
   isSkillCool: 000000
 --- !u!114 &535044186
@@ -1115,7 +1210,7 @@ GameObject:
   - component: {fileID: 1163703548}
   - component: {fileID: 1163703547}
   m_Layer: 0
-  m_Name: SkillSpawner
+  m_Name: SkillLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1778,9 +1873,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7569fa3746b2bb4285b93df1c9ac22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 20, y: 30}
-  regenNumMax: 16
-  monType: goblinking
+  position: {x: 0, y: 3}
+  maxRegenNum: 16
+  monType: normal
 --- !u!4 &1962377201
 Transform:
   m_ObjectHideFlags: 0
@@ -2083,6 +2178,63 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &2073852053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2073852056}
+  - component: {fileID: 2073852055}
+  - component: {fileID: 2073852054}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2073852054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073852053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289712567ad1c4641bdd53ae1b254004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundBar: []
+--- !u!114 &2073852055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073852053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ea9666357bd204d84aace0062460f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2073852056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073852053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3411087861377066720
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class SkillExplode : SkillScript
 {
     [SerializeField]
-    private float radius = 5;
+    private int radius;
     private int penetrationCount = 0;
 
     protected override void Update()
@@ -25,7 +25,10 @@ public class SkillExplode : SkillScript
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
             foreach (Collider2D collider in colliders)
             {
-                if (collider.gameObject == executor) continue;
+                if (skill.isPositive == 0)
+                {
+                    if (collider.gameObject == executor) continue;
+                }
                 if (collider.gameObject == gameObject) continue;
 
                 ILivingEntity entity = collider.GetComponent<ILivingEntity>();
@@ -34,10 +37,10 @@ public class SkillExplode : SkillScript
                 entity.TakeDamage();
 
                 penetrationCount++;
-                if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
+                if (skill.penetration <= penetrationCount) Destroy(gameObject);
             }
 
-            yield return new WaitForSeconds(float.Parse(skill.status["delay"].ToString()));
+            yield return new WaitForSeconds(skill.delay);
         }
     }
 

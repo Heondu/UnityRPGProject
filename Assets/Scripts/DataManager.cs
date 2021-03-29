@@ -70,7 +70,37 @@ public class DataManager : MonoBehaviour
             {
                 string name = list[i]["name"].ToString();
                 skillDB[name] = new Skill();
-                skillDB[name].status = list[i];
+                skillDB[name].skill = list[i]["skill"].ToString();
+                skillDB[name].name = list[i]["name"].ToString();
+                skillDB[name].rarity = (int)list[i]["rarity"];
+                skillDB[name].exp = (int)list[i]["exp"];
+                skillDB[name].material = list[i]["material"].ToString();
+                skillDB[name].weaponClass = list[i]["weaponClass"].ToString();
+                skillDB[name].classBonus = list[i]["classBonus"].ToString();
+                skillDB[name].bonusAmount = (int)list[i]["bonusAmount%"];
+                skillDB[name].prefabName = list[i]["prefabName"].ToString();
+                skillDB[name].prefabOnHit = list[i]["prefabOnHit"].ToString();
+                skillDB[name].type = list[i]["type"].ToString();
+                skillDB[name].position = list[i]["position"].ToString();
+                skillDB[name].element = list[i]["element"].ToString();
+                skillDB[name].cooltime = float.Parse(list[i]["cooltime"].ToString());
+                skillDB[name].relatedStatus[0] = list[i]["relatedStatus1"].ToString();
+                skillDB[name].status[0] = list[i]["status1"].ToString();
+                skillDB[name].amount[0] = (int)list[i]["amount1"];
+                skillDB[name].perlvl[0] = (int)list[i]["perlvl1"];
+                skillDB[name].relatedStatus[1] = list[i]["relatedStatus2"].ToString();
+                skillDB[name].status[1] = list[i]["status2"].ToString();
+                skillDB[name].amount[1] = (int)list[i]["amount2"];
+                skillDB[name].perlvl[1] = (int)list[i]["perlvl2"];
+                skillDB[name].isPositive = (int)list[i]["isPositive"];
+                skillDB[name].repeat = (int)list[i]["repeat"];
+                skillDB[name].indeterminacy = float.Parse(list[i]["indeterminacy"].ToString());
+                skillDB[name].delay = float.Parse(list[i]["delay"].ToString());
+                skillDB[name].speed = (int)list[i]["speed"];
+                skillDB[name].size = (int)list[i]["size"];
+                skillDB[name].lifetime = (int)list[i]["lifetime"];
+                skillDB[name].guide = float.Parse(list[i]["guide"].ToString());
+                skillDB[name].penetration = (int)list[i]["penetration"];
             }
         }
     }

@@ -12,7 +12,7 @@ public class SkillScript : MonoBehaviour
     {
         if (skill != null)
         {
-            if (timer.IsTimeOut(float.Parse(skill.status["lifetime"].ToString()))) Destroy(gameObject);
+            if (timer.IsTimeOut(skill.lifetime)) Destroy(gameObject);
         }
     }
 
