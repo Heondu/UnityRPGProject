@@ -4,11 +4,11 @@ using UnityEngine;
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
-    private string[] skillnames = new string[3];
-    public Skill[] skills = new Skill[3];
+    private string[] skillnames = new string[5];
+    public Skill[] skills = new Skill[5];
     public List<Skill> buffs = new List<Skill>();
-    public Timer[] skillCoolTimer = { new Timer(), new Timer(), new Timer() };
-    public bool[] isSkillCool = { false, false, false };
+    public Timer[] skillCoolTimer = { new Timer(), new Timer(), new Timer(), new Timer(), new Timer() };
+    public bool[] isSkillCool = { false, false, false, false, false };
 
     private void Awake()
     {
