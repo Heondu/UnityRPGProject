@@ -17,8 +17,8 @@ public class UICooltimeViewer : MonoBehaviour
 
     private void Update()
     {
-        if (playerSkill.isSkillCool[index])
-            cooltimeImages.fillAmount = 1 - playerSkill.skillCoolTimer[index].GetTime / playerSkill.skills[index].cooltime;
+        if (playerSkill.IsSkillCool[index])
+            cooltimeImages.fillAmount = 1 - playerSkill.SkillCoolTimer[index].GetTime / playerSkill.skills[index].cooltime;
         else cooltimeImages.fillAmount = 0;
     }
 }

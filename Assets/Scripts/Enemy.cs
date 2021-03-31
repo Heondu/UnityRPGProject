@@ -6,7 +6,6 @@ public enum EnemyState { STATE_NULL = 0, STATE_PATROL, STATE_CHASE, STATE_ATTACK
 public class Enemy : MonoBehaviour, ILivingEntity
 {
     private Movement movement;
-    private Attack attack;
     private EnemyController enemyController;
     private Health health;
     private EnemyState state = EnemyState.STATE_PATROL;
@@ -19,7 +18,6 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private void Awake()
     {
         movement = GetComponent<Movement>();
-        attack = GetComponentInChildren<Attack>();
         enemyController = GetComponent<EnemyController>();
         health = GetComponent<Health>();
         status = GetComponent<Status>();
@@ -39,7 +37,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
                 movement.Execute(enemyController.GetAxis());
                 break;
             case EnemyState.STATE_ATTACK:
-                attack.Execute((int)status.status["damage"]);
+                //attack.Execute((int)status.status["damage"]);
                 break;
         }
     }

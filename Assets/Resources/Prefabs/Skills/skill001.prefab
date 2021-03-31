@@ -90,6 +90,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
+      propertyPath: nextSkills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: effects.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
       propertyPath: radius
       value: 5
       objectReference: {fileID: 0}
@@ -97,6 +107,16 @@ PrefabInstance:
         type: 3}
       propertyPath: secondSkill
       value: skill002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: nextSkills.Array.data[0]
+      value: skill002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: effects.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca564a35c228dfd4bbb0d341c1aef87f, type: 3}

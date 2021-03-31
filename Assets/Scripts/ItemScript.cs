@@ -7,7 +7,7 @@ public class ItemScript : MonoBehaviour
 
     public void Use(PlayerItem playerItem)
     {
-        playerItem.Equip(item);
+        playerItem.PickUp(item);
         Destroy(gameObject);
     }
 }

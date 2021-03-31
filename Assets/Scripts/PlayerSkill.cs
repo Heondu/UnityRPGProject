@@ -7,8 +7,10 @@ public class PlayerSkill : MonoBehaviour
     private string[] skillnames = new string[5];
     public Skill[] skills = new Skill[5];
     public List<Skill> buffs = new List<Skill>();
-    public Timer[] skillCoolTimer = { new Timer(), new Timer(), new Timer(), new Timer(), new Timer() };
-    public bool[] isSkillCool = { false, false, false, false, false };
+    private Timer[] skillCoolTimer = new Timer[5];
+    public Timer[] SkillCoolTimer => skillCoolTimer;
+    private bool[] isSkillCool = new bool[5];
+    public bool[] IsSkillCool => isSkillCool;
 
     private void Awake()
     {
@@ -16,6 +18,8 @@ public class PlayerSkill : MonoBehaviour
         {
             skills[i] = new Skill();
             skills[i].skill = "";
+            skillCoolTimer[i] = new Timer();
+            isSkillCool[i] = false;
         }
 
         ChangeSkill();
@@ -53,13 +57,8 @@ public class PlayerSkill : MonoBehaviour
     {
         for (int i = 0; i < isSkillCool.Length; i++)
         {
-            if (isSkillCool[i])
-            {
-                if (skillCoolTimer[i].IsTimeOut(skills[i].cooltime))
-                {
-                    isSkillCool[i] = false;
-                }
-            }
+            if (!isSkillCool[i]) continue;
+            if (skillCoolTimer[i].IsTimeOut(skills[i].cooltime)) isSkillCool[i] = false;
         }
     }
 

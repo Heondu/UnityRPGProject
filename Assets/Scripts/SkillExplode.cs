@@ -4,7 +4,7 @@ using UnityEngine;
 public class SkillExplode : SkillScript
 {
     [SerializeField]
-    private int radius;
+    private float radius;
     private int penetrationCount = 0;
 
     protected override void Update()

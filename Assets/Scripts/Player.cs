@@ -3,25 +3,21 @@
 public class Player : MonoBehaviour, ILivingEntity
 {
     private Movement movement;
-    private Attack attack;
     private PlayerInput playerInput;
     private PlayerItem playerItem;
     private PlayerSkill playerSkill;
     private PlayerAnimator playerAnimator;
     private PlayerStatus playerStatus;
-    private Rotation rotation;
     public Status status;
 
     private void Awake()
     {
         movement = GetComponent<Movement>();
-        attack = GetComponentInChildren<Attack>();
         playerInput = GetComponent<PlayerInput>();
         playerItem = GetComponent<PlayerItem>();
         playerSkill = GetComponent<PlayerSkill>();
         playerAnimator = GetComponent<PlayerAnimator>();
         playerStatus = GetComponent<PlayerStatus>();
-        rotation = GetComponentInChildren<Rotation>();
         status = GetComponent<Status>();
         StatusCalculator.StatusCalc(status.status, playerStatus.fourStatus);
     }
@@ -31,7 +27,6 @@ public class Player : MonoBehaviour, ILivingEntity
         playerAnimator.Movement(playerInput.GetAxis());
         if (IsMove()) movement.Execute(playerInput.GetAxis());
         if (IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
-        rotation.Rotate(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
     }
 
     private bool IsMove()
@@ -45,7 +40,7 @@ public class Player : MonoBehaviour, ILivingEntity
         {
             if (playerInput.GetSkillIndex() == i)
             {
-                if (playerSkill.isSkillCool[i] == false) return true;
+                if (playerSkill.IsSkillCool[i] == false) return true;
             }
         }
         return false;
