@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum KeyAction
 {
-    up, down, left, right, esc, skill1, skill2, skill3, skill4, skill5, item1, item2, item3, item4, interaction, portal, evade, attack, inventory
+    up, down, left, right, esc, skill1, skill2, skill3, skill4, skill5, item1, item2, item3, item4, interaction, portal, evade, attack, inventory, info
 }
 
 public static class KeySetting { public static Dictionary<KeyAction, KeyCode> keys = new Dictionary<KeyAction, KeyCode>(); }
@@ -35,5 +35,6 @@ public class KeyManager : MonoBehaviour
         KeySetting.keys.Add(KeyAction.item3, KeyCode.Alpha3);
         KeySetting.keys.Add(KeyAction.item4, KeyCode.Alpha4);
         KeySetting.keys.Add(KeyAction.inventory, KeyCode.I);
+        KeySetting.keys.Add(KeyAction.info, KeyCode.O);
     }
 }

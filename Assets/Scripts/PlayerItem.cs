@@ -4,14 +4,16 @@ using UnityEngine.UI;
 
 public class PlayerItem : MonoBehaviour
 {
-    private Item[] equipment;
+    [SerializeField]
+    private Transform equipmentContent;
+    private InventoryItem[] equipment;
     [SerializeField]
     private Transform invetoryContent;
     private Transform[] inventory;
 
     private void Awake()
     {
-        equipment = new Item[10];
+        equipment = equipmentContent.GetComponentsInChildren<InventoryItem>();
         inventory = new Transform[invetoryContent.childCount];
         for (int i = 0; i < invetoryContent.childCount; i++)
             inventory[i] = invetoryContent.GetChild(i).GetComponent<Transform>();
@@ -50,18 +52,19 @@ public class PlayerItem : MonoBehaviour
         itemImage.color = Color.white;
     }
 
-    public void Equip(InventoryItem[] equipment)
+    public void Equip()
     {
+        Item[] items = new Item[equipment.Length];
         for (int i = 0; i < equipment.Length; i++)
         {
-            this.equipment[i] = equipment[i].item;
+            items[i] = equipment[i].item;
         }
         
-        StatusCalc();
+        StatusCalc(items);
     }
 
-    public void StatusCalc()
+    public void StatusCalc(Item[] items)
     {
-        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, equipment, GetComponent<PlayerSkill>().buffs);
+        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, items, GetComponent<PlayerSkill>().buffs);
     }
 }
