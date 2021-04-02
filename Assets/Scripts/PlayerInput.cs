@@ -4,11 +4,11 @@ public class PlayerInput : MonoBehaviour
 {
     public int GetSkillIndex()
     {
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.skill1])) return 0;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.skill2])) return 1;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.skill3])) return 2;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.skill4])) return 3;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.skill5])) return 4;
+        if (Input.GetKey(KeySetting.keys[KeyAction.skill1])) return 0;
+        if (Input.GetKey(KeySetting.keys[KeyAction.skill2])) return 1;
+        if (Input.GetKey(KeySetting.keys[KeyAction.skill3])) return 2;
+        if (Input.GetKey(KeySetting.keys[KeyAction.skill4])) return 3;
+        if (Input.GetKey(KeySetting.keys[KeyAction.skill5])) return 4;
         return -1;
     }
 

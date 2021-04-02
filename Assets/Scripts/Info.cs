@@ -20,11 +20,7 @@ public class Info : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.info]))
-        {
-            UpdateInfo();
-            info.SetActive(!info.activeSelf);
-        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.info])) UpdateInfo();
     }
 
     private void UpdateInfo()
@@ -33,7 +29,7 @@ public class Info : MonoBehaviour
         statusTexts["agility"].text = playerStatus.status["agility"].ToString();
         statusTexts["intelligence"].text = playerStatus.status["intelligence"].ToString();
         statusTexts["damage"].text = playerStatus.status["damage"].ToString();
-        statusTexts["fixDam"].text = playerStatus.status["fixDam"].ToString();
+        statusTexts["fixDamage"].text = playerStatus.status["fixDamage"].ToString();
         statusTexts["critChance"].text = playerStatus.status["critChance"].ToString();
         statusTexts["avoidance"].text = playerStatus.status["avoidance"].ToString();
         statusTexts["accuracy"].text = playerStatus.status["accuracy"].ToString();

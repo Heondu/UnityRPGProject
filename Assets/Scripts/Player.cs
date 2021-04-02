@@ -5,9 +5,9 @@ public class Player : MonoBehaviour, ILivingEntity
     private Movement movement;
     private PlayerInput playerInput;
     private PlayerItem playerItem;
-    private PlayerSkill playerSkill;
+    public PlayerSkill playerSkill;
     private PlayerAnimator playerAnimator;
-    private PlayerStatus playerStatus;
+    public PlayerStatus playerStatus;
     public Status status;
 
     private void Awake()
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, ILivingEntity
 
     private bool IsAttack()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (playerInput.GetSkillIndex() == i)
             {

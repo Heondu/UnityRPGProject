@@ -1,5 +1,4 @@
-﻿[System.Serializable]
-public class Item
+﻿public class Item
 {
     private const int additionalMax = 3;
 

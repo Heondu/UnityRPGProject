@@ -96,7 +96,7 @@ public class ItemGenerator : MonoBehaviour
         {
             rand = Random.Range(0, additionalList.Count);
             Dictionary<string, object> additional = DataManager.Find(DataManager.additional, "code", additionalList[rand]);
-            item.nameAdd[i] = additional["Name"].ToString();
+            item.nameAdd[i] = additional["code"].ToString();
             item.statusAdd[i] = additional["status"].ToString();
             item.statAdd[i] = Random.Range((int)additional["statMin"], (int)additional["statMax"]);
             item.cost += (int)additional["cost"];

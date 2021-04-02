@@ -1,55 +1,43 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
     [SerializeField]
     private Transform equipmentContent;
-    private InventoryItem[] equipment;
-    [SerializeField]
-    private Transform invetoryContent;
-    private Transform[] inventory;
+    private Slot[] equipment;
+    private Inventory inventory;
+    private Player player;
 
     private void Awake()
     {
-        equipment = equipmentContent.GetComponentsInChildren<InventoryItem>();
-        inventory = new Transform[invetoryContent.childCount];
-        for (int i = 0; i < invetoryContent.childCount; i++)
-            inventory[i] = invetoryContent.GetChild(i).GetComponent<Transform>();
+        equipment = equipmentContent.GetComponentsInChildren<Slot>();
+        inventory = FindObjectOfType<Inventory>();
+        player = GetComponent<Player>();
     }
 
     public void PickUp(Item item)
     {
-        Image itemImage = null;
-        for (int i = 0; i < invetoryContent.childCount; i++)
-        {
-            InventoryItem inventoryItem = inventory[i].GetComponent<InventoryItem>();
-            if (inventoryItem.item.name == "") 
-            {
-                inventoryItem.item = item;
-                itemImage = inventory[i].Find("ItemIcon").GetComponent<Image>();
-                break;
-            }
-        }
+        Slot newItem = inventory.ItemToInventorySlot();
+        if (newItem == null) return;
+        newItem.item = item;
         switch (item.type)
         {
-            case "sword": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "axe": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "gun": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "bow": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "fan": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "staff": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
-            case "helm": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/hel01"); break;
-            case "top": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/arm01"); break;
-            case "gloves": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/glv01"); break;
-            case "shoes": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
-            case "belt": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
-            case "ring": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
-            case "necklace": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
-            case "bracelet": itemImage.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
+            case "sword": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "axe": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "gun": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "bow": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "fan": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "staff": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/swd01"); break;
+            case "helm": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/hel01"); break;
+            case "top": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/arm01"); break;
+            case "gloves": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/glv01"); break;
+            case "shoes": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
+            case "belt": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
+            case "ring": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
+            case "necklace": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
+            case "bracelet": newItem.itemIcon.sprite = Resources.Load<Sprite>("Interface/EquipIcon/blt01"); break;
         }
-        itemImage.color = Color.white;
+        newItem.itemIcon.color = Color.white;
     }
 
     public void Equip()
@@ -65,6 +53,6 @@ public class PlayerItem : MonoBehaviour
 
     public void StatusCalc(Item[] items)
     {
-        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, items, GetComponent<PlayerSkill>().buffs);
+        StatusCalculator.StatusCalc(player.status.status, player.playerStatus.fourStatus, items, player.playerSkill.buffs);
     }
 }

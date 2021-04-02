@@ -122,4 +122,19 @@ public class DataManager : MonoBehaviour
         }
         return false;
     }
+
+    public static string Localization(string name)
+    {
+        string percent = "";
+        if (name.Contains("%"))
+        {
+            name = name.Substring(0, name.Length - 1);
+            percent = "%";
+        }
+        for (int i = 0; i < localization_KOR.Count; i++)
+        {
+            if (localization_KOR[i]["name"].ToString() == name) return localization_KOR[i]["localization"].ToString() + percent;
+        }
+        return "none";
+    }
 }
