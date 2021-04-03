@@ -4,8 +4,6 @@ public class SkillScript : MonoBehaviour
 {
     [SerializeField]
     protected string[] nextSkills;
-    [SerializeField]
-    protected string[] effects;
     public delegate void Callback(Skill skill);
     protected Callback callback = null;
     protected Timer timer = new Timer();

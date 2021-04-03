@@ -17,9 +17,10 @@ public class DataManager : MonoBehaviour
     public static List<Dictionary<string, object>> runes = new List<Dictionary<string, object>>();
     public static List<Dictionary<string, object>> skills = new List<Dictionary<string, object>>();
     public static List<Dictionary<string, object>> skillexp = new List<Dictionary<string, object>>();
-
     public static List<Dictionary<string, object>> item = new List<Dictionary<string, object>>();
-    public static Dictionary<string, Item> itemDB = new Dictionary<string, Item>();
+
+    public static Dictionary<string, Item> itemEquipmentDB = new Dictionary<string, Item>();
+    public static Dictionary<string, Item> itemConsumeDB = new Dictionary<string, Item>();
     public static Dictionary<string, Skill> skillDB = new Dictionary<string, Skill>();
 
     private void Awake()
@@ -38,10 +39,12 @@ public class DataManager : MonoBehaviour
         runes = CSVReader.Read("runes");
         skills = CSVReader.Read("skills");
         skillexp = CSVReader.Read("skillexp");
+        item = CSVReader.Read("item");
 
         ListToDict(weapon);
         ListToDict(armor);
         ListToDict(accessories);
+        ListToDict(item);
         ListToDict(skills);
     }
 
@@ -51,19 +54,34 @@ public class DataManager : MonoBehaviour
         {
             if (list == weapon || list == armor || list == accessories)
             {
-                Dictionary<string, object> temp = list[i];
-                item.Add(temp);
                 string name = list[i]["name"].ToString();
-                itemDB[name] = new Item
+                itemEquipmentDB[name] = new Item
                 {
                     name = name,
                     spawnable = (int)list[i]["spawnable"],
+                    useType = list[i]["useType"].ToString(),
                     type = list[i]["type"].ToString(),
                     status = list[i]["status"].ToString(),
                     rarity = (int)list[i]["rarity"],
                     statMin = (int)list[i]["statMin"],
                     statMax = (int)list[i]["statMax"],
-                    cost = (int)list[i]["cost"]
+                    cost = (int)list[i]["cost"],
+                    itemImage = list[i]["itemImage"].ToString(),
+                    inventoryImage = list[i]["inventoryImage"].ToString()
+                };
+            }
+            else if (list == item)
+            {
+                string name = list[i]["name"].ToString();
+                itemConsumeDB[name] = new Item
+                {
+                    name = name,
+                    spawnable = (int)list[i]["spawnable"],
+                    useType = list[i]["useType"].ToString(),
+                    type = list[i]["type"].ToString(),
+                    rarity = (int)list[i]["rarity"],
+                    itemImage = list[i]["itemImage"].ToString(),
+                    inventoryImage = list[i]["inventoryImage"].ToString()
                 };
             }
             else if (list == skills)
@@ -105,15 +123,6 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    public static Dictionary<string, object> Find(List<Dictionary<string, object>> list, string key, object value)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (list[i][key].Equals(value)) return list[i];
-        }
-        return null;
-    }
-
     public static bool Exists(List<Dictionary<string, object>> list, string key, object value)
     {
         for (int i = 0; i < list.Count; i++)
@@ -123,18 +132,50 @@ public class DataManager : MonoBehaviour
         return false;
     }
 
-    public static string Localization(string name)
+    public static string Localization(string str)
     {
+        if (str == null) return "";
         string percent = "";
-        if (name.Contains("%"))
+        if (str.Contains("%"))
         {
-            name = name.Substring(0, name.Length - 1);
+            str = str.Substring(0, str.Length - 1);
             percent = "%";
         }
         for (int i = 0; i < localization_KOR.Count; i++)
         {
-            if (localization_KOR[i]["name"].ToString() == name) return localization_KOR[i]["localization"].ToString() + percent;
+            if (localization_KOR[i]["name"].ToString() == str) return localization_KOR[i]["localization"].ToString() + percent;
         }
-        return "none";
+        return "";
+    }
+}
+
+public static class Data
+{
+    public static object Find(this List<Dictionary<string, object>> list, string key, object value, string key2)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) return list[i][key2];
+        }
+        return null;
+    }
+
+    public static List<object> FindAll(this List<Dictionary<string, object>> list, string key, object value, string key2)
+    {
+        List<object> objects = new List<object>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) objects.Add(list[i][key2]);
+        }
+        return objects;
+    }
+
+    public static Dictionary<string, object> FindDic(this List<Dictionary<string, object>> list, string key, object value)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) return list[i];
+        }
+        return null;
     }
 }

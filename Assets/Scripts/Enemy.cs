@@ -9,8 +9,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private EnemyController enemyController;
     private Health health;
     private EnemyState state = EnemyState.STATE_PATROL;
-    [SerializeField]
-    public string name;
+    private string name;
     public Status status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
     public Dictionary<string, object> monlvl = new Dictionary<string, object>();
@@ -21,7 +20,6 @@ public class Enemy : MonoBehaviour, ILivingEntity
         enemyController = GetComponent<EnemyController>();
         health = GetComponent<Health>();
         status = GetComponent<Status>();
-        Init();
     }
 
     private void Update()
@@ -47,10 +45,11 @@ public class Enemy : MonoBehaviour, ILivingEntity
         this.state = state; 
     }
 
-    private void Init()
+    public void Init(string name)
     {
-        monster = DataManager.Find(DataManager.monster, "name", name);
-        monlvl = DataManager.Find(DataManager.monlvl, "Level", monster["monlvl"]);
+        this.name = name;
+        monster = DataManager.monster.FindDic("name", name);
+        monlvl = DataManager.monlvl.FindDic("Level", monster["monlvl"]);
         StatusCalculator.StatusCalc(status.status, monlvl);
     }
 

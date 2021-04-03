@@ -1,25 +1,35 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item = null;
     public Image itemIcon;
     public Image qualty;
-    public Text quantity;
+    public TextMeshProUGUI quantityText;
+    public int quantity = 0;
     private GameObject lockIcon;
     private Inventory inventory;
+    public string useType;
     public string[] equipType;
     public bool isLock;
 
     private void Awake()
     {
-        itemIcon = transform.Find("ItemIcon").GetComponent<Image>();
-        qualty = transform.Find("Quality").GetComponent<Image>();
-        quantity = transform.Find("Quantity").GetComponent<Text>();
-        lockIcon = transform.Find("Isable").gameObject;
+        if (transform.Find("ItemIcon") != null) itemIcon = transform.Find("ItemIcon").GetComponent<Image>();
+        if (transform.Find("Quality") != null) qualty = transform.Find("Quality").GetComponent<Image>();
+        if (transform.Find("Quantity") != null) quantityText = transform.Find("Quantity").GetComponent<TextMeshProUGUI>();
+        if (transform.Find("Isable") != null) lockIcon = transform.Find("Isable").gameObject;
         inventory = FindObjectOfType<Inventory>();
+    }
+
+    public void Update()
+    {
+        if (quantityText == null) return;
+        if (item == null || quantity == 0) quantityText.text = "";
+        else if (item.useType != "equipment") quantityText.text = quantity.ToString();
     }
 
     [ContextMenu("Lock")]
@@ -61,6 +71,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     {
         if (isLock) return;
         if (eventData.pointerEnter.name == "Bin") inventory.DestroyItem(this);
-        else inventory.OnEndDrag(eventData.pointerEnter.GetComponent<Slot>(), CompareTag("InventoryEquip"));
+        else inventory.OnEndDrag(this, eventData.pointerEnter.GetComponent<Slot>(), CompareTag("InventoryEquip"));
     }
 }

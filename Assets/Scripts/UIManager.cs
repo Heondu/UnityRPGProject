@@ -12,9 +12,20 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject info;
     [SerializeField]
+    private Toggle[] inventoryToggle;
+    [SerializeField]
     private Toggle equipToggle;
     [SerializeField]
     private Toggle infoToggle;
+
+    private void Awake()
+    {
+        uIPanel.SetActive(true);
+        for (int i = 0; i < inventoryToggle.Length; i++)
+            inventoryToggle[i].isOn = true;
+        inventoryToggle[0].isOn = true;
+        uIPanel.SetActive(false);
+    }
 
     private void Update()
     {

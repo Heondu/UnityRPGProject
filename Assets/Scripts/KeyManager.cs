@@ -12,7 +12,7 @@ public static class KeySetting { public static Dictionary<KeyAction, KeyCode> ke
 public class KeyManager : MonoBehaviour
 {
 
-    private void Start()
+    private void Awake()
     {
         KeysetDefault();
         DontDestroyOnLoad(gameObject);

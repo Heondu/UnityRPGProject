@@ -75,8 +75,6 @@ public class SkillProjectile : SkillScript
             penetrationCount++;
             for (int i = 0; i < nextSkills.Length; i++)
                 if (nextSkills[i] != "") SkillLoader.SkillLoad(executor, DataManager.skillDB[nextSkills[i]], transform.position);
-            for (int i = 0; i < effects.Length; i++)
-                Instantiate(Resources.Load("Prefabs/Effects/" + effects[i]), transform.position, Quaternion.identity);
             if (skill.penetration <= penetrationCount) Destroy(gameObject);
         }
     }
