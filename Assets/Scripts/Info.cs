@@ -8,14 +8,20 @@ public class Info : MonoBehaviour
     private GameObject info;
     private Status playerStatus;
     private Dictionary<string, Text> statusTexts = new Dictionary<string, Text>();
+    private Dictionary<string, Text> status = new Dictionary<string, Text>();
 
     private void Awake()
     {
         playerStatus = FindObjectOfType<Player>().GetComponent<Status>();
         for (int i = 0; i < info.transform.Find("StatusText").childCount; i++)
         {
-            statusTexts.Add(info.transform.Find("StatusText").GetChild(i).name, info.transform.Find("StatusText").GetChild(i).GetChild(0).GetComponent<Text>());
+            statusTexts.Add(info.transform.Find("StatusText").GetChild(i).name, info.transform.Find("StatusText").GetChild(i).GetComponent<Text>());
+            status.Add(info.transform.Find("StatusText").GetChild(i).name, info.transform.Find("StatusText").GetChild(i).GetChild(0).GetComponent<Text>());
         }
+
+        foreach (string key in statusTexts.Keys)
+            if (playerStatus.status.ContainsKey(key))
+                statusTexts[key].text = DataManager.Localization(key);
     }
 
     private void Update()
@@ -25,26 +31,8 @@ public class Info : MonoBehaviour
 
     private void UpdateInfo()
     {
-        statusTexts["strength"].text = playerStatus.status["strength"].ToString();
-        statusTexts["agility"].text = playerStatus.status["agility"].ToString();
-        statusTexts["intelligence"].text = playerStatus.status["intelligence"].ToString();
-        statusTexts["damage"].text = playerStatus.status["damage"].ToString();
-        statusTexts["fixDamage"].text = playerStatus.status["fixDamage"].ToString();
-        statusTexts["critChance"].text = playerStatus.status["critChance"].ToString();
-        statusTexts["avoidance"].text = playerStatus.status["avoidance"].ToString();
-        statusTexts["accuracy"].text = playerStatus.status["accuracy"].ToString();
-        statusTexts["reduceMana"].text = playerStatus.status["reduceMana"].ToString();
-        statusTexts["reduceCooltime"].text = playerStatus.status["reduceCooltime"].ToString();
-        statusTexts["defence"].text = playerStatus.status["defence"].ToString();
-        statusTexts["critAvoid"].text = playerStatus.status["critAvoid"].ToString();
-        statusTexts["critDamage"].text = playerStatus.status["critDamage"].ToString();
-        statusTexts["fireResist"].text = playerStatus.status["fireResist"].ToString();
-        statusTexts["coldResist"].text = playerStatus.status["coldResist"].ToString();
-        statusTexts["darkResist"].text = playerStatus.status["darkResist"].ToString();
-        statusTexts["lightResist"].text = playerStatus.status["lightResist"].ToString();
-        statusTexts["fireDamage"].text = playerStatus.status["fireDamage"].ToString();
-        statusTexts["coldDamage"].text = playerStatus.status["coldDamage"].ToString();
-        statusTexts["darkDamage"].text = playerStatus.status["darkDamage"].ToString();
-        statusTexts["lightDamage"].text = playerStatus.status["lightDamage"].ToString();
+        foreach (string key in status.Keys)
+            if (playerStatus.status.ContainsKey(key))
+                status[key].text = playerStatus.status[key].ToString();
     }
 }

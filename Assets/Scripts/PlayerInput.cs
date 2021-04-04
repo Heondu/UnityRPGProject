@@ -8,7 +8,15 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKey(KeySetting.keys[KeyAction.skill2])) return 1;
         if (Input.GetKey(KeySetting.keys[KeyAction.skill3])) return 2;
         if (Input.GetKey(KeySetting.keys[KeyAction.skill4])) return 3;
-        if (Input.GetKey(KeySetting.keys[KeyAction.skill5])) return 4;
+        return -1;
+    }
+
+    public int GetItemIndex()
+    {
+        if (Input.GetKey(KeySetting.keys[KeyAction.item1])) return 0;
+        if (Input.GetKey(KeySetting.keys[KeyAction.item2])) return 1;
+        if (Input.GetKey(KeySetting.keys[KeyAction.item3])) return 2;
+        if (Input.GetKey(KeySetting.keys[KeyAction.item4])) return 3;
         return -1;
     }
 

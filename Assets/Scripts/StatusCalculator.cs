@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class StatusCalculator : MonoBehaviour
 {
-    private static string[] statusString = { "strength", "agility", "intelligence", "endurance", "damage", "fixDam",
+    private static string[] statusString = { "strength", "agility", "intelligence", "endurance", "damage", "fixDamage",
                                     "fireDamage", "coldDamage", "darkDamage", "lightDamage", "critChance",
-                                    "critAvoid", "critDamage", "avoidance", "accuracy", "reduceMana", "reduceCooltime",
+                                    "critResist", "critDamage", "avoidance", "accuracy", "reduceMana", "reduceCool",
                                     "defence", "fireResist", "coldResist", "darkResist", "lightResist", "allResist" };
-    private static string[] statusPerString = { "strength%", "agility%", "intelligence%", "endurance%", "damage%", "fixDam%",
-                                    "fireDamage%", "coldDamage%", "darkDamage%", "lightDamage%", "critChance%",
-                                    "critAvoid%", "critDamage%", "avoidance%", "accuracy%", "reduceMana%", "reduceCooltime%",
-                                    "defence%", "fireResist%", "coldResist%", "darkResist%", "lightResist%", "allResist%" };
+    private static string[] statusPerString = { "strengthPer", "agilityPer", "intelligencePer", "endurancePer", "damagePer", "fixDamagePer",
+                                    "fireDamagePer", "coldDamagePer", "darkDamagePer", "lightDamagePer", "critChancePer",
+                                    "critResistPer", "critDamagePer", "avoidancePer", "accuracyPer", "reduceManaPer", "reduceCoolPer",
+                                    "defencePer", "fireResistPer", "coldResistPer", "darkResistPer", "lightResistPer", "allResistPer" };
     private const float statusMultiplier = 0.05f;
 
-    public static void Init(StringFloat status, Dictionary<string, object> fourStatus)
+    public static void Init(Dictionary<string, float> status, Dictionary<string, float> fourStatus)
     {
         for (int i = 0; i < 4; i++)
         {
-            status[statusString[i]] = (int)fourStatus[statusString[i]];
+            status[statusString[i]] = fourStatus[statusString[i]];
         }
         for (int i = 4; i < statusString.Length; i++)
         {
@@ -28,23 +28,22 @@ public class StatusCalculator : MonoBehaviour
         {
             status[statusPerString[i]] = 0;
         }
-        status["HP"] = 10;
     }
 
-    private static void DeriveStatusCalc(StringFloat status)
+    private static void DeriveStatusCalc(Dictionary<string, float> status)
     {
         status["damage"] += status["strength"];
-        status["fixDam"] += status["strength"] * statusMultiplier;
+        status["fixDamage"] += status["strength"] * statusMultiplier;
         status["critChance"] += status["agility"] * statusMultiplier;
         status["avoidance"] += status["agility"] * statusMultiplier;
         status["accuracy"] += status["agility"] * statusMultiplier;
         status["reduceMana"] += status["intelligence"] * statusMultiplier;
-        status["reduceCooltime"] += status["intelligence"] * statusMultiplier;
+        status["reduceCool"] += status["intelligence"] * statusMultiplier;
         status["defence"] += status["endurance"];
         status["allResist"] += status["endurance"] * statusMultiplier;
     }
 
-    private static void PercentStatusCalc(StringFloat status)
+    private static void PercentStatusCalc(Dictionary<string, float> status)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -57,7 +56,7 @@ public class StatusCalculator : MonoBehaviour
         }
     }
 
-    private static void ItemStatusCalc(StringFloat status, Item[] items)
+    private static void ItemStatusCalc(Dictionary<string, float> status, Item[] items)
     {
         for (int i = 0; i < items.Length; i++)
         {
@@ -73,27 +72,27 @@ public class StatusCalculator : MonoBehaviour
         }
     }
 
-    public static void SkillStatusCalc(StringFloat executorStatus, StringFloat targetStatus, Skill skill)
+    public static int SkillStatusCalc(Dictionary<string, float> executorStatus, Dictionary<string, float> targetStatus, Skill skill)
     {
         for (int i = 0; i <= 1; i++)
         {
-            float value;
+            int value;
             if (skill.relatedStatus[i] == "") continue;
             if (skill.status[i] == "none") continue;
             else if (skill.relatedStatus[i] == "none") value = skill.amount[i];
             else value = Mathf.RoundToInt(executorStatus[skill.relatedStatus[i]] * (skill.amount[i] / 100));
 
-            if (skill.isPositive == 1)
+            if (skill.isPositive == 1) executorStatus[skill.status[i]] += value;
+            else if (skill.isPositive == 0)
             {
-                Debug.Log($"{skill.skill} : {value}");
-                executorStatus[skill.status[i]] += value;
-                Debug.Log($"Executor : {executorStatus[skill.status[i]]}");
+                if (skill.status[i] == "HP") return value;
+                else targetStatus[skill.status[i]] -= value;
             }
-            else if (skill.isPositive == 0) targetStatus[skill.status[i]] -= value;
         }
+        return 0;
     }
 
-    public static void SkillsStatusCalc(StringFloat executorStatus, List<Skill> skills)
+    public static void SkillsStatusCalc(Dictionary<string, float> executorStatus, Skill[] skills)
     {
         if (skills == null) return;
 
@@ -112,7 +111,7 @@ public class StatusCalculator : MonoBehaviour
         }
     }
 
-    private static void Round(StringFloat status)
+    private static void Round(Dictionary<string, float> status)
     {
         for (int i = 0; i < statusString.Length; i++)
         {
@@ -120,9 +119,9 @@ public class StatusCalculator : MonoBehaviour
         }
     }
 
-    public static void StatusCalc(StringFloat status, Dictionary<string, object> fourStatus, Item[] items = null, List<Skill> skills = null)
+    public static void StatusCalc(Dictionary<string, float> status, Dictionary<string, float> baseStatus, Item[] items = null, Skill[] skills = null)
     {
-        Init(status, fourStatus);
+        Init(status, baseStatus);
         if (items != null) ItemStatusCalc(status, items);
         PercentStatusCalc(status);
         Round(status);

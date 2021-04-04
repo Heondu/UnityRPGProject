@@ -8,7 +8,10 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private Movement movement;
     private EnemyController enemyController;
     private Health health;
+    private EnemyAttack enemyAttack;
     private EnemyState state = EnemyState.STATE_PATROL;
+    [SerializeField]
+    private GameObject damagePrefab;
     private string name;
     public Status status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
@@ -19,6 +22,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
         movement = GetComponent<Movement>();
         enemyController = GetComponent<EnemyController>();
         health = GetComponent<Health>();
+        enemyAttack = GetComponent<EnemyAttack>();
         status = GetComponent<Status>();
     }
 
@@ -35,7 +39,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
                 movement.Execute(enemyController.GetAxis());
                 break;
             case EnemyState.STATE_ATTACK:
-                //attack.Execute((int)status.status["damage"]);
+                enemyAttack.Execute(1);
                 break;
         }
     }
@@ -50,15 +54,29 @@ public class Enemy : MonoBehaviour, ILivingEntity
         this.name = name;
         monster = DataManager.monster.FindDic("name", name);
         monlvl = DataManager.monlvl.FindDic("Level", monster["monlvl"]);
-        StatusCalculator.StatusCalc(status.status, monlvl);
+        Dictionary<string, float> baseStatus = new Dictionary<string, float>();
+        baseStatus["strength"] = float.Parse(monlvl["strength"].ToString());
+        baseStatus["agility"] = float.Parse(monlvl["agility"].ToString());
+        baseStatus["intelligence"] = float.Parse(monlvl["intelligence"].ToString());
+        baseStatus["endurance"] = float.Parse(monlvl["endurance"].ToString());
+        StatusCalculator.StatusCalc(status.status, baseStatus);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
-        if (status.status["HP"] <=  0)
+        FloatingDamage(damage);
+        status.status["hp"] = Mathf.Max(0, status.status["hp"] - damage);
+        if (status.status["hp"] ==  0)
         {
+            FindObjectOfType<Player>().status.status["exp"] += (int)monlvl["monexp"];
             ItemGenerator.Instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);
             Destroy(gameObject);
         }
+    }
+
+    public void FloatingDamage(int damage)
+    {
+        GameObject clone = Instantiate(damagePrefab, GameObject.Find("Canvas").transform);
+        clone.GetComponent<FloatingDamage>().Init(damage, transform.position);
     }
 }

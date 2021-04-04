@@ -30,6 +30,7 @@ public class ItemGenerator : MonoBehaviour
 
     public void DropItem(int rarityMin, int rarityMax, string type, Vector3 pos)
     {
+        GameObject clone;
         int num = Random.Range(0, 2);
         if (num == 0)
         {
@@ -37,13 +38,15 @@ public class ItemGenerator : MonoBehaviour
             RandomRarity(type);
             ItemInit();
             Additional();
+            clone = itemPrefab;
         }
-        else if (num == 1)
+        else
         {
             Filtering(rarityMin, rarityMax, DataManager.itemConsumeDB);
             item = itemList[Random.Range(0, itemList.Count)];
+            clone = Resources.Load<GameObject>("Prefabs/Items/" + item.name);
         }
-        GameObject clone = Instantiate(itemPrefab, pos, Quaternion.identity);
+        clone = Instantiate(clone, pos, Quaternion.identity);
         clone.GetComponent<ItemScript>().item = item;
         Sprite sprite;
         if (item.itemImage.Contains("_"))

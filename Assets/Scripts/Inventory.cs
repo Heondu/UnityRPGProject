@@ -12,9 +12,7 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private GameObject equipmentHolder;
     private Slot[] equipSlots;
-    [SerializeField]
-    private GameObject itemPopup;
-    private RectTransform itemPopupRect;
+    public PopupUI popupUI;
     [SerializeField]
     private GameObject draggingItem;
     private PlayerItem playerItem;
@@ -26,12 +24,6 @@ public class Inventory : MonoBehaviour
             itemSlots.Add(itemHolders[i].GetComponentsInChildren<Slot>());
         equipSlots = equipmentHolder.GetComponentsInChildren<Slot>();
         playerItem = FindObjectOfType<PlayerItem>();
-        itemPopupRect = itemPopup.GetComponent<RectTransform>();
-    }
-
-    private void Update()
-    {
-        if (itemPopup.activeSelf) PopupFollowMouse();
     }
 
     public void OnBeginDrag(Slot selectedItem)
@@ -57,7 +49,7 @@ public class Inventory : MonoBehaviour
                 changedItem = ItemToInventorySlot(selectedItem.item, out bool isEmpty);
                 if (isEmpty) ChangeItemSlot(selectedItem, changedItem);
                 else selectedItem.itemIcon.color = Color.white;
-                ClosePopupItem();
+                popupUI.ClosePopup();
             }
             else if (selectedItem.item.useType == "consume") ItemShortcutAssign(selectedItem, changedItem);
             else selectedItem.itemIcon.color = Color.white;
@@ -65,10 +57,7 @@ public class Inventory : MonoBehaviour
         else if (changedItem == selectedItem) selectedItem.itemIcon.color = Color.white;
         else if (selectedItem.item.useType != changedItem.useType) selectedItem.itemIcon.color = Color.white;
         else if (changedItem.isLock) selectedItem.itemIcon.color = Color.white;
-        else if (changedItem.useType == "consume")
-        {
-            ItemShortcutAssign(selectedItem, changedItem);
-        }
+        else if (changedItem.useType == "consume") ItemShortcutAssign(selectedItem, changedItem);
         else if (changedItem.useType == "equipment")
         {
             foreach (string type in changedItem.equipType)
@@ -77,7 +66,7 @@ public class Inventory : MonoBehaviour
                 {
                     ChangeItemSlot(selectedItem, changedItem);
                     playerItem.Equip(equipSlots);
-                    PopupItem(changedItem);
+                    popupUI.UpdatePopup(changedItem);
                     break;
                 }
                 else selectedItem.itemIcon.color = Color.white;
@@ -95,12 +84,15 @@ public class Inventory : MonoBehaviour
         Sprite spriteTemp = changedItem.itemIcon.sprite;
         Color colorTemp = changedItem.itemIcon.color;
         int quantityTemp = changedItem.quantity;
+        string skillTemp = changedItem.skill;
         changedItem.itemIcon.sprite = selectedItem.itemIcon.sprite;
         changedItem.quantity = selectedItem.quantity;
         changedItem.itemIcon.color = Color.white;
+        changedItem.skill = selectedItem.skill;
         selectedItem.itemIcon.sprite = spriteTemp;
         selectedItem.itemIcon.color = colorTemp;
         selectedItem.quantity = quantityTemp;
+        selectedItem.skill = skillTemp;
     }
 
     private void ItemShortcutAssign(Slot selectedItem, Slot changedItem)
@@ -115,6 +107,7 @@ public class Inventory : MonoBehaviour
             selectedItem.item = null;
             selectedItem.itemIcon.color = Color.clear;
             selectedItem.quantity = 0;
+            selectedItem.skill = null;
         }
         else if (selectedShortcut == null && changedShortcut != null)
         {
@@ -122,6 +115,7 @@ public class Inventory : MonoBehaviour
             changedItem.itemIcon.sprite = selectedItem.itemIcon.sprite;
             changedItem.itemIcon.color = Color.white;
             changedItem.quantity = selectedItem.quantity;
+            changedItem.skill = selectedItem.skill;
         }
         else ChangeItemSlot(selectedItem, changedItem);
         if (selectedShortcut != null) selectedShortcut.ShortcutAssign(selectedItem);
@@ -137,12 +131,12 @@ public class Inventory : MonoBehaviour
             if (isEmpty)
             {
                 ChangeItemSlot(selectedItem, changedItem);
-                ClosePopupItem();
+                popupUI.ClosePopup();
             }
         }
         else
         {
-            Slot tempSlot = null;
+            Slot ChangedItem = null;
             bool flag = false;
             for (int i = 0; i < equipSlots.Length; i++)
             {
@@ -151,21 +145,21 @@ public class Inventory : MonoBehaviour
                     if (selectedItem.item.useType != equipSlots[i].useType) continue;
                     if (selectedItem.item.type != equipSlots[i].equipType[j]) continue;
                     if (equipSlots[i].isLock) continue;
-                    if (tempSlot == null) tempSlot = equipSlots[i];
+                    if (ChangedItem == null) ChangedItem = equipSlots[i];
                     if (equipSlots[i].item == null)
                     {
-                        tempSlot = equipSlots[i];
+                        ChangedItem = equipSlots[i];
                         flag = true;
                         break;
                     }
                 }
                 if (flag) break;
             }
-            if (tempSlot == null) return;
-            ChangeItemSlot(selectedItem, tempSlot);
+            if (ChangedItem == null) return;
+            ChangeItemSlot(selectedItem, ChangedItem);
             playerItem.Equip(equipSlots);
-            if (selectedItem.item == null) ClosePopupItem();
-            else PopupItem(selectedItem);
+            if (selectedItem.item == null) popupUI.ClosePopup();
+            else popupUI.UpdatePopup(selectedItem);
         }
     }
 
@@ -207,42 +201,13 @@ public class Inventory : MonoBehaviour
         selectedItem.item = null;
         selectedItem.itemIcon.color = Color.clear;
         selectedItem.quantity = 0;
+        selectedItem.skill = null;
         draggingItem.SetActive(false);
     }
 
-    public void PopupItem(Slot selectedItem)
+    public void Disable()
     {
-        if (draggingItem.activeSelf) return;
-        itemPopup.SetActive(true);
-        itemPopup.transform.Find("ItemIcon").GetComponent<Image>().sprite = selectedItem.itemIcon.sprite;
-        itemPopup.transform.Find("Name").GetComponent<Text>().text = $"{DataManager.Localization(selectedItem.item.nameAdd[0])} {DataManager.Localization(selectedItem.item.name)}";
-        itemPopup.transform.Find("QualityName").GetComponent<Text>().text = $"{DataManager.Localization(selectedItem.item.rarityType)} {DataManager.Localization(selectedItem.item.type)}";
-        itemPopup.transform.Find("BaseStatusTitle").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.status);
-        itemPopup.transform.Find("BaseStatusTitle").Find("Status").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.stat.ToString());
-        itemPopup.transform.Find("StatusTitle (1)").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statusAdd[0]);
-        itemPopup.transform.Find("StatusTitle (1)").Find("Status").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statAdd[0].ToString());
-        itemPopup.transform.Find("StatusTitle (2)").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statusAdd[1]);
-        itemPopup.transform.Find("StatusTitle (2)").Find("Status").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statAdd[1].ToString());
-        itemPopup.transform.Find("StatusTitle (3)").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statusAdd[2]);
-        itemPopup.transform.Find("StatusTitle (3)").Find("Status").GetComponent<Text>().text = DataManager.Localization(selectedItem.item.statAdd[2].ToString());
-    }
-
-    public void ClosePopupItem()
-    {
-        itemPopup.SetActive(false);
-    }
-
-    private void PopupFollowMouse()
-    {
-        itemPopup.transform.position = Input.mousePosition;
-        if (itemPopup.transform.position.y < Screen.height / 2) itemPopupRect.pivot = Vector2.zero;
-        else itemPopupRect.pivot = Vector2.up;
-        if (itemPopup.transform.position.x + itemPopupRect.sizeDelta.x > Screen.width) itemPopupRect.pivot = new Vector2(1, itemPopupRect.pivot.y);
-    }
-
-    public void OnDisable()
-    {
-        ClosePopupItem();
+        popupUI.ClosePopup();
         draggingItem.SetActive(false);
         if (selectedItem != null) selectedItem.itemIcon.color = Color.white;
     }

@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     private Toggle equipToggle;
     [SerializeField]
     private Toggle infoToggle;
+    [SerializeField]
+    private Inventory inventory;
 
     private void Awake()
     {
@@ -34,13 +36,14 @@ public class UIManager : MonoBehaviour
             if (uIPanel.activeSelf == false) uIPanel.SetActive(true);
             else if (equipToggle.isOn) uIPanel.SetActive(false);
             equipToggle.isOn = uIPanel.activeSelf;
-
+            inventory.Disable();
         }
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.info]))
         {
             if (uIPanel.activeSelf == false) uIPanel.SetActive(true);
             else if (infoToggle.isOn) uIPanel.SetActive(false);
             infoToggle.isOn = uIPanel.activeSelf;
+            inventory.Disable();
         }
     }
 }

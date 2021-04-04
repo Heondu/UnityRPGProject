@@ -10,7 +10,7 @@ public class Rotation : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
     }
 
-    public void Rotate(Vector3 center, Vector3 dir) //센터를 중심으로 회전
+    public void Rotate(Vector3 dir, Vector3 center) //센터를 중심으로 회전
     {
         Rotate(dir);
         float angle = Mathf.Atan2(dir.y, dir.x);
@@ -20,9 +20,9 @@ public class Rotation : MonoBehaviour
         transform.localPosition = new Vector3(x, y, 0);
     }
 
-    public static float GetAngle(Vector3 pos)
+    public static float GetAngle(Vector3 from, Vector3 to)
     {
-        Vector2 dir = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - pos).normalized;
+        Vector2 dir = (to - from).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         return angle - 90;
     }

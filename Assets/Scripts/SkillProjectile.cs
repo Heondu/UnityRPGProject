@@ -24,7 +24,7 @@ public class SkillProjectile : SkillScript
     public override void Execute(GameObject executor, Skill skill)
     {
         base.Execute(executor, skill);
-        float angle = Rotation.GetAngle(executor.transform.position);
+        float angle = Rotation.GetAngle(executor.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         StartCoroutine("FindTarget");
     }

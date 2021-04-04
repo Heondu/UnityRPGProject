@@ -15,6 +15,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     public string useType;
     public string[] equipType;
     public bool isLock;
+    public string skill;
 
     private void Awake()
     {
@@ -48,12 +49,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null) inventory.PopupItem(this);
+        if (item != null) inventory.popupUI.UpdatePopup(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        inventory.ClosePopupItem();
+        inventory.popupUI.ClosePopup();
     }
 
     public void OnBeginDrag(PointerEventData eventData)

@@ -1,69 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
-    private string[] skillnames = new string[5];
-    public Skill[] skills = new Skill[5];
-    public List<Skill> buffs = new List<Skill>();
-    private Timer[] skillCoolTimer = new Timer[5];
-    public Timer[] SkillCoolTimer => skillCoolTimer;
-    private bool[] isSkillCool = new bool[5];
-    public bool[] IsSkillCool => isSkillCool;
-
-    private void Awake()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            skills[i] = new Skill();
-            skills[i].skill = "";
-            skillCoolTimer[i] = new Timer();
-            isSkillCool[i] = false;
-        }
-
-        ChangeSkill();
-    }
-
-    private void Update()
-    {
-        Cooltime();
-    }
-
-    [ContextMenu("ChangeSkill")]
-    private void ChangeSkill()
-    {
-        for (int i = 0; i < skills.Length; i++)
-        {
-            if (DataManager.Exists(DataManager.skills, "name", skillnames[i]))
-            {
-                skills[i] = DataManager.skillDB[skillnames[i]];
-            }
-        }
-    }
+    private Shortcut[] shortcuts;
 
     public void Execute(int index, GameObject executor)
     {
-        SkillScript skill = SkillLoader.SkillLoad(executor, skills[index], transform.position);
-        isSkillCool[index] = true;
-        if (skills[index].type == "buff")
-        {
-            buffs.Add(skills[index]);
-            skill.SetCallBack(RemoveBuff);
-        }
+        if (shortcuts[index].skill == "") return;
+        if (DataManager.skillDB[shortcuts[index].skill].isCool) return;
+        SkillLoader.SkillLoad(executor, DataManager.skillDB[shortcuts[index].skill], transform.position);
+        DataManager.skillDB[shortcuts[index].skill].isCool = true;
+        StartCoroutine("Cooltime", DataManager.skillDB[shortcuts[index].skill]);
     }
 
-    private void Cooltime()
+    public void Execute(Skill skill, GameObject executor)
     {
-        for (int i = 0; i < isSkillCool.Length; i++)
-        {
-            if (!isSkillCool[i]) continue;
-            if (skillCoolTimer[i].IsTimeOut(skills[i].cooltime)) isSkillCool[i] = false;
-        }
+        SkillLoader.SkillLoad(executor, skill, transform.position);
+        skill.isCool = true;
+        StartCoroutine("Cooltime", skill);
     }
 
-    private void RemoveBuff(Skill skill)
+    private IEnumerator Cooltime(Skill skill)
     {
-        buffs.Remove(skill);
+        skill.currentTime = 0;
+        while (skill.currentTime < skill.cooltime)
+        {
+            skill.currentTime += Time.deltaTime;
+            yield return null;
+        }
+        skill.isCool = false;
     }
 }

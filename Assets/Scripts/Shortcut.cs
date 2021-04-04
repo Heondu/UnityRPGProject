@@ -7,10 +7,11 @@ public class Shortcut : MonoBehaviour
     [SerializeField]
     private Transform shortcut;
     private Image icon;
-    private Image cooltime;
+    public Image cooltime;
     private TextMeshProUGUI keycodeSelf;
     private TextMeshProUGUI keycodeOther;
     private TextMeshProUGUI quantity;
+    public string skill;
     [SerializeField]
     private KeyAction keycode;
 
@@ -20,7 +21,7 @@ public class Shortcut : MonoBehaviour
         cooltime = shortcut.Find("Cooltime").GetComponent<Image>();
         keycodeSelf = transform.Find("Keycode").GetComponent<TextMeshProUGUI>();
         keycodeOther = shortcut.Find("Keycode").GetComponent<TextMeshProUGUI>();
-        quantity = shortcut.Find("Quantity").GetComponent<TextMeshProUGUI>();
+        if (shortcut.Find("Quantity") == true) quantity = shortcut.Find("Quantity").GetComponent<TextMeshProUGUI>();
         keycodeSelf.text = KeySetting.keys[keycode].ToString();
         keycodeOther.text = KeySetting.keys[keycode].ToString();
     }
@@ -29,6 +30,7 @@ public class Shortcut : MonoBehaviour
     {
         icon.sprite = slot.itemIcon.sprite;
         icon.color = slot.itemIcon.color;
-        quantity.text = slot.quantityText.text;
+        if (quantity != null) quantity.text = slot.quantityText.text;
+        skill = slot.skill;
     }
 }

@@ -18,4 +18,5 @@
     public int[] statAdd = new int[additionalMax];
     public string itemImage;
     public string inventoryImage;
+    public string skill;
 }

@@ -19,36 +19,40 @@ public class Player : MonoBehaviour, ILivingEntity
         playerAnimator = GetComponent<PlayerAnimator>();
         playerStatus = GetComponent<PlayerStatus>();
         status = GetComponent<Status>();
-        StatusCalculator.StatusCalc(status.status, playerStatus.fourStatus);
+        StatusCalculator.StatusCalc(status.status, playerStatus.baseStatus);
     }
 
     private void Update()
     {
         playerAnimator.Movement(playerInput.GetAxis());
-        if (IsMove()) movement.Execute(playerInput.GetAxis());
-        if (IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
+        if (!IsMove()) movement.Execute(playerInput.GetAxis());
+        if (!IsAttack()) playerSkill.Execute(playerInput.GetSkillIndex(), gameObject);
+        if (!IsItemCool()) playerItem.Execute(playerInput.GetItemIndex(), gameObject);
     }
 
     private bool IsMove()
     {
-        return true;
+        return false;
     }
 
     private bool IsAttack()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            if (playerInput.GetSkillIndex() == i)
-            {
-                if (playerSkill.IsSkillCool[i] == false) return true;
-            }
-        }
-        return false;
+        for (int i = 0; i < 4; i++)
+            if (playerInput.GetSkillIndex() == i) return false;
+        return true;
     }
 
-    public void TakeDamage()
+    private bool IsItemCool()
     {
+        for (int i = 0; i < 4; i++)
+            if (playerInput.GetItemIndex() == i) return false;
+        return true;
+    }
 
+    public void TakeDamage(int damage)
+    {
+        status.status["hp"] = Mathf.Max(0, status.status["hp"] - damage);
+        Debug.Log(status.status["hp"]);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

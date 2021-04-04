@@ -33,8 +33,8 @@ public class SkillExplode : SkillScript
 
                 ILivingEntity entity = collider.GetComponent<ILivingEntity>();
                 if (entity == null) continue;
-                StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
-                entity.TakeDamage();
+                int damage = StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
+                entity.TakeDamage(damage);
 
                 penetrationCount++;
                 if (skill.penetration <= penetrationCount) Destroy(gameObject);

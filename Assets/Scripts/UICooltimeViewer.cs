@@ -4,21 +4,20 @@ using TMPro;
 
 public class UICooltimeViewer : MonoBehaviour
 {
-    private PlayerSkill playerSkill;
-    private Image cooltimeImages;
     [SerializeField]
-    private int index;
+    private Shortcut shortcut;
+    private Image cooltimeImage;
 
     private void Awake()
     {
-        playerSkill = FindObjectOfType<PlayerSkill>();
-        cooltimeImages = GetComponent<Image>();
+        cooltimeImage = transform.Find("Cooltime").GetComponent<Image>();
     }
 
     private void Update()
     {
-        if (playerSkill.IsSkillCool[index])
-            cooltimeImages.fillAmount = 1 - playerSkill.SkillCoolTimer[index].GetTime / playerSkill.skills[index].cooltime;
-        else cooltimeImages.fillAmount = 0;
+        if (shortcut.skill == "") return;
+        if (DataManager.skillDB[shortcut.skill].isCool)
+            cooltimeImage.fillAmount = 1 - DataManager.skillDB[shortcut.skill].currentTime / DataManager.skillDB[shortcut.skill].cooltime;
+        else cooltimeImage.fillAmount = 0;
     }
 }
