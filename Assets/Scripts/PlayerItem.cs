@@ -1,33 +1,32 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
     [SerializeField]
     private Shortcut[] shortcuts;
-    private Inventory inventory;
     private Player player;
+    [SerializeField]
+    private Transform equipmentHolder;
+    private Slot[] equipSlots;
     private PlayerSkill playerSkill;
     private GameObject buffHolder;
 
     private void Awake()
     {
-        inventory = FindObjectOfType<Inventory>();
         player = GetComponent<Player>();
         playerSkill = GetComponent<PlayerSkill>();
         buffHolder = GameObject.Find("BuffHolder");
+        equipSlots = equipmentHolder.GetComponentsInChildren<Slot>();
+        InventoryManager.instance.onItemChangedCallback += Equip;
     }
 
     public void PickUp(Item item)
     {
-        Slot newItem = inventory.ItemToInventorySlot(item, out bool isEmpty);
-        if (isEmpty == false) return;
-        newItem.item = item;
-        newItem.itemIcon.sprite = Resources.Load<Sprite>(item.inventoryImage);
-        newItem.itemIcon.color = Color.white;
-        newItem.skill = item.skill;
+        InventoryManager.instance.AddItem(item);
     }
 
-    public void Equip(Slot[] equipSlots)
+    public void Equip()
     {
         Item[] items = new Item[equipSlots.Length];
         for (int i = 0; i < equipSlots.Length; i++)
@@ -44,6 +43,6 @@ public class PlayerItem : MonoBehaviour
 
     public void StatusCalc(Item[] items)
     {
-        StatusCalculator.StatusCalc(player.status.status, player.playerStatus.baseStatus, items, buffHolder.GetComponentsInChildren<Skill>());
+        StatusCalculator.StatusCalc(player.status.status, player.playerStatus.baseStatus, items);
     }
 }

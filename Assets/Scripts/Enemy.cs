@@ -65,8 +65,8 @@ public class Enemy : MonoBehaviour, ILivingEntity
     public void TakeDamage(int damage)
     {
         FloatingDamage(damage);
-        status.status["hp"] = Mathf.Max(0, status.status["hp"] - damage);
-        if (status.status["hp"] ==  0)
+        status.status["HP"] = Mathf.Max(0, status.status["HP"] - damage);
+        if (status.status["HP"] ==  0)
         {
             FindObjectOfType<Player>().status.status["exp"] += (int)monlvl["monexp"];
             ItemGenerator.Instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);

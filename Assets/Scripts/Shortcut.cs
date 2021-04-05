@@ -14,6 +14,7 @@ public class Shortcut : MonoBehaviour
     public string skill;
     [SerializeField]
     private KeyAction keycode;
+    private Slot slot;
 
     private void Awake()
     {
@@ -24,13 +25,20 @@ public class Shortcut : MonoBehaviour
         if (shortcut.Find("Quantity") == true) quantity = shortcut.Find("Quantity").GetComponent<TextMeshProUGUI>();
         keycodeSelf.text = KeySetting.keys[keycode].ToString();
         keycodeOther.text = KeySetting.keys[keycode].ToString();
+        slot = GetComponent<Slot>();
     }
 
-    public void ShortcutAssign(Slot slot)
+    private void Update()
     {
-        icon.sprite = slot.itemIcon.sprite;
-        icon.color = slot.itemIcon.color;
+        ShortcutAssign();
+    }
+
+    private void ShortcutAssign()
+    {
+        if (slot == null) return;
+        icon.sprite = slot.icon.sprite;
+        icon.color = slot.icon.color;
         if (quantity != null) quantity.text = slot.quantityText.text;
-        skill = slot.skill;
+        if (slot.item != null) skill = slot.item.skill;
     }
 }

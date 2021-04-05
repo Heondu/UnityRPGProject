@@ -1,214 +1,151 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject inventory;
-    [SerializeField]
-    private GameObject[] itemHolders;
-    private List<Slot[]> itemSlots = new List<Slot[]>();
-    [SerializeField]
-    private GameObject equipmentHolder;
-    private Slot[] equipSlots;
-    public PopupUI popupUI;
-    [SerializeField]
-    private GameObject draggingItem;
-    private PlayerItem playerItem;
-    private Slot selectedItem;
+    public Slot[] itemSlots;
+    public List<Item> items = new List<Item>();
 
     private void Awake()
     {
-        for (int i = 0; i < itemHolders.Length; i++)
-            itemSlots.Add(itemHolders[i].GetComponentsInChildren<Slot>());
-        equipSlots = equipmentHolder.GetComponentsInChildren<Slot>();
-        playerItem = FindObjectOfType<PlayerItem>();
+        itemSlots = GetComponentsInChildren<Slot>();
+        for (int i = 0; i < transform.childCount; i++)
+            items.Add(null);
     }
 
-    public void OnBeginDrag(Slot selectedItem)
+    public void AddItem(Item newItem)
     {
-        draggingItem.SetActive(true);
-        this.selectedItem = selectedItem;
-        draggingItem.transform.Find("ItemIcon").GetComponent<Image>().sprite = selectedItem.itemIcon.sprite;
-        if (selectedItem.item.useType == "equipment") selectedItem.itemIcon.color = Color.clear;
-    }
-
-    public void OnDrag()
-    {
-        draggingItem.transform.position = Input.mousePosition;
-    }
-    
-    public void OnEndDrag(Slot selectedItem, Slot changedItem, bool isEquip)
-    {
-        if (draggingItem.activeSelf == false) return;
-        if (changedItem == null)
+        int index;
+        if (newItem.useType == "equipment")
         {
-            if (isEquip)
-            {
-                changedItem = ItemToInventorySlot(selectedItem.item, out bool isEmpty);
-                if (isEmpty) ChangeItemSlot(selectedItem, changedItem);
-                else selectedItem.itemIcon.color = Color.white;
-                popupUI.ClosePopup();
-            }
-            else if (selectedItem.item.useType == "consume") ItemShortcutAssign(selectedItem, changedItem);
-            else selectedItem.itemIcon.color = Color.white;
+            index = FindSlot(itemSlots, null);
+            if (index != -1) items[index] = newItem;
         }
-        else if (changedItem == selectedItem) selectedItem.itemIcon.color = Color.white;
-        else if (selectedItem.item.useType != changedItem.useType) selectedItem.itemIcon.color = Color.white;
-        else if (changedItem.isLock) selectedItem.itemIcon.color = Color.white;
-        else if (changedItem.useType == "consume") ItemShortcutAssign(selectedItem, changedItem);
-        else if (changedItem.useType == "equipment")
+        else if (newItem.useType == "consume")
         {
-            foreach (string type in changedItem.equipType)
+            index = FindSlot(itemSlots, newItem);
+            if (index != -1) items[index].quantity++;
+            else
             {
-                if (type == "all" || type == selectedItem.item.type)
+                index = FindSlot(itemSlots, null);
+                items[index] = newItem;
+            }
+        }
+        UpdateInventory();
+    }
+
+    public void ChangeItem(Item changedItem, int index)
+    {
+        items[index] = changedItem;
+        UpdateInventory();
+    }
+
+    public void RemoveItem(Item targetItem)
+    {
+        int index = FindSlot(itemSlots, targetItem);
+        if (index != -1) items[index] = null;
+        UpdateInventory();
+    }
+
+    public int FindSlot(Slot[] itemSlots, Item newItem)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i].item == newItem) return i;
+        }
+        return -1;
+    }
+
+    private int FindIndex(Transform transform)
+    {
+        for (int i = 0; i < transform.parent.childCount; i++)
+        {
+            if (transform.parent.GetChild(i) == transform) return i;
+        }
+        return -1;
+    }
+
+    protected void FindInventory(Slot selectedSlot, Slot targetSlot)
+    {
+        Item selectedItem = selectedSlot.item;
+        Item targetItem = targetSlot.item;
+        Inventory selectedInventory = selectedSlot.transform.parent.GetComponent<Inventory>();
+        Inventory targetInventory = targetSlot.transform.parent.GetComponent<Inventory>();
+        targetInventory.ChangeItem(selectedItem, FindIndex(targetSlot.transform));
+        selectedInventory.ChangeItem(targetItem, FindIndex(selectedSlot.transform));
+    }
+
+    public void IsChangable(Slot selectedSlot, Slot targetSlot)
+    {
+        if (selectedSlot.item.useType == targetSlot.useType)
+        {
+            if (selectedSlot.item.useType == "equipment")
+            {
+                for (int i = 0; i < targetSlot.equipType.Length; i++)
                 {
-                    ChangeItemSlot(selectedItem, changedItem);
-                    playerItem.Equip(equipSlots);
-                    popupUI.UpdatePopup(changedItem);
-                    break;
+                    if (targetSlot.equipType[i] == "all" || selectedSlot.item.type == targetSlot.equipType[i])
+                    {
+                        FindInventory(selectedSlot, targetSlot);
+                        break;
+                    }
+                    else
+                    {
+                        selectedSlot.icon.color = Color.white;
+                    }
                 }
-                else selectedItem.itemIcon.color = Color.white;
             }
-        }
-        else selectedItem.itemIcon.color = Color.white;
-        draggingItem.SetActive(false);
-    }
-
-    private void ChangeItemSlot(Slot selectedItem, Slot changedItem)
-    {
-        Item temp = changedItem.item;
-        changedItem.item = selectedItem.item;
-        selectedItem.item = temp;
-        Sprite spriteTemp = changedItem.itemIcon.sprite;
-        Color colorTemp = changedItem.itemIcon.color;
-        int quantityTemp = changedItem.quantity;
-        string skillTemp = changedItem.skill;
-        changedItem.itemIcon.sprite = selectedItem.itemIcon.sprite;
-        changedItem.quantity = selectedItem.quantity;
-        changedItem.itemIcon.color = Color.white;
-        changedItem.skill = selectedItem.skill;
-        selectedItem.itemIcon.sprite = spriteTemp;
-        selectedItem.itemIcon.color = colorTemp;
-        selectedItem.quantity = quantityTemp;
-        selectedItem.skill = skillTemp;
-    }
-
-    private void ItemShortcutAssign(Slot selectedItem, Slot changedItem)
-    {
-        Shortcut selectedShortcut = null;
-        Shortcut changedShortcut = null;
-        if (selectedItem != null) selectedShortcut = selectedItem.GetComponent<Shortcut>();
-        if (changedItem != null) changedShortcut = changedItem.GetComponent<Shortcut>();
-        if (selectedShortcut == null && changedItem == null) return;
-        else if ((selectedShortcut != null && changedItem == null) || (selectedShortcut != null && changedShortcut == null))
-        {
-            selectedItem.item = null;
-            selectedItem.itemIcon.color = Color.clear;
-            selectedItem.quantity = 0;
-            selectedItem.skill = null;
-        }
-        else if (selectedShortcut == null && changedShortcut != null)
-        {
-            changedItem.item = selectedItem.item;
-            changedItem.itemIcon.sprite = selectedItem.itemIcon.sprite;
-            changedItem.itemIcon.color = Color.white;
-            changedItem.quantity = selectedItem.quantity;
-            changedItem.skill = selectedItem.skill;
-        }
-        else ChangeItemSlot(selectedItem, changedItem);
-        if (selectedShortcut != null) selectedShortcut.ShortcutAssign(selectedItem);
-        if (changedShortcut != null) changedShortcut.ShortcutAssign(changedItem);
-    }
-
-    public void Equip(Slot selectedItem, bool isEquip)
-    {
-        if (selectedItem.item == null) return;
-        if (isEquip)
-        {
-            Slot changedItem = ItemToInventorySlot(selectedItem.item, out bool isEmpty);
-            if (isEmpty)
+            else if (selectedSlot.item.useType == "consume")
             {
-                ChangeItemSlot(selectedItem, changedItem);
-                popupUI.ClosePopup();
+                FindInventory(selectedSlot, targetSlot);
             }
         }
         else
         {
-            Slot ChangedItem = null;
-            bool flag = false;
-            for (int i = 0; i < equipSlots.Length; i++)
+            selectedSlot.icon.color = Color.white;
+        }
+    }
+
+    public void UpdateInventory()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            itemSlots[i].item = items[i];
+        }
+
+        InventoryManager.instance.onItemChangedCallback.Invoke();
+    }
+
+    public void QuickEquip(Slot selectedSlot)
+    {
+        if (selectedSlot.item.useType == "equipment")
+        {
+            if (selectedSlot.CompareTag("InventoryEquip"))
             {
-                for (int j = 0; j < equipSlots[i].equipType.Length; j++)
+                Inventory inventory = InventoryManager.instance.GetInventory(InventoryUseType.equipment);
+                int index = FindSlot(inventory.itemSlots, null);
+                if (index != -1) FindInventory(selectedSlot, inventory.itemSlots[index]);
+            }
+            else
+            {
+                Inventory inventory = InventoryManager.instance.GetInventory(InventoryUseType.equipSlot);
+                for (int i = 0; i < inventory.itemSlots.Length; i++)
                 {
-                    if (selectedItem.item.useType != equipSlots[i].useType) continue;
-                    if (selectedItem.item.type != equipSlots[i].equipType[j]) continue;
-                    if (equipSlots[i].isLock) continue;
-                    if (ChangedItem == null) ChangedItem = equipSlots[i];
-                    if (equipSlots[i].item == null)
+                    for (int j = 0; j < inventory.itemSlots[i].equipType.Length; j++)
                     {
-                        ChangedItem = equipSlots[i];
-                        flag = true;
-                        break;
+                        if (selectedSlot.item.type == inventory.itemSlots[i].equipType[j])
+                        {
+                            FindInventory(selectedSlot, inventory.itemSlots[i]);
+                            return;
+                        }
                     }
                 }
-                if (flag) break;
-            }
-            if (ChangedItem == null) return;
-            ChangeItemSlot(selectedItem, ChangedItem);
-            playerItem.Equip(equipSlots);
-            if (selectedItem.item == null) popupUI.ClosePopup();
-            else popupUI.UpdatePopup(selectedItem);
-        }
-    }
-
-    public Slot ItemToInventorySlot(Item item, out bool isEmpty)
-    {
-        int num = 0;
-        if (item.useType == "equipment") num = 0;
-        else if (item.useType == "consume") num = 1;
-
-        for (int i = 0; i < itemSlots[num].Length; i++)
-        {
-            if (item.useType == "equipment" && itemSlots[num][i].item == null)
-            {
-                isEmpty = true;
-                return itemSlots[num][i];
-            }
-            else if (item.useType == "consume")
-            {
-                if (itemSlots[num][i].item == item)
-                {
-                    itemSlots[num][i].quantity++;
-                    isEmpty = false;
-                    return null;
-                }
-                else if (itemSlots[num][i].item == null)
-                {
-                    itemSlots[num][i].quantity++;
-                    isEmpty = true;
-                    return itemSlots[num][i];
-                }
             }
         }
-        isEmpty = false;
-        return null;
     }
-
-    public void DestroyItem(Slot selectedItem)
-    {
-        selectedItem.item = null;
-        selectedItem.itemIcon.color = Color.clear;
-        selectedItem.quantity = 0;
-        selectedItem.skill = null;
-        draggingItem.SetActive(false);
-    }
-
-    public void Disable()
-    {
-        popupUI.ClosePopup();
-        draggingItem.SetActive(false);
-        if (selectedItem != null) selectedItem.itemIcon.color = Color.white;
-    }
+    //public void Disable()
+    //{
+    //    popupUI.ClosePopup();
+    //    draggingItem.SetActive(false);
+    //    if (selectedItem != null) selectedItem.icon.color = Color.white;
+    //}
 }

@@ -33,7 +33,7 @@ public class Status : MonoBehaviour
         status["experience"] = 0;
         status["itemRange"] = 0;
         status["maxHp"] = 0;
-        status["hp"] = 0;
+        status["HP"] = 0;
         status["maxMana"] = 0;
         status["mana"] = 0;
         status["exp"] = 0;
@@ -64,7 +64,7 @@ public class Status : MonoBehaviour
         status["experience%"] = 0;
         status["itemRange%"] = 0;
         status["maxHp%"] = 0;
-        status["hp%"] = 0;
+        status["HP%"] = 0;
         status["maxMana%"] = 0;
         status["mana%"] = 0;
     }

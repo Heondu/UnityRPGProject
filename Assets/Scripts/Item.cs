@@ -19,4 +19,5 @@
     public string itemImage;
     public string inventoryImage;
     public string skill;
+    public int quantity = 1;
 }

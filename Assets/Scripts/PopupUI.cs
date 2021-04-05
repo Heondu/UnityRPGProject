@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class PopupUI : MonoBehaviour
 {
+    public static PopupUI instance;
     [SerializeField]
     private GameObject popup;
     private RectTransform popupRect;
     private Image icon;
-    private Text name;
+    private new Text name;
     private Text qualityName;
     private Text baseStatusTitle;
     private Text baseStatus;
@@ -17,9 +18,13 @@ public class PopupUI : MonoBehaviour
     private Text addStatus1;
     private Text addStatus2;
     private Text addStatus3;
+    private Slot selectedSlot;
 
     private void Awake()
     {
+        if (instance != null) Destroy(this);
+        else instance = this;
+
         popupRect = popup.GetComponent<RectTransform>();
         icon = popup.transform.Find("ItemIcon").GetComponent<Image>();
         name = popup.transform.Find("Name").GetComponent<Text>();
@@ -37,27 +42,29 @@ public class PopupUI : MonoBehaviour
     private void Update()
     {
         if (popup.activeSelf) PopupFollowMouse();
+        if (popup.activeSelf != false && selectedSlot != null && selectedSlot.item != null) UpdatePopup(selectedSlot);
+        else SetActive(false);
     }
 
-    public void UpdatePopup(Slot selectedItem)
+    public void UpdatePopup(Slot selectedSlot)
     {
-        popup.SetActive(true);
-        icon.sprite = selectedItem.itemIcon.sprite;
-        name.text = $"{DataManager.Localization(selectedItem.item.nameAdd[0])} {DataManager.Localization(selectedItem.item.name)}";
-        qualityName.text = $"{DataManager.Localization(selectedItem.item.rarityType)} {DataManager.Localization(selectedItem.item.type)}";
-        baseStatusTitle.text = DataManager.Localization(selectedItem.item.status);
-        baseStatus.text = DataManager.Localization(selectedItem.item.stat.ToString());
-        addStatusTitle1.text = DataManager.Localization(selectedItem.item.statusAdd[0]);
-        addStatus1.text = DataManager.Localization(selectedItem.item.statAdd[0].ToString());
-        addStatusTitle2.text = DataManager.Localization(selectedItem.item.statusAdd[1]);
-        addStatus2.text = DataManager.Localization(selectedItem.item.statAdd[1].ToString());
-        addStatusTitle3.text = DataManager.Localization(selectedItem.item.statusAdd[2]);
-        addStatus3.text = DataManager.Localization(selectedItem.item.statAdd[2].ToString());
+        this.selectedSlot = selectedSlot;
+        icon.sprite = selectedSlot.icon.sprite;
+        name.text = $"{DataManager.Localization(selectedSlot.item.nameAdd[0])} {DataManager.Localization(selectedSlot.item.name)}";
+        qualityName.text = $"{DataManager.Localization(selectedSlot.item.rarityType)} {DataManager.Localization(selectedSlot.item.type)}";
+        baseStatusTitle.text = DataManager.Localization(selectedSlot.item.status);
+        baseStatus.text = DataManager.Localization(selectedSlot.item.stat.ToString());
+        addStatusTitle1.text = DataManager.Localization(selectedSlot.item.statusAdd[0]);
+        addStatus1.text = DataManager.Localization(selectedSlot.item.statAdd[0].ToString());
+        addStatusTitle2.text = DataManager.Localization(selectedSlot.item.statusAdd[1]);
+        addStatus2.text = DataManager.Localization(selectedSlot.item.statAdd[1].ToString());
+        addStatusTitle3.text = DataManager.Localization(selectedSlot.item.statusAdd[2]);
+        addStatus3.text = DataManager.Localization(selectedSlot.item.statAdd[2].ToString());
     }
 
-    public void ClosePopup()
+    public void SetActive(bool value)
     {
-        popup.SetActive(false);
+        popup.SetActive(value);
     }
 
     private void PopupFollowMouse()

@@ -25,7 +25,7 @@
     "experience": 0.0,
     "itemRange": 0.0,
     "maxHp": 100.0,
-    "hp": 100.0,
+    "HP": 100.0,
     "maxMana": 100.0,
     "mana": 100.0,
     "exp": 0.0,

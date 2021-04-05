@@ -20,7 +20,6 @@ public class PlayerStatus : MonoBehaviour
         baseStatus["agility"] = status.status["agility"];
         baseStatus["intelligence"] = status.status["intelligence"];
         baseStatus["endurance"] = status.status["endurance"];
-        PrintStatus();
     }
 
     private void Update()

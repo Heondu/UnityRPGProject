@@ -51,8 +51,7 @@ public class Player : MonoBehaviour, ILivingEntity
 
     public void TakeDamage(int damage)
     {
-        status.status["hp"] = Mathf.Max(0, status.status["hp"] - damage);
-        Debug.Log(status.status["hp"]);
+        status.status["HP"] = Mathf.Max(0, status.status["HP"] - damage);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

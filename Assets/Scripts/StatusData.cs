@@ -29,7 +29,7 @@ public class StatusData
     public float experience;
     public float itemRange;
     public float maxHp;
-    public float hp;
+    public float HP;
     public float maxMana;
     public float mana;
     public float exp;
@@ -92,7 +92,7 @@ public class StatusData
         experience = status["experience"];
         itemRange = status["itemRange"];
         maxHp = status["maxHp"];
-        hp = status["hp"];
+        HP = status["HP"];
         maxMana = status["maxMana"];
         mana = status["mana"];
         exp = status["exp"];
@@ -123,7 +123,7 @@ public class StatusData
         experiencePer = status["experience%"];
         itemRangePer = status["itemRange%"];
         maxHpPer = status["maxHp%"];
-        hpPer = status["hp%"];
+        hpPer = status["HP%"];
         maxManaPer = status["maxMana%"];
         manaPer = status["mana%"];
     }
@@ -157,7 +157,7 @@ public class StatusData
         status["experience"] = experience;
         status["itemRange"] = itemRange;
         status["maxHp"] = maxHp;
-        status["hp"] = hp;
+        status["HP"] = HP;
         status["maxMana"] = maxMana;
         status["mana"] = mana;
         status["exp"] = exp;
@@ -188,7 +188,7 @@ public class StatusData
         status["experience%"] = experiencePer;
         status["itemRange%"] = itemRangePer;
         status["maxHp%"] = maxHpPer;
-        status["hp%"] = hpPer;
+        status["HP%"] = hpPer;
         status["maxMana%"] = maxManaPer;
         status["mana%"] = manaPer;
         return status;
