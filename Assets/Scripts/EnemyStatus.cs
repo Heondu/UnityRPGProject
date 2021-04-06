@@ -1,12 +1,8 @@
 ﻿[System.Serializable]
-public class EntityStatus
+public class EnemyStatus : BaseStatus
 {
     public int HP;
     public int maxHP;
-    public int mana;
-    public int maxMana;
-    public float exp;
-    public int level;
 
     public Status strength;
     public Status agility;
@@ -31,7 +27,6 @@ public class EntityStatus
     public Status accuracy;
     public Status reduceMana;
     public Status reduceCool;
-    public Status experience;
 
     private const float multValue = 0.05f;
 

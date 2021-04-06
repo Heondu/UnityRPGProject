@@ -14,13 +14,13 @@ public class UIExpViewer : MonoBehaviour
 
     private void Awake()
     {
-        status = FindObjectOfType<Player>().GetComponent<Status>();
+        //status = FindObjectOfType<Player>().GetComponent<Status>();
     }
 
     private void Update()
     {
-        image.fillAmount = status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"];
-        textLevel.text = status.status["level"].ToString();
-        textExp.text = $"{(status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"] * 100).ToString("N2")}%";
+        //image.fillAmount = status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"];
+        //textLevel.text = status.status["level"].ToString();
+        //textExp.text = $"{(status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"] * 100).ToString("N2")}%";
     }
 }

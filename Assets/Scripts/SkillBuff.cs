@@ -10,6 +10,6 @@ public class SkillBuff : SkillScript
     public override void Execute(GameObject executor, Skill skill)
     {
         base.Execute(executor, skill);
-        StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, null, skill);
+        //StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, null, skill);
     }
 }

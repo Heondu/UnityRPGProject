@@ -1,27 +1,22 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
 
 public class JsonIO
 {
     private const string dataPath = "Assets/Resources/";
 
-    public static void SaveStatusToJson(Dictionary<string, float> dic, string fileName)
+    public static void SaveToJson<T>(T t, string fileName)
     {
         IsExists(dataPath + fileName + ".json");
-        StatusData data = new StatusData();
-        data.DicToVar(dic);
-        string jsonString = JsonUtility.ToJson(data, true);
+        string jsonString = JsonUtility.ToJson(t, true);
         File.WriteAllText(dataPath + fileName + ".json", jsonString);
     }
 
-    public static Dictionary<string, float> LoadStatusFromJson(string fileName)
+    public static T LoadFromJson<T>(string fileName)
     {
         IsExists(dataPath + fileName + ".json");
         string jsonString = File.ReadAllText(dataPath + fileName + ".json");
-        StatusData data = JsonUtility.FromJson<StatusData>(jsonString);
-        Dictionary<string, float> status = data.VarToDic();
-        return status;
+        return JsonUtility.FromJson<T>(jsonString);
     }
 
     private static void IsExists(string path)

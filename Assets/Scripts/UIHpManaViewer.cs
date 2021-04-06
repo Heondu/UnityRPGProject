@@ -16,12 +16,12 @@ public class UIHpManaViewer : MonoBehaviour
 
     private void Awake()
     {
-        status = FindObjectOfType<Player>().GetComponent<Status>();
+        //status = FindObjectOfType<Player>().GetComponent<Status>();
     }
 
     private void Update()
     {
-        image.fillAmount = status.status[valueName1] / status.status[valueName2];
-        text.text = $"{(int)status.status[valueName1]}/{(int)status.status[valueName2]}";
+        //image.fillAmount = status.status[valueName1] / status.status[valueName2];
+        //text.text = $"{(int)status.status[valueName1]}/{(int)status.status[valueName2]}";
     }
 }

@@ -18,7 +18,7 @@ public class PlayerItem : MonoBehaviour
         playerSkill = GetComponent<PlayerSkill>();
         buffHolder = GameObject.Find("BuffHolder");
         equipSlots = equipmentHolder.GetComponentsInChildren<Slot>();
-        InventoryManager.instance.onItemChangedCallback += Equip;
+        //InventoryManager.instance.onItemChangedCallback += Equip;
     }
 
     public void PickUp(Item item)
@@ -43,6 +43,6 @@ public class PlayerItem : MonoBehaviour
 
     public void StatusCalc(Item[] items)
     {
-        StatusCalculator.StatusCalc(player.status.status, player.playerStatus.baseStatus, items);
+        //StatusCalculator.StatusCalc(player.status.status, player.playerStatus.baseStatus, items);
     }
 }

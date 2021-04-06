@@ -12,16 +12,16 @@ public class Info : MonoBehaviour
 
     private void Awake()
     {
-        playerStatus = FindObjectOfType<Player>().GetComponent<Status>();
+        //playerStatus = FindObjectOfType<Player>().GetComponent<Status>();
         for (int i = 0; i < info.transform.Find("StatusText").childCount; i++)
         {
             statusTexts.Add(info.transform.Find("StatusText").GetChild(i).name, info.transform.Find("StatusText").GetChild(i).GetComponent<Text>());
             status.Add(info.transform.Find("StatusText").GetChild(i).name, info.transform.Find("StatusText").GetChild(i).GetChild(0).GetComponent<Text>());
         }
 
-        foreach (string key in statusTexts.Keys)
-            if (playerStatus.status.ContainsKey(key))
-                statusTexts[key].text = DataManager.Localization(key);
+        //foreach (string key in statusTexts.Keys)
+        //    if (playerStatus.status.ContainsKey(key))
+        //        statusTexts[key].text = DataManager.Localization(key);
     }
 
     private void Update()
@@ -31,8 +31,8 @@ public class Info : MonoBehaviour
 
     private void UpdateInfo()
     {
-        foreach (string key in status.Keys)
-            if (playerStatus.status.ContainsKey(key))
-                status[key].text = playerStatus.status[key].ToString();
+        //foreach (string key in status.Keys)
+        //    if (playerStatus.status.ContainsKey(key))
+        //        status[key].text = playerStatus.status[key].ToString();
     }
 }

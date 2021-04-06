@@ -7,8 +7,7 @@ public class Player : MonoBehaviour, ILivingEntity
     private PlayerItem playerItem;
     public PlayerSkill playerSkill;
     private PlayerAnimator playerAnimator;
-    public PlayerStatus playerStatus;
-    public Status status;
+    public EntityStatus status;
 
     private void Awake()
     {
@@ -17,9 +16,8 @@ public class Player : MonoBehaviour, ILivingEntity
         playerItem = GetComponent<PlayerItem>();
         playerSkill = GetComponent<PlayerSkill>();
         playerAnimator = GetComponent<PlayerAnimator>();
-        playerStatus = GetComponent<PlayerStatus>();
-        status = GetComponent<Status>();
-        StatusCalculator.StatusCalc(status.status, playerStatus.baseStatus);
+        LoadStatus();
+        
     }
 
     private void Update()
@@ -51,12 +49,32 @@ public class Player : MonoBehaviour, ILivingEntity
 
     public void TakeDamage(int damage)
     {
-        status.status["HP"] = Mathf.Max(0, status.status["HP"] - damage);
+        status.HP = Mathf.Max(0, status.HP - damage);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<ItemScript>() != null)
             collision.GetComponent<ItemScript>().Use(playerItem);
+    }
+
+    [ContextMenu("Save Status")]
+    public void SaveStatus()
+    {
+        JsonIO.SaveToJson(status, "PlayerStatus");
+    }
+
+    [ContextMenu("Load Status")]
+    public void LoadStatus()
+    {
+        status = JsonIO.LoadFromJson<EntityStatus>("PlayerStatus");
+    }
+
+    [ContextMenu("Calculate Derived Status")]
+    public void CalculateDerivedStatus()
+    {
+        status.CalculateDerivedStatus();
+        Debug.Log(status.damage.Value);
+        Debug.Log(status.fixDamage.Value);
     }
 }
