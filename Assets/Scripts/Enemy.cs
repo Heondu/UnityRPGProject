@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
     [SerializeField]
     private GameObject damagePrefab;
     private new string name;
-    public EntityStatus status;
+    public EnemyStatus status;
     public Dictionary<string, object> monster = new Dictionary<string, object>();
     public Dictionary<string, object> monlvl = new Dictionary<string, object>();
 
@@ -67,14 +67,24 @@ public class Enemy : MonoBehaviour, ILivingEntity
         if (status.HP ==  0)
         {
             FindObjectOfType<Player>().status.exp += (int)monlvl["monexp"];
-            ItemGenerator.Instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);
+            ItemGenerator.instance.DropItem((int)monlvl["raritymin"], (int)monlvl["raritymax"], monster["class"].ToString(), transform.position);
             Destroy(gameObject);
         }
+    }
+
+    public void Restore(int value)
+    {
+        status.HP = Mathf.Min(status.HP + value, status.maxHP);
     }
 
     public void FloatingDamage(int damage)
     {
         GameObject clone = Instantiate(damagePrefab, GameObject.Find("Canvas").transform);
         clone.GetComponent<FloatingDamage>().Init(damage, transform.position);
+    }
+
+    public Status GetStatus(string name)
+    {
+        return status.GetStatus(name);
     }
 }

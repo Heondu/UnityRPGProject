@@ -15,9 +15,9 @@ public class UICooltimeViewer : MonoBehaviour
 
     private void Update()
     {
-        if (shortcut.skill == "") return;
-        if (DataManager.skillDB[shortcut.skill].isCool)
-            cooltimeImage.fillAmount = 1 - DataManager.skillDB[shortcut.skill].currentTime / DataManager.skillDB[shortcut.skill].cooltime;
+        if (shortcut.skill == null) return;
+        if (shortcut.skill.isCool)
+            cooltimeImage.fillAmount = 1 - shortcut.skill.currentTime / shortcut.skill.cooltime;
         else cooltimeImage.fillAmount = 0;
     }
 }

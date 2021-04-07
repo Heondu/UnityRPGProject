@@ -79,9 +79,9 @@ public class DataManager : MonoBehaviour
                     spawnable = (int)list[i]["spawnable"],
                     useType = list[i]["useType"].ToString(),
                     type = list[i]["type"].ToString(),
-                    rarity = (int)list[i]["rarity"],
                     itemImage = list[i]["itemImage"].ToString(),
-                    inventoryImage = list[i]["inventoryImage"].ToString()
+                    inventoryImage = list[i]["inventoryImage"].ToString(),
+                    rarity = (int)list[i]["rarity"]
                 };
             }
             else if (list == skills)

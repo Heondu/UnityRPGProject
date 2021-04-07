@@ -18,16 +18,16 @@ public class Inventory : MonoBehaviour
         int index;
         if (newItem.useType == "equipment")
         {
-            index = FindSlot(itemSlots, null);
+            index = FindItem(itemSlots, null);
             if (index != -1) items[index] = newItem;
         }
         else if (newItem.useType == "consume")
         {
-            index = FindSlot(itemSlots, newItem);
+            index = FindItem(itemSlots, newItem);
             if (index != -1) items[index].quantity++;
             else
             {
-                index = FindSlot(itemSlots, null);
+                index = FindItem(itemSlots, null);
                 items[index] = newItem;
             }
         }
@@ -42,12 +42,12 @@ public class Inventory : MonoBehaviour
 
     public void RemoveItem(Item targetItem)
     {
-        int index = FindSlot(itemSlots, targetItem);
+        int index = FindItem(itemSlots, targetItem);
         if (index != -1) items[index] = null;
         UpdateInventory();
     }
 
-    public int FindSlot(Slot[] itemSlots, Item newItem)
+    public int FindItem(Slot[] itemSlots, Item newItem)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
@@ -65,7 +65,7 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-    protected void FindInventory(Slot selectedSlot, Slot targetSlot)
+    private void FindSlot(Slot selectedSlot, Slot targetSlot)
     {
         Item selectedItem = selectedSlot.item;
         Item targetItem = targetSlot.item;
@@ -85,7 +85,7 @@ public class Inventory : MonoBehaviour
                 {
                     if (targetSlot.equipType[i] == "all" || selectedSlot.item.type == targetSlot.equipType[i])
                     {
-                        FindInventory(selectedSlot, targetSlot);
+                        FindSlot(selectedSlot, targetSlot);
                         break;
                     }
                     else
@@ -96,7 +96,7 @@ public class Inventory : MonoBehaviour
             }
             else if (selectedSlot.item.useType == "consume")
             {
-                FindInventory(selectedSlot, targetSlot);
+                FindSlot(selectedSlot, targetSlot);
             }
         }
         else
@@ -122,8 +122,8 @@ public class Inventory : MonoBehaviour
             if (selectedSlot.CompareTag("InventoryEquip"))
             {
                 Inventory inventory = InventoryManager.instance.GetInventory(InventoryUseType.equipment);
-                int index = FindSlot(inventory.itemSlots, null);
-                if (index != -1) FindInventory(selectedSlot, inventory.itemSlots[index]);
+                int index = FindItem(inventory.itemSlots, null);
+                if (index != -1) FindSlot(selectedSlot, inventory.itemSlots[index]);
             }
             else
             {
@@ -134,7 +134,7 @@ public class Inventory : MonoBehaviour
                     {
                         if (selectedSlot.item.type == inventory.itemSlots[i].equipType[j])
                         {
-                            FindInventory(selectedSlot, inventory.itemSlots[i]);
+                            FindSlot(selectedSlot, inventory.itemSlots[i]);
                             return;
                         }
                     }

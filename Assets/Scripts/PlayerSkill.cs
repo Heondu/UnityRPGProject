@@ -5,19 +5,29 @@ public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
     private Shortcut[] shortcuts;
+    private PlayerInput playerInput;
 
-    public void Execute(int index, GameObject executor)
+    private void Awake()
     {
-        if (shortcuts[index].skill == "") return;
-        if (DataManager.skillDB[shortcuts[index].skill].isCool) return;
-        SkillLoader.SkillLoad(executor, DataManager.skillDB[shortcuts[index].skill], transform.position);
-        DataManager.skillDB[shortcuts[index].skill].isCool = true;
-        StartCoroutine("Cooltime", DataManager.skillDB[shortcuts[index].skill]);
+        playerInput = GetComponent<PlayerInput>();
     }
 
-    public void Execute(Skill skill, GameObject executor)
+    private void Update()
     {
-        SkillLoader.SkillLoad(executor, skill, transform.position);
+        if (IsAttack(playerInput.GetSkillIndex())) Execute(shortcuts[playerInput.GetSkillIndex()].skill);
+    }
+
+    private bool IsAttack(int index)
+    {
+        if (index == -1) return false;
+        if (shortcuts[index].skill == null) return false;
+        if (shortcuts[index].skill.isCool) return false;
+        return true;
+    }
+
+    public void Execute(Skill skill)
+    {
+        SkillLoader.SkillLoad(gameObject, skill, transform.position);
         skill.isCool = true;
         StartCoroutine("Cooltime", skill);
     }

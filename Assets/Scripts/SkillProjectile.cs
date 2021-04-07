@@ -16,7 +16,10 @@ public class SkillProjectile : SkillScript
 
     protected override void Update()
     {
-        base.Update();
+        if (skill != null)
+        {
+            if (timer.IsTimeOut(skill.lifetime)) Destroy(gameObject);
+        }
         movement.Execute(transform.up, skill.speed);
         SetDir();
     }

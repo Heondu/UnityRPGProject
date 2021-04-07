@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public class EntityStatus
+public class PlayerStatus
 {
     public int HP;
     public int maxHP;
@@ -54,5 +54,37 @@ public class EntityStatus
         reduceMana.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
         reduceCool.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
         allResist.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
+    }
+
+    public Status GetStatus(string name)
+    {
+        switch (name)
+        {
+            case "strength": return strength;
+            case "agility": return agility;
+            case "intelligence": return intelligence;
+            case "endurance": return endurance;
+            case "damage": return damage;
+            case "defence": return defence;
+            case "allResist": return allResist;
+            case "fireResist": return fireResist;
+            case "coldResist": return coldResist;
+            case "darkResist": return darkResist;
+            case "lightResist": return lightResist;
+            case "fireDamage": return fireDamage;
+            case "coldDamage": return coldDamage;
+            case "darkDamage": return darkDamage;
+            case "lightDamage": return lightDamage;
+            case "fixDamage": return fixDamage;
+            case "critChance": return critChance;
+            case "critResist": return critResist;
+            case "critDamage": return critDamage;
+            case "avoidance": return avoidance;
+            case "accuracy": return accuracy;
+            case "reduceMana": return reduceMana;
+            case "reduceCool": return reduceCool;
+            case "experience": return experience;
+        }
+        return null;
     }
 }

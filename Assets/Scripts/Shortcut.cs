@@ -11,10 +11,12 @@ public class Shortcut : MonoBehaviour
     private TextMeshProUGUI keycodeSelf;
     private TextMeshProUGUI keycodeOther;
     private TextMeshProUGUI quantity;
-    public string skill;
+    public Skill skill;
     [SerializeField]
     private KeyAction keycode;
     private Slot slot;
+    [SerializeField]
+    private string skillName;
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class Shortcut : MonoBehaviour
         keycodeSelf.text = KeySetting.keys[keycode].ToString();
         keycodeOther.text = KeySetting.keys[keycode].ToString();
         slot = GetComponent<Slot>();
+        if (skillName != "") skill = DataManager.skillDB[skillName];
     }
 
     private void Update()
@@ -39,6 +42,6 @@ public class Shortcut : MonoBehaviour
         icon.sprite = slot.icon.sprite;
         icon.color = slot.icon.color;
         if (quantity != null) quantity.text = slot.quantityText.text;
-        if (slot.item != null) skill = slot.item.skill;
+        if (slot.item != null && slot.item.skill != null) skill = slot.item.skill;
     }
 }

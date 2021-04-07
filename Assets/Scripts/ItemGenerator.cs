@@ -3,15 +3,7 @@ using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
-    private static ItemGenerator instance;
-    public static ItemGenerator Instance
-    {
-        get
-        {
-            if (instance == null) return null;
-            return instance;
-        }
-    }
+    public static ItemGenerator instance;
     [SerializeField]
     private Item item;
     private Dictionary<string, object> rarity;
@@ -24,30 +16,34 @@ public class ItemGenerator : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance != null) Destroy(gameObject);
+        else instance = this;
     }
 
     public void DropItem(int rarityMin, int rarityMax, string type, Vector3 pos)
     {
-        GameObject clone;
-        int num = Random.Range(0, 2);
-        if (num == 0)
+        GameObject clone = null;
+        int num = Random.Range(0, System.Enum.GetNames(typeof(ItemType)).Length);
+        if (num == (int)ItemType.equipment)
         {
             Filtering(rarityMin, rarityMax, DataManager.itemEquipmentDB);
             RandomRarity(type);
             ItemInit();
             Additional();
-            clone = itemPrefab;
+            clone = Instantiate(itemPrefab, pos, Quaternion.identity);
+            clone.GetComponent<ItemScript>().item = item;
         }
-        else
+        else if (num == (int)ItemType.consume)
         {
             Filtering(rarityMin, rarityMax, DataManager.itemConsumeDB);
             item = itemList[Random.Range(0, itemList.Count)];
             clone = Resources.Load<GameObject>("Prefabs/Items/" + item.name);
+            clone = Instantiate(clone, pos, Quaternion.identity);
+            ItemScript itemScript = clone.GetComponent<ItemScript>();
+            itemScript.item = item;
+            if (itemScript.skill != "")
+                item.skill = DataManager.skillDB[itemScript.skill];
         }
-        clone = Instantiate(clone, pos, Quaternion.identity);
-        clone.GetComponent<ItemScript>().item = item;
         Sprite sprite;
         if (item.itemImage.Contains("_"))
         {

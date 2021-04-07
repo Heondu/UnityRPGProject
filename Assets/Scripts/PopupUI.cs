@@ -53,13 +53,13 @@ public class PopupUI : MonoBehaviour
         name.text = $"{DataManager.Localization(selectedSlot.item.nameAdd[0])} {DataManager.Localization(selectedSlot.item.name)}";
         qualityName.text = $"{DataManager.Localization(selectedSlot.item.rarityType)} {DataManager.Localization(selectedSlot.item.type)}";
         baseStatusTitle.text = DataManager.Localization(selectedSlot.item.status);
-        baseStatus.text = DataManager.Localization(selectedSlot.item.stat.ToString());
+        baseStatus.text = selectedSlot.item.stat.ToString();
         addStatusTitle1.text = DataManager.Localization(selectedSlot.item.statusAdd[0]);
-        addStatus1.text = DataManager.Localization(selectedSlot.item.statAdd[0].ToString());
+        addStatus1.text = selectedSlot.item.statAdd[0].ToString();
         addStatusTitle2.text = DataManager.Localization(selectedSlot.item.statusAdd[1]);
-        addStatus2.text = DataManager.Localization(selectedSlot.item.statAdd[1].ToString());
+        addStatus2.text = selectedSlot.item.statAdd[1].ToString();
         addStatusTitle3.text = DataManager.Localization(selectedSlot.item.statusAdd[2]);
-        addStatus3.text = DataManager.Localization(selectedSlot.item.statAdd[2].ToString());
+        addStatus3.text = selectedSlot.item.statAdd[2].ToString();
     }
 
     public void SetActive(bool value)

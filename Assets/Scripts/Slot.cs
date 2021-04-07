@@ -6,6 +6,7 @@ using TMPro;
 public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item = null;
+    public Skill skill = null;
     public Image icon;
     public Image qualty;
     public TextMeshProUGUI quantityText;
@@ -14,7 +15,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     public string useType;
     public string[] equipType;
     public bool isLock;
-    public string skill;
     private Inventory inventory;
 
     private void Awake()

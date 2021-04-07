@@ -1,4 +1,6 @@
-﻿public class Item
+﻿public enum ItemType { equipment = 0, consume }
+
+public class Item
 {
     private const int additionalMax = 3;
 
@@ -6,6 +8,8 @@
     public int spawnable;
     public string useType;
     public string type;
+    public string itemImage;
+    public string inventoryImage;
     public string status;
     public int rarity;
     public int statMin;
@@ -16,8 +20,6 @@
     public string[] nameAdd = new string[additionalMax];
     public string[] statusAdd = new string[additionalMax];
     public int[] statAdd = new int[additionalMax];
-    public string itemImage;
-    public string inventoryImage;
-    public string skill;
     public int quantity = 1;
+    public Skill skill;
 }

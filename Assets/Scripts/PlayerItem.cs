@@ -1,24 +1,34 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Reflection;
 
 public class PlayerItem : MonoBehaviour
 {
     [SerializeField]
     private Shortcut[] shortcuts;
     private Player player;
-    [SerializeField]
-    private Transform equipmentHolder;
-    private Slot[] equipSlots;
+    private PlayerInput playerInput;
     private PlayerSkill playerSkill;
-    private GameObject buffHolder;
 
     private void Awake()
     {
         player = GetComponent<Player>();
+        playerInput = GetComponent<PlayerInput>();
         playerSkill = GetComponent<PlayerSkill>();
-        buffHolder = GameObject.Find("BuffHolder");
-        equipSlots = equipmentHolder.GetComponentsInChildren<Slot>();
-        //InventoryManager.instance.onItemChangedCallback += Equip;
+        InventoryManager.instance.onItemEquipCallback += Equip;
+        InventoryManager.instance.onItemUnequipCallback += Unequip;
+    }
+
+    private void Update()
+    {
+        if (IsItemCool(playerInput.GetItemIndex())) Execute(playerInput.GetItemIndex());
+    }
+
+    private bool IsItemCool(int index)
+    {
+        if (index == -1) return false;
+        if (shortcuts[index].skill == null) return false;
+        if (shortcuts[index].skill.isCool) return false;
+        return true;
     }
 
     public void PickUp(Item item)
@@ -26,23 +36,42 @@ public class PlayerItem : MonoBehaviour
         InventoryManager.instance.AddItem(item);
     }
 
-    public void Equip()
+    public void Execute(int index)
     {
-        Item[] items = new Item[equipSlots.Length];
-        for (int i = 0; i < equipSlots.Length; i++)
-            items[i] = equipSlots[i].item;
-        StatusCalc(items);
+        playerSkill.Execute(shortcuts[index].skill);
     }
 
-    public void Execute(int index, GameObject executor)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (shortcuts[index].skill == "") return;
-        if (DataManager.skillDB[shortcuts[index].skill].isCool) return;
-        playerSkill.Execute(DataManager.skillDB[shortcuts[index].skill], executor);
+        ItemScript item = collision.GetComponent<ItemScript>();
+        if (item != null)
+        {
+            PickUp(item.item);
+            Destroy(collision.gameObject);
+        }
     }
 
-    public void StatusCalc(Item[] items)
+    public void Equip(Item item)
     {
-        //StatusCalculator.StatusCalc(player.status.status, player.playerStatus.baseStatus, items);
+        Status status = player.status.GetStatus(item.status);
+        if (item.status.Contains("%")) status.AddModifier(new StatusModifier(item.stat, StatusModType.PercentAdd, item));
+        else status.AddModifier(new StatusModifier(item.stat, StatusModType.Flat, item));
+        for (int i = 0; i < item.statusAdd.Length; i++)
+        {
+            status = player.status.GetStatus(item.statusAdd[i]);
+            if (item.statusAdd[i].Contains("%")) status.AddModifier(new StatusModifier(item.statAdd[i], StatusModType.PercentAdd, item));
+            else status.AddModifier(new StatusModifier(item.statAdd[i], StatusModType.Flat, item));
+        }
+    }
+
+    public void Unequip(Item item)
+    {
+        Status status = player.status.GetStatus(item.status);
+        status.RemoveAllModifiersFromSource(item);
+        for (int i = 0; i < item.statusAdd.Length; i++)
+        {
+            status = player.status.GetStatus(item.statusAdd[i]);
+            status.RemoveAllModifiersFromSource(item);
+        }
     }
 }

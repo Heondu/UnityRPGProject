@@ -15,6 +15,10 @@ public class InventoryManager : MonoBehaviour
     private Item selectedItem;
     public delegate void OnItemChanged();
     public OnItemChanged onItemChangedCallback;
+    public delegate void OnItemEquipChanged(Item item);
+    public OnItemEquipChanged onItemEquipCallback;
+    public delegate void OnItemUnequipChanged(Item item);
+    public OnItemUnequipChanged onItemUnequipCallback;
 
     private void Awake()
     {

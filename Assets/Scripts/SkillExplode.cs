@@ -9,7 +9,11 @@ public class SkillExplode : SkillScript
 
     protected override void Update()
     {
-        base.Update();
+        if (skill != null)
+        {
+            if (timer.IsTimeOut(skill.lifetime)) Destroy(gameObject);
+        }
+        if (skill.penetration <= penetrationCount) Destroy(gameObject);
     }
 
     public override void Execute(GameObject executor, Skill skill)
@@ -22,22 +26,25 @@ public class SkillExplode : SkillScript
     {
         while (true)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
-            foreach (Collider2D collider in colliders)
+            if (skill.isPositive == 1)
             {
-                if (skill.isPositive == 0)
+                ILivingEntity entity = executor.GetComponent<ILivingEntity>();
+                CalcSkillStatus(entity);
+                penetrationCount++;
+            }
+            else if (skill.isPositive == 0)
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+                foreach (Collider2D collider in colliders)
                 {
                     if (collider.gameObject == executor) continue;
+                    if (collider.gameObject == gameObject) continue;
+
+                    ILivingEntity entity = collider.GetComponent<ILivingEntity>();
+                    if (entity == null) continue;
+                    CalcSkillStatus(entity);
+                    penetrationCount++;
                 }
-                if (collider.gameObject == gameObject) continue;
-
-                ILivingEntity entity = collider.GetComponent<ILivingEntity>();
-                if (entity == null) continue;
-                //int damage = StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
-                entity.TakeDamage(10);
-
-                penetrationCount++;
-                if (skill.penetration <= penetrationCount) Destroy(gameObject);
             }
 
             yield return new WaitForSeconds(skill.delay);
