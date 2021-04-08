@@ -3,8 +3,8 @@
 public class EnemyController : MonoBehaviour
 {
     private GameObject target;
-    private const float CAHSE_DISTANCE = 3f;
-    private const float ATTACK_DISTANCE = 1f;
+    private const float CAHSE_DISTANCE = 5f;
+    private const float ATTACK_DISTANCE = 3f;
     private Timer timer = new Timer();
     private Vector3[] patrolDir = { Vector3.right, Vector3.zero, Vector3.down, Vector3.zero,
                                     Vector3.left, Vector3.zero, Vector3.up, Vector3.zero };

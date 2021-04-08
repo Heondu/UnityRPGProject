@@ -9,6 +9,7 @@ public class RegenManager : MonoBehaviour
         Spawn();
     }
 
+    [ContextMenu("Spawn")]
     private void Spawn()
     {
         GameObject[] regens = GameObject.FindGameObjectsWithTag("RegenArea");

@@ -19,6 +19,8 @@ public class Player : MonoBehaviour, ILivingEntity
     {
         playerAnimator.Movement(playerInput.GetAxis());
         if (!IsMove()) movement.Execute(playerInput.GetAxis());
+
+        status.CalculateDerivedStatus();
     }
 
     private bool IsMove()
@@ -26,17 +28,28 @@ public class Player : MonoBehaviour, ILivingEntity
         return false;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float _value, DamageType damageType)
     {
-        status.HP = Mathf.Max(0, status.HP - damage);
+        int value = Mathf.RoundToInt(_value);
+
+        if (damageType == DamageType.miss) FloatingDamageManager.instance.FloatingDamage("Miss", transform.position, damageType);
+        else FloatingDamageManager.instance.FloatingDamage(value.ToString(), transform.position, damageType);
+
+        if (damageType == DamageType.normal)
+        {
+            status.HP = Mathf.Max(0, status.HP - value);
+        }
+        else if (damageType == DamageType.critical)
+        {
+            status.HP = Mathf.Max(0, status.HP - value);
+        }
+        else if (damageType == DamageType.heal)
+        {
+            status.HP = Mathf.Min(status.HP + value, status.maxHP);
+        }
     }
 
-    public void Restore(int value)
-    {
-        status.HP = Mathf.Min(status.HP + value, status.maxHP);
-    }
-
-    public Status GetStatus(string name)
+        public Status GetStatus(string name)
     {
         return status.GetStatus(name);
     }
@@ -51,6 +64,5 @@ public class Player : MonoBehaviour, ILivingEntity
     public void LoadStatus()
     {
         status = JsonIO.LoadFromJson<PlayerStatus>("PlayerStatus");
-        status.CalculateDerivedStatus();
     }
 }

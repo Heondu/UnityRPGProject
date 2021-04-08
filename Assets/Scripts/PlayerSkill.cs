@@ -1,45 +1,73 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
     private Shortcut[] shortcuts;
+    private Player player;
     private PlayerInput playerInput;
+    public Dictionary<Skill, bool> isSkillCool = new Dictionary<Skill, bool>();
+    public Dictionary<Skill, Timer> skillCool = new Dictionary<Skill, Timer>();
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         playerInput = GetComponent<PlayerInput>();
     }
 
     private void Update()
     {
         if (IsAttack(playerInput.GetSkillIndex())) Execute(shortcuts[playerInput.GetSkillIndex()].skill);
+        if (hasItemSkill(playerInput.GetItemIndex())) Execute(shortcuts[playerInput.GetItemIndex()].skill);
+
+        UpdateShortcutSkills();
+    }
+
+    private void UpdateShortcutSkills()
+    {
+        for (int i = 0; i < shortcuts.Length; i++)
+        {
+            if (shortcuts[i].skill == null) continue;
+            if (isSkillCool.ContainsKey(shortcuts[i].skill) == false)
+            {
+                isSkillCool[shortcuts[i].skill] = false;
+                skillCool[shortcuts[i].skill] = new Timer();
+            }
+        }
     }
 
     private bool IsAttack(int index)
     {
         if (index == -1) return false;
         if (shortcuts[index].skill == null) return false;
-        if (shortcuts[index].skill.isCool) return false;
+        if (isSkillCool[shortcuts[index].skill]) return false;
+        return true;
+    }
+
+    private bool hasItemSkill(int index)
+    {
+        if (index == -1) return false;
+        if (shortcuts[index].skill == null) return false;
+        if (isSkillCool[shortcuts[index].skill]) return false;
         return true;
     }
 
     public void Execute(Skill skill)
     {
-        SkillLoader.SkillLoad(gameObject, skill, transform.position);
-        skill.isCool = true;
+        SkillLoader.SkillLoad(gameObject, "Enemy", skill, transform.position);
+        isSkillCool[skill] = true;
+        skillCool[skill] = new Timer();
         StartCoroutine("Cooltime", skill);
     }
 
     private IEnumerator Cooltime(Skill skill)
     {
-        skill.currentTime = 0;
-        while (skill.currentTime < skill.cooltime)
+        while (skillCool[skill].IsTimeOut(Mathf.Max(0.3f, skill.cooltime - player.GetStatus("reduceCool").Value / 10)) == false)
         {
-            skill.currentTime += Time.deltaTime;
             yield return null;
         }
-        skill.isCool = false;
+        isSkillCool[skill] = false;
     }
 }

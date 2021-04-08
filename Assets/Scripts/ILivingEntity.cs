@@ -1,8 +1,6 @@
 ﻿public interface ILivingEntity
 {
-    void TakeDamage(int damage);
-
-    public void Restore(int value);
+    void TakeDamage(float _value, DamageType damageType);
 
     Status GetStatus(string name);
 }

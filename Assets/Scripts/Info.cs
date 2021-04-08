@@ -38,7 +38,7 @@ public class Info : MonoBehaviour
         {
             Status playerStatus = player.status.GetStatus(key);
             if (playerStatus != null)
-                status[key].text = playerStatus.Value.ToString();
+                status[key].text = playerStatus.Value.ToString("0");
         }
     }
 }

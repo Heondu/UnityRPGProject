@@ -27,6 +27,4 @@
     public int lifetime;
     public float guide;
     public int penetration;
-    public float currentTime = 0;
-    public bool isCool = false;
 }

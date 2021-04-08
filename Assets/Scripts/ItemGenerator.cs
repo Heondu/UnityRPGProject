@@ -36,6 +36,7 @@ public class ItemGenerator : MonoBehaviour
         else if (num == (int)ItemType.consume)
         {
             Filtering(rarityMin, rarityMax, DataManager.itemConsumeDB);
+            if (itemList.Count == 0) return;
             item = itemList[Random.Range(0, itemList.Count)];
             clone = Resources.Load<GameObject>("Prefabs/Items/" + item.name);
             clone = Instantiate(clone, pos, Quaternion.identity);

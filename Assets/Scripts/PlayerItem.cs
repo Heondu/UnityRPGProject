@@ -1,44 +1,19 @@
 ﻿using UnityEngine;
-using System.Reflection;
 
 public class PlayerItem : MonoBehaviour
 {
-    [SerializeField]
-    private Shortcut[] shortcuts;
     private Player player;
-    private PlayerInput playerInput;
-    private PlayerSkill playerSkill;
 
     private void Awake()
     {
         player = GetComponent<Player>();
-        playerInput = GetComponent<PlayerInput>();
-        playerSkill = GetComponent<PlayerSkill>();
         InventoryManager.instance.onItemEquipCallback += Equip;
         InventoryManager.instance.onItemUnequipCallback += Unequip;
-    }
-
-    private void Update()
-    {
-        if (IsItemCool(playerInput.GetItemIndex())) Execute(playerInput.GetItemIndex());
-    }
-
-    private bool IsItemCool(int index)
-    {
-        if (index == -1) return false;
-        if (shortcuts[index].skill == null) return false;
-        if (shortcuts[index].skill.isCool) return false;
-        return true;
     }
 
     public void PickUp(Item item)
     {
         InventoryManager.instance.AddItem(item);
-    }
-
-    public void Execute(int index)
-    {
-        playerSkill.Execute(shortcuts[index].skill);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

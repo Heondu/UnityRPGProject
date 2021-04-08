@@ -4,12 +4,52 @@ using UnityEngine;
 
 public class StatusCalculator : MonoBehaviour
 {
-    private StatusCalculator instance;
-
-    private void Awake()
+    public static void CalcSkillStatus(ILivingEntity executor, ILivingEntity target, Skill skill)
     {
-        if (instance != null) Destroy(this);
-        else instance = this;
+        for (int i = 0; i < 2; i++)
+        {
+            float value;
+            Status relatedStatus = target.GetStatus(skill.relatedStatus[i]);
+            Status status = target.GetStatus(skill.status[i]);
+            if (skill.relatedStatus[i] == "") continue;
+            if (skill.status[i] == "none") continue;
+            else if (skill.relatedStatus[i] == "none") value = skill.amount[i];
+            else value = Mathf.RoundToInt(relatedStatus.Value * ((float)skill.amount[i] / 100));
+
+            if (skill.isPositive == 1)
+            {
+                if (skill.status[i] == "HP") target.TakeDamage(value, DamageType.heal);
+                else status.AddModifier(new StatusModifier(value, StatusModType.Flat, skill));
+            }
+            else if (skill.isPositive == 0)
+            {
+                if (skill.status[i] == "HP")
+                {
+                    bool isAvoid = IsAvoid(executor, target);
+                    if (isAvoid) target.TakeDamage(value, DamageType.miss);
+                    else
+                    {
+                        value = executor.GetStatus("damage").Value * skill.amount[i] / (100 + target.GetStatus("defence").Value);
+                        value = Random.Range(value - (float)value % 2, value + (float)value % 2);
+                        value = Mathf.Max(1, value);
+                        if (Random.Range(0, 100) < executor.GetStatus("critChance").Value) target.TakeDamage(value * 2, DamageType.critical);
+                        else target.TakeDamage(value, DamageType.normal);
+                    }
+                }
+                else status.AddModifier(new StatusModifier(-value, StatusModType.Flat, skill));
+            }
+        }
+    }
+
+    public static bool IsAvoid(ILivingEntity executor, ILivingEntity target)
+    {
+        Status executorAccuracy = executor.GetStatus("accuracy");
+        Status targetAvoidance = target.GetStatus("avoidance");
+
+        float value = executorAccuracy.Value - targetAvoidance.Value + 100;
+
+        if (value < Random.Range(0f, 100f)) return true;
+        else return false;
     }
 
 

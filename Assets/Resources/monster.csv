@@ -1,4 +1,4 @@
 ﻿name,monlvl,class,skill1,prob1,skill2,prob2,skill3,prob3,skill4,prob4,skill5,prob5,skill6,prob6,delay
-goblin,1,pawn,,,,,,,,,,,,,3
+goblin,1,pawn,skill001,100,,,,,,,,,,,3
 goblinsoldier,5,elite,,,,,,,,,,,,,3
 goblinking,10,boss,,,,,,,,,,,,,3

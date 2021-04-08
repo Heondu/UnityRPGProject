@@ -42,13 +42,13 @@ public class EnemyStatus : BaseStatus
         defence.AddModifier(new StatusModifier(endurance.Value, StatusModType.Flat));
         allResist.AddModifier(new StatusModifier(endurance.Value, StatusModType.Flat));
 
-        fixDamage.AddModifier(new StatusModifier(multValue, StatusModType.PercentMult));
-        critChance.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
-        avoidance.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
-        accuracy.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
-        reduceMana.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
-        reduceCool.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
-        allResist.AddModifier(new StatusModifier(multValue, StatusModType.Flat));
+        fixDamage.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        critChance.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        avoidance.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        accuracy.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        reduceMana.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        reduceCool.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
+        allResist.AddModifier(new StatusModifier(multValue, StatusModType.PercentAdd));
     }
 
     public Status GetStatus(string name)

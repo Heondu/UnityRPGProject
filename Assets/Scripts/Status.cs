@@ -104,7 +104,7 @@ public class Status
             }
             else if (mod.Type == StatusModType.PercentMult)
             {
-                finalValue *= 1 + mod.Value;
+                finalValue *= mod.Value;
             }
         }
 

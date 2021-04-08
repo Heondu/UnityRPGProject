@@ -11753,11 +11753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cefc59c2a0d5445980125a05d317c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shortcuts:
-  - {fileID: 1326795043}
-  - {fileID: 1287591774}
-  - {fileID: 1724736182}
-  - {fileID: 211744905}
 --- !u!61 &535044180
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11853,6 +11848,10 @@ MonoBehaviour:
   - {fileID: 165598116}
   - {fileID: 831095112}
   - {fileID: 1124107119}
+  - {fileID: 1326795043}
+  - {fileID: 1287591774}
+  - {fileID: 1724736182}
+  - {fileID: 211744905}
 --- !u!1001 &539826403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34960,6 +34959,7 @@ GameObject:
   - component: {fileID: 1615862144}
   - component: {fileID: 1615862148}
   - component: {fileID: 1615862146}
+  - component: {fileID: 1615862149}
   m_Layer: 0
   m_Name: UIMnager
   m_TagString: Untagged
@@ -35051,6 +35051,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popup: {fileID: 1013001506}
+--- !u!114 &1615862149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615862143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427274dfa6ba2e74d9c7fe3df7aa15a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePrefab:
+  - {fileID: 4600192584601636224, guid: 736cd5710b233df4aaf040cd88b23ce9, type: 3}
+  - {fileID: 2891847009563690175, guid: 36743053343abee4d8c86c2d819e9253, type: 3}
+  - {fileID: 1849308248069271397, guid: df768bcc4e13e014b9240ba5dbb8af68, type: 3}
+  - {fileID: 4790047897866465712, guid: 18c466782f332ed46a1af30484f7cbf4, type: 3}
+  canvas: {fileID: 2022912653}
 --- !u!1001 &1616062176
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,9 +18,9 @@ public class SkillBuff : SkillScript
         buffPrefab = Resources.Load<GameObject>("Prefabs/UI/Buff");
     }
 
-    public override void Execute(GameObject executor, Skill skill)
+    public override void Execute(GameObject executor, string targetTag, Skill skill)
     {
-        base.Execute(executor, skill);
+        base.Execute(executor, targetTag, skill);
 
         Transform buff = buffHolder.Find(gameObject.name);
         if (buff != null)
@@ -34,20 +34,19 @@ public class SkillBuff : SkillScript
         {
             ILivingEntity entity = executor.GetComponent<ILivingEntity>();
             entityList.Add(entity);
-            CalcSkillStatus(entity);
+            StatusCalculator.CalcSkillStatus(executorEntity, entity, skill);
         }
         else if (skill.isPositive == 0)
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, skill.size);
             foreach (Collider2D collider in colliders)
             {
-                if (collider.gameObject == executor) continue;
-                if (collider.gameObject == gameObject) continue;
+                if (collider.gameObject.CompareTag(targetTag) == false) continue;
 
                 ILivingEntity entity = collider.GetComponent<ILivingEntity>();
                 if (entity == null) continue;
                 entityList.Add(entity);
-                CalcSkillStatus(entity);
+                StatusCalculator.CalcSkillStatus(executorEntity, entity, skill);
             }
         }
         transform.parent = buffHolder;
@@ -62,7 +61,6 @@ public class SkillBuff : SkillScript
         while (currentTime < skill.lifetime)
         {
             currentTime += Time.deltaTime;
-            Debug.Log($"{skill.name}, {currentTime} / {skill.lifetime}");
             yield return null;
         }
         Destroy(clone);

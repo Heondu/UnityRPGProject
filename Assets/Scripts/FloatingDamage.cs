@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class FloatingDamage : MonoBehaviour
 {
-    private float moveSpeed = 100;
+    private float moveSpeed = 200;
     private float alphaSpeed = 1f;
     private float destroyTime = 2;
     private Text text;
@@ -14,13 +14,14 @@ public class FloatingDamage : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<Text>();
-        Invoke("DestroyObject", destroyTime);
+        Destroy(gameObject, destroyTime);
     }
 
-    public void Init(int damage, Vector3 position)
+    public void Init(string damage, Vector3 position)
     {
         this.position = position;
-        text.text = damage.ToString();
+        text.text = damage;
+        offset.x += Random.Range(-1, 1);
     }
 
     private void Update()
@@ -31,10 +32,5 @@ public class FloatingDamage : MonoBehaviour
         transform.position = newPos;
         alpha.a = Mathf.Lerp(alpha.a, 0, alphaSpeed * Time.deltaTime);
         text.color = alpha;
-    }
-
-    private void DestroyObject()
-    {
-        Destroy(gameObject);
     }
 }

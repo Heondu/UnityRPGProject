@@ -24,10 +24,12 @@ public class SkillProjectile : SkillScript
         SetDir();
     }
 
-    public override void Execute(GameObject executor, Skill skill)
+    public override void Execute(GameObject executor, string targetTag, Skill skill)
     {
-        base.Execute(executor, skill);
-        float angle = Rotation.GetAngle(executor.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        base.Execute(executor, targetTag, skill);
+        float angle = 0;
+        if (targetTag == "Enemy") angle = Rotation.GetAngle(executor.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        else if (targetTag == "Player") angle = Rotation.GetAngle(executor.transform.position, GameObject.FindWithTag(targetTag).transform.position);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         StartCoroutine("FindTarget");
     }
@@ -56,8 +58,7 @@ public class SkillProjectile : SkillScript
             float distance = Mathf.Infinity;
             foreach (Collider2D collider in colliders)
             {
-                if (collider.gameObject == executor) continue;
-                if (collider.gameObject == gameObject) continue;
+                if (collider.gameObject.CompareTag(targetTag) == false) continue;
 
                 ILivingEntity entity = collider.GetComponent<ILivingEntity>();
                 if (entity == null) continue;
@@ -73,11 +74,11 @@ public class SkillProjectile : SkillScript
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag(targetTag))
         {
             penetrationCount++;
             for (int i = 0; i < nextSkills.Length; i++)
-                if (nextSkills[i] != "") SkillLoader.SkillLoad(executor, DataManager.skillDB[nextSkills[i]], transform.position);
+                if (nextSkills[i] != "") SkillLoader.SkillLoad(executor, targetTag, DataManager.skillDB[nextSkills[i]], transform.position);
             if (skill.penetration <= penetrationCount) Destroy(gameObject);
         }
     }
