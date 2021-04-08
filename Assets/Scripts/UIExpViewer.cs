@@ -10,17 +10,17 @@ public class UIExpViewer : MonoBehaviour
     private TextMeshProUGUI textLevel;
     [SerializeField]
     private TextMeshProUGUI textExp;
-    private Status status;
+    private PlayerStatus playerStatus;
 
     private void Awake()
     {
-        //status = FindObjectOfType<Player>().GetComponent<Status>();
+        playerStatus = FindObjectOfType<Player>().status;
     }
 
     private void Update()
     {
-        //image.fillAmount = status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"];
-        //textLevel.text = status.status["level"].ToString();
-        //textExp.text = $"{(status.status["exp"] / (int)DataManager.experience[(int)status.status["level"]]["exp"] * 100).ToString("N2")}%";
+        image.fillAmount = playerStatus.exp / (int)DataManager.experience[playerStatus.level]["exp"];
+        textLevel.text = playerStatus.level.ToString();
+        textExp.text = (playerStatus.exp / (int)DataManager.experience[playerStatus.level]["exp"] * 100).ToString("0.##") + "%";
     }
 }

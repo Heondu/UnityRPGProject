@@ -5,23 +5,25 @@ using TMPro;
 public class UIHpManaViewer : MonoBehaviour
 {
     [SerializeField]
-    private Image image;
+    private Image imageHP;
     [SerializeField]
-    private TextMeshProUGUI text;
+    private Image imageMana;
     [SerializeField]
-    private string valueName1;
+    private TextMeshProUGUI textHP;
     [SerializeField]
-    private string valueName2;
-    private Status status;
+    private TextMeshProUGUI textMana;
+    private PlayerStatus playerStatus;
 
     private void Awake()
     {
-        //status = FindObjectOfType<Player>().GetComponent<Status>();
+        playerStatus = FindObjectOfType<Player>().status;
     }
 
     private void Update()
     {
-        //image.fillAmount = status.status[valueName1] / status.status[valueName2];
-        //text.text = $"{(int)status.status[valueName1]}/{(int)status.status[valueName2]}";
+        imageHP.fillAmount = (float)playerStatus.HP / playerStatus.maxHP;
+        textHP.text = $"{playerStatus.HP}/{playerStatus.maxHP}";
+        imageMana.fillAmount = (float)playerStatus.mana / playerStatus.maxMana;
+        textMana.text = $"{playerStatus.mana}/{playerStatus.maxMana}";
     }
 }

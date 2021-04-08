@@ -1,12 +1,12 @@
 ﻿[System.Serializable]
 public class PlayerStatus
 {
-    public int HP;
-    public int maxHP;
-    public int mana;
-    public int maxMana;
-    public float exp;
-    public int level;
+    public int HP = 0;
+    public int maxHP = 1000;
+    public int mana = 0;
+    public int maxMana = 100;
+    public float exp = 0;
+    public int level = 1;
 
     public Status strength;
     public Status agility;
@@ -94,6 +94,20 @@ public class PlayerStatus
             case "reduceMana": return reduceMana;
             case "reduceCool": return reduceCool;
             case "experience": return experience;
+        }
+        return null;
+    }
+
+    public object GetValue(string name)
+    {
+        switch (name)
+        {
+            case "HP": return HP;
+            case "maxHP": return maxHP;
+            case "mana": return mana;
+            case "maxMana": return maxMana;
+            case "exp": return exp;
+            case "level": return level;
         }
         return null;
     }

@@ -12,10 +12,25 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.newSize.y
       value: 0.9375
       objectReference: {fileID: 0}
+    - target: {fileID: 2796872793022639488, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2796872793022639488, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.05
+      objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639490, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
       propertyPath: m_Name
       value: goblinsoldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
@@ -34,6 +49,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -45,16 +65,6 @@ PrefabInstance:
     - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639498, guid: 00fd5a69e9eaec44b9d4034170725ec2,
@@ -74,18 +84,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -2844156082311196381, guid: bdbebaabd96e1a54ab1340f99062648a,
-        type: 3}
-    - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
-        type: 3}
       propertyPath: m_Size.y
       value: 0.9375
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
-      propertyPath: m_WasSpriteAssigned
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3786333543349763437, guid: 62a99d23f9a54fa4e9935e9eedc16da0,
+        type: 3}
+    - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
+        type: 3}
+      propertyPath: m_Color.g
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
@@ -95,13 +110,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
         type: 3}
-      propertyPath: m_Color.g
+      propertyPath: m_WasSpriteAssigned
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2796872793022639501, guid: 00fd5a69e9eaec44b9d4034170725ec2,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00fd5a69e9eaec44b9d4034170725ec2, type: 3}

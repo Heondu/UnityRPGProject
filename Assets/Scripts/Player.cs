@@ -13,7 +13,11 @@ public class Player : MonoBehaviour, ILivingEntity
         playerInput = GetComponent<PlayerInput>();
         playerAnimator = GetComponent<PlayerAnimator>();
         LoadStatus();
-    }
+        status.HP = status.maxHP;
+        status.mana = status.maxMana;
+        status.exp = 0;
+        status.level = 1;
+}
 
     private void Update()
     {
@@ -21,11 +25,24 @@ public class Player : MonoBehaviour, ILivingEntity
         if (!IsMove()) movement.Execute(playerInput.GetAxis());
 
         status.CalculateDerivedStatus();
+        LevelUp();
     }
 
     private bool IsMove()
     {
         return false;
+    }
+
+    private void LevelUp()
+    {
+        Debug.Log(status.exp);
+        Debug.Log(status.level);
+        Debug.Log((int)DataManager.experience[status.level]["exp"]);
+        if (status.exp >= (int)DataManager.experience[status.level]["exp"])
+        {
+            status.exp -= (int)DataManager.experience[status.level]["exp"];
+            status.level++;
+        }
     }
 
     public void TakeDamage(float _value, DamageType damageType)
@@ -49,9 +66,14 @@ public class Player : MonoBehaviour, ILivingEntity
         }
     }
 
-        public Status GetStatus(string name)
+    public Status GetStatus(string name)
     {
         return status.GetStatus(name);
+    }
+
+    public object GetValue(string name)
+    {
+        return status.GetValue(name);
     }
 
     [ContextMenu("Save Status")]
