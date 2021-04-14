@@ -8,15 +8,16 @@ public class PlayerSkill : MonoBehaviour
     private Shortcut[] shortcuts;
     private Player player;
     private PlayerInput playerInput;
-    private PlayerAnimator playerAnimator;
+    private AnimationController animationController;
     public Dictionary<Skill, bool> isSkillCool = new Dictionary<Skill, bool>();
     public Dictionary<Skill, Timer> skillCool = new Dictionary<Skill, Timer>();
+    public string[] skillNames;
 
     private void Awake()
     {
         player = GetComponent<Player>();
         playerInput = GetComponent<PlayerInput>();
-        playerAnimator = GetComponent<PlayerAnimator>();
+        animationController = GetComponent<AnimationController>();
     }
 
     private void Update()
@@ -62,7 +63,7 @@ public class PlayerSkill : MonoBehaviour
         isSkillCool[skill] = true;
         skillCool[skill] = new Timer();
         StartCoroutine("Cooltime", skill);
-        playerAnimator.Attack();
+        animationController.Attack();
     }
 
     private IEnumerator Cooltime(Skill skill)

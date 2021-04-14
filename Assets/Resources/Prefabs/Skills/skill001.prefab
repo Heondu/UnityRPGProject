@@ -14,12 +14,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969400, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2a5f758257ec68849853004187c2ed87,
-        type: 3}
-    - target: {fileID: 8047951444142969400, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-        type: 3}
       propertyPath: m_Size.x
       value: 1
       objectReference: {fileID: 0}
@@ -30,8 +24,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969400, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2a5f758257ec68849853004187c2ed87,
+        type: 3}
+    - target: {fileID: 8047951444142969400, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
@@ -50,6 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -61,16 +81,6 @@ PrefabInstance:
     - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969401, guid: ca564a35c228dfd4bbb0d341c1aef87f,
@@ -90,16 +100,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
-      propertyPath: nextSkills.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-        type: 3}
-      propertyPath: effects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
-        type: 3}
       propertyPath: radius
       value: 5
       objectReference: {fileID: 0}
@@ -110,13 +110,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
-      propertyPath: nextSkills.Array.data[0]
-      value: skill002
+      propertyPath: effects.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
         type: 3}
       propertyPath: effects.Array.data[0]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: nextSkills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047951444142969403, guid: ca564a35c228dfd4bbb0d341c1aef87f,
+        type: 3}
+      propertyPath: nextSkills.Array.data[0]
+      value: skill002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca564a35c228dfd4bbb0d341c1aef87f, type: 3}

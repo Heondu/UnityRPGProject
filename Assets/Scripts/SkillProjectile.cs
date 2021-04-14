@@ -31,6 +31,7 @@ public class SkillProjectile : SkillScript
         if (targetTag == "Enemy") angle = Rotation.GetAngle(executor.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
         else if (targetTag == "Player") angle = Rotation.GetAngle(executor.transform.position, GameObject.FindWithTag(targetTag).transform.position);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.position += transform.up * 1;
         StartCoroutine("FindTarget");
     }
 
@@ -44,7 +45,7 @@ public class SkillProjectile : SkillScript
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * skill.guide);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);
     }

@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
                                     Vector3.left, Vector3.zero, Vector3.up, Vector3.zero };
     private int currentDirNum = 0;
     private const float PATROL_TIME = 1f;
+    public bool isSwarmAttack = false;
 
     private void Awake()
     {
@@ -28,13 +29,13 @@ public class EnemyController : MonoBehaviour
     private bool IsPatrol()
     {
         if (target == null) return true;
-        if (Distance() > CAHSE_DISTANCE) return true;
+        if (Distance() > CAHSE_DISTANCE && isSwarmAttack == false) return true;
         return false;
     }
 
     private bool IsChase()
     {
-        if (Distance() <= CAHSE_DISTANCE && Distance() > ATTACK_DISTANCE) return true;
+        if (Distance() <= CAHSE_DISTANCE && Distance() > ATTACK_DISTANCE || isSwarmAttack == true) return true;
         return false;
     }
 

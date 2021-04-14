@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
     private Movement movement;
     private EnemyController enemyController;
     private EnemyAttack enemyAttack;
+    private AnimationController animationController;
     private EnemyState state = EnemyState.STATE_PATROL;
     private new string name;
     public EnemyStatus status;
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour, ILivingEntity
         movement = GetComponent<Movement>();
         enemyController = GetComponent<EnemyController>();
         enemyAttack = GetComponent<EnemyAttack>();
+        animationController = GetComponent<AnimationController>();
     }
 
     private void Update()
@@ -30,12 +32,15 @@ public class Enemy : MonoBehaviour, ILivingEntity
         {
             case EnemyState.STATE_PATROL:
                 movement.Execute(enemyController.GetAxis());
+                animationController.Movement(enemyController.GetAxis());
                 break;
             case EnemyState.STATE_CHASE:
                 movement.Execute(enemyController.GetAxis());
+                animationController.Movement(enemyController.GetAxis());
                 break;
             case EnemyState.STATE_ATTACK:
                 enemyAttack.Execute(delay);
+                animationController.Attack();
                 break;
         }
     }
@@ -63,6 +68,8 @@ public class Enemy : MonoBehaviour, ILivingEntity
 
     public void TakeDamage(float _value, DamageType damageType)
     {
+        enemyController.isSwarmAttack = true;
+
         int value = Mathf.RoundToInt(_value);
 
         if (damageType == DamageType.miss) FloatingDamageManager.instance.FloatingDamage("Miss", transform.position, damageType);

@@ -4,14 +4,16 @@ public class Player : MonoBehaviour, ILivingEntity
 {
     private Movement movement;
     private PlayerInput playerInput;
-    private PlayerAnimator playerAnimator;
+    private AnimationController animationController;
     public PlayerStatus status;
+    [SerializeField]
+    private Transform[] weapon;
 
     private void Awake()
     {
         movement = GetComponent<Movement>();
         playerInput = GetComponent<PlayerInput>();
-        playerAnimator = GetComponent<PlayerAnimator>();
+        animationController = GetComponent<AnimationController>();
         LoadStatus();
         status.HP = status.maxHP;
         status.mana = status.maxMana;
@@ -21,7 +23,7 @@ public class Player : MonoBehaviour, ILivingEntity
 
     private void Update()
     {
-        playerAnimator.Movement(playerInput.GetAxis());
+        animationController.Movement(playerInput.GetAxis());
         if (!IsMove()) movement.Execute(playerInput.GetAxis());
 
         status.CalculateDerivedStatus();
@@ -35,9 +37,6 @@ public class Player : MonoBehaviour, ILivingEntity
 
     private void LevelUp()
     {
-        Debug.Log(status.exp);
-        Debug.Log(status.level);
-        Debug.Log((int)DataManager.experience[status.level]["exp"]);
         if (status.exp >= (int)DataManager.experience[status.level]["exp"])
         {
             status.exp -= (int)DataManager.experience[status.level]["exp"];
