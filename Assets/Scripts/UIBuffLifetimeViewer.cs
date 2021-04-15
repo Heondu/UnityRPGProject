@@ -1,24 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIBuffLifetimeViewer : MonoBehaviour
 {
-    private Image icon;
+    private TextMeshProUGUI text;
     private Image cooltimeImage;
     private SkillBuff buff;
     private Skill skill;
 
     private void Awake()
     {
-        icon = GetComponent<Image>();
         cooltimeImage = transform.Find("Cooltime").GetComponent<Image>();
+        text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
     }
 
     public void Init(SkillBuff buff, Skill skill)
     {
         this.buff = buff;
         this.skill = skill;
-        icon.sprite = Resources.Load<Sprite>(skill.image);
+        text.text = skill.name;
     }
 
     private void Update()

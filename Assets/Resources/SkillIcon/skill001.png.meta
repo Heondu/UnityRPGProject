@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: b8fd365f86ddd504d9053921644714f4
+=======
+guid: ccc218fb5e2ff664795e80d057fdc3a4
+>>>>>>> parent of fd8e658 (새로운 UI 적용)
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

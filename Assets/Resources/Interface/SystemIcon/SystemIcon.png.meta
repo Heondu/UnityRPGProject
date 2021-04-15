@@ -96,6 +96,7 @@ TextureImporter:
       213: 3559261048551997561
     second: SystemIcon_15
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   - first:
       213: 8708109082514105664
@@ -314,6 +315,8 @@ TextureImporter:
       213: -7932128955835067005
     second: SystemIcon_51
 >>>>>>> feature/modify
+=======
+>>>>>>> parent of fd8e658 (새로운 UI 적용)
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -336,9 +339,13 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   vTOnly: 0
 =======
 >>>>>>> feature/modify
+=======
+  vTOnly: 0
+>>>>>>> parent of fd8e658 (새로운 UI 적용)
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -374,9 +381,13 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   ignorePngGamma: 0
 =======
 >>>>>>> feature/modify
+=======
+  ignorePngGamma: 0
+>>>>>>> parent of fd8e658 (새로운 UI 적용)
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -748,6 +759,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
+<<<<<<< HEAD
 <<<<<<< HEAD
       spriteID: 97083ddd019056130800000000000000
       internalID: 3559261048551997561
@@ -1511,6 +1523,10 @@ TextureImporter:
       spriteID: 3855cdaadba6be190800000000000000
       internalID: -7932128955835067005
 >>>>>>> feature/modify
+=======
+      spriteID: 97083ddd019056130800000000000000
+      internalID: 3559261048551997561
+>>>>>>> parent of fd8e658 (새로운 UI 적용)
       vertices: []
       indices: 
       edges: []

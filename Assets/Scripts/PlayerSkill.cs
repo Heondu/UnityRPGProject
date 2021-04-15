@@ -18,11 +18,6 @@ public class PlayerSkill : MonoBehaviour
         player = GetComponent<Player>();
         playerInput = GetComponent<PlayerInput>();
         animationController = GetComponent<AnimationController>();
-
-        for (int i = 0; i < skillNames.Length; i++)
-        {
-            InventoryManager.instance.AddSkill(DataManager.skillDB[skillNames[i]]);
-        }
     }
 
     private void Update()

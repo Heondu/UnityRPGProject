@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class FloatingDamage : MonoBehaviour
 {
-    private float moveSpeed = 1;
+    private float moveSpeed = 200;
     private float alphaSpeed = 1f;
     private float destroyTime = 2;
     private Text text;
@@ -27,7 +27,7 @@ public class FloatingDamage : MonoBehaviour
     private void Update()
     {
         offset += Vector3.up * moveSpeed * Time.deltaTime;
-        Vector3 newPos = position + offset;
+        Vector3 newPos = Camera.main.WorldToScreenPoint(position) + offset;
         newPos.z = 0;
         transform.position = newPos;
         alpha.a = Mathf.Lerp(alpha.a, 0, alphaSpeed * Time.deltaTime);

@@ -4,29 +4,42 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject uIPanel;
+    [SerializeField]
+    private GameObject equipPanel;
+    [SerializeField]
     private GameObject inventoryPanel;
     [SerializeField]
     private GameObject info;
     [SerializeField]
     private Toggle[] inventoryToggle;
     [SerializeField]
-    private Toggle[] menuToggle;
+    private Toggle equipToggle;
+    [SerializeField]
+    private Toggle infoToggle;
 
     private void Awake()
     {
-        inventoryPanel.SetActive(true);
+        uIPanel.SetActive(true);
         for (int i = 0; i < inventoryToggle.Length; i++)
             inventoryToggle[i].isOn = true;
         inventoryToggle[0].isOn = true;
-        inventoryPanel.SetActive(false);
+        uIPanel.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.status])) menuToggle[0].isOn = !menuToggle[0].isOn;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.inventory])) menuToggle[1].isOn = !menuToggle[1].isOn;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.awaken])) menuToggle[2].isOn = !menuToggle[2].isOn;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.quest])) menuToggle[3].isOn = !menuToggle[3].isOn;
-        if (Input.GetKeyDown(KeySetting.keys[KeyAction.setting])) menuToggle[4].isOn = !menuToggle[4].isOn;
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.inventory]))
+        {
+            if (uIPanel.activeSelf == false) uIPanel.SetActive(true);
+            else if (equipToggle.isOn) uIPanel.SetActive(false);
+            equipToggle.isOn = uIPanel.activeSelf;
+        }
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.info]))
+        {
+            if (uIPanel.activeSelf == false) uIPanel.SetActive(true);
+            else if (infoToggle.isOn) uIPanel.SetActive(false);
+            infoToggle.isOn = uIPanel.activeSelf;
+        }
     }
 }

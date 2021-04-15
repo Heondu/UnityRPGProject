@@ -7,7 +7,7 @@ public class EquipmentSlot : MonoBehaviour
 
     private void Awake()
     {
-        InventoryManager.instance.onSlotChangedCallback += EquipCheck;
+        InventoryManager.instance.onItemChangedCallback += EquipCheck;
         slot = GetComponent<Slot>();
     }
 
