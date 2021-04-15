@@ -1,74 +1,97 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public enum InventoryUseType { equipment = 0, consume, equipSlot = 5 }
+public enum UseType { weapon = 0, equipment, skill, consume, rune }
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    [SerializeField]
-    private Inventory[] inventorys;
-    [SerializeField]
-    private GameObject draggingItem;
-    private Slot draggingSlot;
-    private Item selectedItem;
-    public delegate void OnItemChanged();
-    public OnItemChanged onItemChangedCallback;
+    public InventoryItem inventoryWeapon;
+    public InventoryItem inventoryEquipment;
+    public InventorySkill inventorySkill;
+    public InventoryItem inventoryConsume;
+    public delegate void OnSlotChanged();
+    public OnSlotChanged onSlotChangedCallback;
     public delegate void OnItemEquipChanged(Item item);
     public OnItemEquipChanged onItemEquipCallback;
     public delegate void OnItemUnequipChanged(Item item);
     public OnItemUnequipChanged onItemUnequipCallback;
+    private SlotDrag draggingSlot;
+    [SerializeField]
+    private GameObject draggingObject;
 
     private void Awake()
     {
         if (instance != null) Destroy(this);
         else instance = this;
 
-        draggingSlot = draggingItem.GetComponent<Slot>();
-    }
-
-    public void OnBeginDrag(Item selectedItem)
-    {
-        draggingSlot.item = selectedItem;
-        draggingItem.SetActive(true);
-        this.selectedItem = selectedItem;
-    }
-
-    public void OnDrag()
-    {
-        draggingItem.transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(Slot selectedSlot, Slot targetSlot)
-    {
-        draggingSlot.item = null;
-        draggingItem.SetActive(false);
-        if (targetSlot == null) selectedSlot.icon.color = Color.white;
-        else inventorys[FindUseType(selectedSlot.item)].IsChangable(selectedSlot, targetSlot);
-    }
-
-    public void RemoveItem()
-    {
-        draggingSlot.item = null;
-        draggingItem.SetActive(false);
-    }
-
-    private int FindUseType(Item targetItem)
-    {
-        if (targetItem.useType == "equipment") return (int)InventoryUseType.equipment;
-        else if (targetItem.useType == "consume") return (int)InventoryUseType.consume;
-        else return -1;
+        draggingSlot = draggingObject.GetComponent<SlotDrag>();
     }
 
     public void AddItem(Item newItem)
     {
-        int useType = FindUseType(newItem);
-        inventorys[useType].AddItem(newItem);
+        if (newItem.useType == "weapon") inventoryWeapon.AddItem(newItem);
+        else if (newItem.useType == "equipment") inventoryEquipment.AddItem(newItem);
+        else if (newItem.useType == "consume") inventoryConsume.AddItem(newItem);
+    }
+    
+    public void AddSkill(Skill newSkill)
+    {
+        inventorySkill.AddSkill(newSkill);
     }
 
-    public Inventory GetInventory(InventoryUseType useType)
+    public void RemoveItem(Item selectedItem)
     {
-        return inventorys[(int)useType];
+        if (selectedItem.useType == "weapon") inventoryWeapon.RemoveItem(selectedItem);
+        else if (selectedItem.useType == "equipment") inventoryEquipment.RemoveItem(selectedItem);
+        else if (selectedItem.useType == "consume") inventoryConsume.RemoveItem(selectedItem);
+    }
+
+    public void OnBeginDrag(Slot selectedSlot)
+    {
+        draggingObject.SetActive(true);
+        draggingSlot.icon.sprite = selectedSlot.icon.sprite;
+    }
+
+    public void OnDrag()
+    {
+        draggingObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) * Vector2.one;
+    }
+
+    public void OnEndDrag(Slot selectedSlot, Slot targetSlot)
+    {
+        draggingObject.SetActive(false);
+        if (targetSlot == null)
+        {
+            selectedSlot.icon.color = Color.white;
+            return;
+        }
+        if (selectedSlot.useType == targetSlot.useType)
+        {
+            if (selectedSlot.useType == UseType.equipment)
+            {
+                if (targetSlot.equipType == "" || selectedSlot.item.type == targetSlot.equipType)
+                {
+                    targetSlot.inventory.ChangeSlot(selectedSlot, targetSlot);
+                    selectedSlot.inventory.ChangeSlot(targetSlot, selectedSlot);
+                    selectedSlot.inventory.UpdateInventory();
+                    targetSlot.inventory.UpdateInventory();
+                }
+                else
+                {
+                    selectedSlot.icon.color = Color.white;
+                }
+            }
+            else
+            {
+                targetSlot.inventory.ChangeSlot(selectedSlot, targetSlot);
+                selectedSlot.inventory.ChangeSlot(targetSlot, selectedSlot);
+                selectedSlot.inventory.UpdateInventory();
+                targetSlot.inventory.UpdateInventory();
+            }
+        }
+        else
+        {
+            selectedSlot.icon.color = Color.white;
+        }
     }
 }

@@ -5,32 +5,20 @@ using TMPro;
 public class Shortcut : MonoBehaviour
 {
     [SerializeField]
-    private Transform shortcut;
+    private Slot slot;
     private Image icon;
-    public Image cooltime;
-    private TextMeshProUGUI keycodeSelf;
-    private TextMeshProUGUI keycodeOther;
-    private TextMeshProUGUI quantity;
+    private TextMeshProUGUI keycodeText;
     public Skill skill;
     [SerializeField]
     private KeyAction keycode;
-    private Slot slot;
-    [SerializeField]
-    private string skillName;
 
     private void Awake()
     {
-        icon = shortcut.Find("ItemIcon").GetComponent<Image>();
-        cooltime = shortcut.Find("Cooltime").GetComponent<Image>();
-        keycodeSelf = transform.Find("Keycode").GetComponent<TextMeshProUGUI>();
-        keycodeOther = shortcut.Find("Keycode").GetComponent<TextMeshProUGUI>();
-        if (shortcut.Find("Quantity") == true) quantity = shortcut.Find("Quantity").GetComponent<TextMeshProUGUI>();
-        keycodeSelf.text = KeySetting.keys[keycode].ToString();
-        keycodeOther.text = KeySetting.keys[keycode].ToString();
-        slot = GetComponent<Slot>();
-        if (skillName != "") skill = DataManager.skillDB[skillName];
+        icon = transform.Find("Image").GetComponent<Image>();
+        keycodeText = transform.Find("TextKeycode").GetComponent<TextMeshProUGUI>();
+        keycodeText.text = KeySetting.keys[keycode].ToString();
     }
-
+    
     private void Update()
     {
         ShortcutAssign();
@@ -41,7 +29,8 @@ public class Shortcut : MonoBehaviour
         if (slot == null) return;
         icon.sprite = slot.icon.sprite;
         icon.color = slot.icon.color;
-        if (quantity != null) quantity.text = slot.quantityText.text;
-        if (slot.item != null && slot.item.skill != null) skill = slot.item.skill;
+        if (slot.skill != null) skill = slot.skill;
+        else if (slot.item != null && slot.item.skill != null) skill = slot.item.skill;
+        else skill = null;
     }
 }

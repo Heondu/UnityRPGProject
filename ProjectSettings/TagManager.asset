@@ -8,6 +8,7 @@ TagManager:
   - RegenArea
   - InventoryItem
   - InventoryEquip
+  - Shortcut
   layers:
   - Default
   - TransparentFX

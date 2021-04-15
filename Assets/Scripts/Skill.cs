@@ -27,4 +27,5 @@
     public int lifetime;
     public float guide;
     public int penetration;
+    public string image;
 }

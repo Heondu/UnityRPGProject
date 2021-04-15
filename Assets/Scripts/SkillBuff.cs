@@ -14,7 +14,7 @@ public class SkillBuff : SkillScript
     private void Awake()
     {
         buffHolder = GameObject.Find("BuffHolder").transform;
-        buffUIHolder = GameObject.Find("BuffUIHolder").transform;
+        buffUIHolder = GameObject.Find("Buff").transform;
         buffPrefab = Resources.Load<GameObject>("Prefabs/UI/Buff");
     }
 

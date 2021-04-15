@@ -119,6 +119,7 @@ public class DataManager : MonoBehaviour
                 skillDB[name].lifetime = (int)list[i]["lifetime"];
                 skillDB[name].guide = float.Parse(list[i]["guide"].ToString());
                 skillDB[name].penetration = (int)list[i]["penetration"];
+                skillDB[name].image = list[i]["image"].ToString();
             }
         }
     }

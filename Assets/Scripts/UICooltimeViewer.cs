@@ -4,15 +4,15 @@ using TMPro;
 
 public class UICooltimeViewer : MonoBehaviour
 {
-    [SerializeField]
     private Shortcut shortcut;
     private PlayerSkill playerSkill;
     private Image cooltimeImage;
 
     private void Awake()
     {
+        shortcut = GetComponent<Shortcut>();
         playerSkill = FindObjectOfType<PlayerSkill>();
-        cooltimeImage = transform.Find("Cooltime").GetComponent<Image>();
+        cooltimeImage = transform.Find("RedCover").GetComponent<Image>();
     }
 
     private void Update()

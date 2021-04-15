@@ -39,28 +39,28 @@ public class PopupUI : MonoBehaviour
         addStatus3 = popup.transform.Find("StatusTitle (3)").Find("Status").GetComponent<Text>();
     }
 
-    private void Update()
-    {
-        if (popup.activeSelf) PopupFollowMouse();
-        if (popup.activeSelf != false && selectedSlot != null && selectedSlot.item != null) UpdatePopup(selectedSlot);
-        else SetActive(false);
-    }
+    //private void Update()
+    //{
+    //    if (popup.activeSelf) PopupFollowMouse();
+    //    if (popup.activeSelf != false && selectedSlot != null && selectedSlot.item != null) UpdatePopup(selectedSlot);
+    //    else SetActive(false);
+    //}
 
-    public void UpdatePopup(Slot selectedSlot)
-    {
-        this.selectedSlot = selectedSlot;
-        icon.sprite = selectedSlot.icon.sprite;
-        name.text = $"{DataManager.Localization(selectedSlot.item.nameAdd[0])} {DataManager.Localization(selectedSlot.item.name)}";
-        qualityName.text = $"{DataManager.Localization(selectedSlot.item.rarityType)} {DataManager.Localization(selectedSlot.item.type)}";
-        baseStatusTitle.text = DataManager.Localization(selectedSlot.item.status);
-        baseStatus.text = selectedSlot.item.stat.ToString();
-        addStatusTitle1.text = DataManager.Localization(selectedSlot.item.statusAdd[0]);
-        addStatus1.text = selectedSlot.item.statAdd[0].ToString();
-        addStatusTitle2.text = DataManager.Localization(selectedSlot.item.statusAdd[1]);
-        addStatus2.text = selectedSlot.item.statAdd[1].ToString();
-        addStatusTitle3.text = DataManager.Localization(selectedSlot.item.statusAdd[2]);
-        addStatus3.text = selectedSlot.item.statAdd[2].ToString();
-    }
+    //public void UpdatePopup(Slot selectedSlot)
+    //{
+    //    this.selectedSlot = selectedSlot;
+    //    icon.sprite = selectedSlot.icon.sprite;
+    //    name.text = $"{DataManager.Localization(selectedSlot.item.nameAdd[0])} {DataManager.Localization(selectedSlot.item.name)}";
+    //    qualityName.text = $"{DataManager.Localization(selectedSlot.item.rarityType)} {DataManager.Localization(selectedSlot.item.type)}";
+    //    baseStatusTitle.text = DataManager.Localization(selectedSlot.item.status);
+    //    baseStatus.text = selectedSlot.item.stat.ToString();
+    //    addStatusTitle1.text = DataManager.Localization(selectedSlot.item.statusAdd[0]);
+    //    addStatus1.text = selectedSlot.item.statAdd[0].ToString();
+    //    addStatusTitle2.text = DataManager.Localization(selectedSlot.item.statusAdd[1]);
+    //    addStatus2.text = selectedSlot.item.statAdd[1].ToString();
+    //    addStatusTitle3.text = DataManager.Localization(selectedSlot.item.statusAdd[2]);
+    //    addStatus3.text = selectedSlot.item.statAdd[2].ToString();
+    //}
 
     public void SetActive(bool value)
     {
