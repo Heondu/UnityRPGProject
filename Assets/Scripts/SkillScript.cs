@@ -2,23 +2,27 @@
 
 public class SkillScript : MonoBehaviour
 {
+    [SerializeField]
+    protected string[] nextSkills;
     public delegate void Callback(Skill skill);
     protected Callback callback = null;
     protected Timer timer = new Timer();
     protected GameObject executor;
+    protected ILivingEntity executorEntity;
     protected Skill skill;
+    protected string targetTag;
 
     protected virtual void Update()
     {
-        if (skill != null)
-        {
-            if (timer.IsTimeOut(float.Parse(skill.status["lifetime"].ToString()))) Destroy(gameObject);
-        }
+
     }
 
-    public virtual void Execute(GameObject executor, Skill skill)
+    public virtual void Execute(GameObject executor, string targetTag, Skill skill)
     {
         this.executor = executor;
+        if (executor == null) Destroy(gameObject);
+        executorEntity = this.executor.GetComponent<ILivingEntity>();
+        this.targetTag = targetTag;
         this.skill = skill;
     }
 

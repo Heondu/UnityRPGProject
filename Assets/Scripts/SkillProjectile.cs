@@ -4,7 +4,7 @@ using UnityEngine;
 public class SkillProjectile : SkillScript
 {
     [SerializeField]
-    private float radius = 5;
+    private float radius;
     private GameObject target;
     private Movement movement;
     private int penetrationCount = 0;
@@ -16,16 +16,22 @@ public class SkillProjectile : SkillScript
 
     protected override void Update()
     {
-        base.Update();
-        movement.Execute(transform.up);
+        if (skill != null)
+        {
+            if (timer.IsTimeOut(skill.lifetime)) Destroy(gameObject);
+        }
+        movement.Execute(transform.up, skill.speed);
         SetDir();
     }
 
-    public override void Execute(GameObject executor, Skill skill)
+    public override void Execute(GameObject executor, string targetTag, Skill skill)
     {
-        base.Execute(executor, skill);
-        float angle = Rotation.GetAngle(executor.transform.position);
+        base.Execute(executor, targetTag, skill);
+        float angle = 0;
+        if (targetTag == "Enemy") angle = Rotation.GetAngle(executor.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        else if (targetTag == "Player") angle = Rotation.GetAngle(executor.transform.position, GameObject.FindWithTag(targetTag).transform.position);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.position += transform.up * 1;
         StartCoroutine("FindTarget");
     }
 
@@ -36,10 +42,10 @@ public class SkillProjectile : SkillScript
         Vector2 dir = (target.transform.position - transform.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * skill.guide);
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);
     }
@@ -53,8 +59,7 @@ public class SkillProjectile : SkillScript
             float distance = Mathf.Infinity;
             foreach (Collider2D collider in colliders)
             {
-                if (collider.gameObject == executor) continue;
-                if (collider.gameObject == gameObject) continue;
+                if (collider.gameObject.CompareTag(targetTag) == false) continue;
 
                 ILivingEntity entity = collider.GetComponent<ILivingEntity>();
                 if (entity == null) continue;
@@ -70,11 +75,12 @@ public class SkillProjectile : SkillScript
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == target)
+        if (collision.gameObject.CompareTag(targetTag))
         {
-            if (skill.status["name"].ToString() == "skill001") SkillSpawner.SkillSpawn(executor, DataManager.skillDB["skill002"], transform.position);
             penetrationCount++;
-            if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
+            for (int i = 0; i < nextSkills.Length; i++)
+                if (nextSkills[i] != "") SkillLoader.SkillLoad(executor, targetTag, DataManager.skillDB[nextSkills[i]], transform.position);
+            if (skill.penetration <= penetrationCount) Destroy(gameObject);
         }
     }
 }

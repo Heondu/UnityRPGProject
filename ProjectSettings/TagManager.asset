@@ -6,6 +6,12 @@ TagManager:
   tags:
   - Enemy
   - RegenArea
+<<<<<<< HEAD
+=======
+  - InventoryItem
+  - InventoryEquip
+  - Shortcut
+>>>>>>> feature/modify
   layers:
   - Default
   - TransparentFX

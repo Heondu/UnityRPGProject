@@ -4,17 +4,21 @@ using UnityEngine;
 public class SkillExplode : SkillScript
 {
     [SerializeField]
-    private float radius = 5;
+    private float radius;
     private int penetrationCount = 0;
 
     protected override void Update()
     {
-        base.Update();
+        if (skill != null)
+        {
+            if (timer.IsTimeOut(skill.lifetime)) Destroy(gameObject);
+            if (skill.penetration <= penetrationCount) Destroy(gameObject);
+        }
     }
 
-    public override void Execute(GameObject executor, Skill skill)
+    public override void Execute(GameObject executor, string targetTag, Skill skill)
     {
-        base.Execute(executor, skill);
+        base.Execute(executor, targetTag, skill);
         StartCoroutine("CoExecute");
     }
 
@@ -22,22 +26,27 @@ public class SkillExplode : SkillScript
     {
         while (true)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
-            foreach (Collider2D collider in colliders)
+            if (skill.isPositive == 1)
             {
-                if (collider.gameObject == executor) continue;
-                if (collider.gameObject == gameObject) continue;
-
-                ILivingEntity entity = collider.GetComponent<ILivingEntity>();
-                if (entity == null) continue;
-                StatusCalculator.SkillStatusCalc(executor.GetComponent<Status>().status, collider.GetComponent<Status>().status, skill);
-                entity.TakeDamage();
-
+                ILivingEntity entity = executor.GetComponent<ILivingEntity>();
+                StatusCalculator.CalcSkillStatus(executorEntity, entity, skill);
                 penetrationCount++;
-                if ((int)skill.status["penetration"] <= penetrationCount) Destroy(gameObject);
+            }
+            else if (skill.isPositive == 0)
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+                foreach (Collider2D collider in colliders)
+                {
+                    if (collider.gameObject.CompareTag(targetTag) == false) continue;
+
+                    ILivingEntity entity = collider.GetComponent<ILivingEntity>();
+                    if (entity == null) continue;
+                    StatusCalculator.CalcSkillStatus(executorEntity, entity, skill);
+                    penetrationCount++;
+                }
             }
 
-            yield return new WaitForSeconds(float.Parse(skill.status["delay"].ToString()));
+            yield return new WaitForSeconds(skill.delay);
         }
     }
 

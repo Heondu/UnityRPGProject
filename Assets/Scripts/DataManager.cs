@@ -17,9 +17,10 @@ public class DataManager : MonoBehaviour
     public static List<Dictionary<string, object>> runes = new List<Dictionary<string, object>>();
     public static List<Dictionary<string, object>> skills = new List<Dictionary<string, object>>();
     public static List<Dictionary<string, object>> skillexp = new List<Dictionary<string, object>>();
-
     public static List<Dictionary<string, object>> item = new List<Dictionary<string, object>>();
-    public static Dictionary<string, Item> itemDB = new Dictionary<string, Item>();
+
+    public static Dictionary<string, Item> itemEquipmentDB = new Dictionary<string, Item>();
+    public static Dictionary<string, Item> itemConsumeDB = new Dictionary<string, Item>();
     public static Dictionary<string, Skill> skillDB = new Dictionary<string, Skill>();
 
     private void Awake()
@@ -38,10 +39,12 @@ public class DataManager : MonoBehaviour
         runes = CSVReader.Read("runes");
         skills = CSVReader.Read("skills");
         skillexp = CSVReader.Read("skillexp");
+        item = CSVReader.Read("item");
 
         ListToDict(weapon);
         ListToDict(armor);
         ListToDict(accessories);
+        ListToDict(item);
         ListToDict(skills);
     }
 
@@ -51,37 +54,74 @@ public class DataManager : MonoBehaviour
         {
             if (list == weapon || list == armor || list == accessories)
             {
-                Dictionary<string, object> temp = list[i];
-                item.Add(temp);
                 string name = list[i]["name"].ToString();
-                itemDB[name] = new Item
+                itemEquipmentDB[name] = new Item
                 {
                     name = name,
                     spawnable = (int)list[i]["spawnable"],
+                    useType = list[i]["useType"].ToString(),
                     type = list[i]["type"].ToString(),
                     status = list[i]["status"].ToString(),
                     rarity = (int)list[i]["rarity"],
                     statMin = (int)list[i]["statMin"],
                     statMax = (int)list[i]["statMax"],
-                    cost = (int)list[i]["cost"]
+                    cost = (int)list[i]["cost"],
+                    itemImage = list[i]["itemImage"].ToString(),
+                    inventoryImage = list[i]["inventoryImage"].ToString()
+                };
+            }
+            else if (list == item)
+            {
+                string name = list[i]["name"].ToString();
+                itemConsumeDB[name] = new Item
+                {
+                    name = name,
+                    spawnable = (int)list[i]["spawnable"],
+                    useType = list[i]["useType"].ToString(),
+                    type = list[i]["type"].ToString(),
+                    itemImage = list[i]["itemImage"].ToString(),
+                    inventoryImage = list[i]["inventoryImage"].ToString(),
+                    rarity = (int)list[i]["rarity"]
                 };
             }
             else if (list == skills)
             {
                 string name = list[i]["name"].ToString();
                 skillDB[name] = new Skill();
-                skillDB[name].status = list[i];
+                skillDB[name].skill = list[i]["skill"].ToString();
+                skillDB[name].name = list[i]["name"].ToString();
+                skillDB[name].rarity = (int)list[i]["rarity"];
+                skillDB[name].exp = (int)list[i]["exp"];
+                skillDB[name].material = list[i]["material"].ToString();
+                skillDB[name].weaponClass = list[i]["weaponClass"].ToString();
+                skillDB[name].classBonus = list[i]["classBonus"].ToString();
+                skillDB[name].bonusAmount = (int)list[i]["bonusAmount%"];
+                skillDB[name].prefabName = list[i]["prefabName"].ToString();
+                skillDB[name].prefabOnHit = list[i]["prefabOnHit"].ToString();
+                skillDB[name].type = list[i]["type"].ToString();
+                skillDB[name].position = list[i]["position"].ToString();
+                skillDB[name].element = list[i]["element"].ToString();
+                skillDB[name].cooltime = float.Parse(list[i]["cooltime"].ToString());
+                skillDB[name].relatedStatus[0] = list[i]["relatedStatus1"].ToString();
+                skillDB[name].status[0] = list[i]["status1"].ToString();
+                skillDB[name].amount[0] = (int)list[i]["amount1"];
+                skillDB[name].perlvl[0] = (int)list[i]["perlvl1"];
+                skillDB[name].relatedStatus[1] = list[i]["relatedStatus2"].ToString();
+                skillDB[name].status[1] = list[i]["status2"].ToString();
+                skillDB[name].amount[1] = (int)list[i]["amount2"];
+                skillDB[name].perlvl[1] = (int)list[i]["perlvl2"];
+                skillDB[name].isPositive = (int)list[i]["isPositive"];
+                skillDB[name].repeat = (int)list[i]["repeat"];
+                skillDB[name].indeterminacy = float.Parse(list[i]["indeterminacy"].ToString());
+                skillDB[name].delay = float.Parse(list[i]["delay"].ToString());
+                skillDB[name].speed = (int)list[i]["speed"];
+                skillDB[name].size = (int)list[i]["size"];
+                skillDB[name].lifetime = (int)list[i]["lifetime"];
+                skillDB[name].guide = float.Parse(list[i]["guide"].ToString());
+                skillDB[name].penetration = (int)list[i]["penetration"];
+                skillDB[name].image = list[i]["image"].ToString();
             }
         }
-    }
-
-    public static Dictionary<string, object> Find(List<Dictionary<string, object>> list, string key, object value)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (list[i][key].Equals(value)) return list[i];
-        }
-        return null;
     }
 
     public static bool Exists(List<Dictionary<string, object>> list, string key, object value)
@@ -91,5 +131,52 @@ public class DataManager : MonoBehaviour
             if (list[i][key].Equals(value)) return true;
         }
         return false;
+    }
+
+    public static string Localization(string str)
+    {
+        if (str == null) return "";
+        string percent = "";
+        if (str.Contains("%"))
+        {
+            str = str.Substring(0, str.Length - 1);
+            percent = "%";
+        }
+        for (int i = 0; i < localization_KOR.Count; i++)
+        {
+            if (localization_KOR[i]["name"].ToString() == str) return localization_KOR[i]["localization"].ToString() + percent;
+        }
+        return "";
+    }
+}
+
+public static class Data
+{
+    public static object Find(this List<Dictionary<string, object>> list, string key, object value, string key2)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) return list[i][key2];
+        }
+        return null;
+    }
+
+    public static List<object> FindAll(this List<Dictionary<string, object>> list, string key, object value, string key2)
+    {
+        List<object> objects = new List<object>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) objects.Add(list[i][key2]);
+        }
+        return objects;
+    }
+
+    public static Dictionary<string, object> FindDic(this List<Dictionary<string, object>> list, string key, object value)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i][key].Equals(value)) return list[i];
+        }
+        return null;
     }
 }

@@ -1,33 +1,52 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
-    [SerializeField]
-    private Item weapon;
-    [SerializeField]
-    private Item armor;
-    [SerializeField]
-    private Item accessories;
-    [SerializeField]
-    private List<Item> itemList = new List<Item>();
+    private Player player;
+
+    private void Awake()
+    {
+        player = GetComponent<Player>();
+        InventoryManager.instance.onItemEquipCallback += Equip;
+        InventoryManager.instance.onItemUnequipCallback += Unequip;
+    }
+
+    public void PickUp(Item item)
+    {
+        InventoryManager.instance.AddItem(item);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        ItemScript item = collision.GetComponent<ItemScript>();
+        if (item != null)
+        {
+            PickUp(item.item);
+            Destroy(collision.gameObject);
+        }
+    }
 
     public void Equip(Item item)
     {
-        if (DataManager.Exists(DataManager.weapon, "name", item.name))
-            weapon = item;
-        if (DataManager.Exists(DataManager.armor, "name", item.name))
-            armor = item;
-        if (DataManager.Exists(DataManager.accessories, "name", item.name))
-            accessories = item;
-
-        StatusCalc();
+        Status status = player.status.GetStatus(item.status);
+        if (item.status.Contains("%")) status.AddModifier(new StatusModifier(item.stat, StatusModType.PercentAdd, item));
+        else status.AddModifier(new StatusModifier(item.stat, StatusModType.Flat, item));
+        for (int i = 0; i < item.statusAdd.Length; i++)
+        {
+            status = player.status.GetStatus(item.statusAdd[i]);
+            if (item.statusAdd[i].Contains("%")) status.AddModifier(new StatusModifier(item.statAdd[i], StatusModType.PercentAdd, item));
+            else status.AddModifier(new StatusModifier(item.statAdd[i], StatusModType.Flat, item));
+        }
     }
 
-    [ContextMenu("StatusCalc")]
-    public void StatusCalc()
+    public void Unequip(Item item)
     {
-        Item[] items = { weapon, armor, accessories };
-        StatusCalculator.StatusCalc(GetComponent<Player>().status.status, GetComponent<PlayerStatus>().fourStatus, items, GetComponent<PlayerSkill>().buffs);
+        Status status = player.status.GetStatus(item.status);
+        status.RemoveAllModifiersFromSource(item);
+        for (int i = 0; i < item.statusAdd.Length; i++)
+        {
+            status = player.status.GetStatus(item.statusAdd[i]);
+            status.RemoveAllModifiersFromSource(item);
+        }
     }
 }

@@ -3,20 +3,12 @@ using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
-    private static ItemGenerator instance;
-    public static ItemGenerator Instance
-    {
-        get
-        {
-            if (instance == null) return null;
-            return instance;
-        }
-    }
+    public static ItemGenerator instance;
     [SerializeField]
     private Item item;
     private Dictionary<string, object> rarity;
     private Dictionary<string, object> rarityAdd;
-    private List<string> itemList = new List<string>();
+    private List<Item> itemList = new List<Item>();
     private List<string> additionalList = new List<string>();
     private string rarityType = "Normal";
     [SerializeField]
@@ -24,33 +16,59 @@ public class ItemGenerator : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance != null) Destroy(gameObject);
+        else instance = this;
     }
 
     public void DropItem(int rarityMin, int rarityMax, string type, Vector3 pos)
     {
-        Filtering(rarityMin, rarityMax);
-        RandomRarity(type);
-        ItemInit();
-        Additional();
-        GameObject clone = Instantiate(itemPrefab, pos, Quaternion.identity);
-        clone.GetComponent<ItemScript>().item = item;
+        GameObject clone = null;
+        int num = Random.Range(0, System.Enum.GetNames(typeof(ItemType)).Length);
+        if (num == (int)ItemType.equipment)
+        {
+            Filtering(rarityMin, rarityMax, DataManager.itemEquipmentDB);
+            RandomRarity(type);
+            ItemInit();
+            Additional();
+            clone = Instantiate(itemPrefab, pos, Quaternion.identity);
+            clone.GetComponent<ItemScript>().item = item;
+        }
+        else if (num == (int)ItemType.consume)
+        {
+            Filtering(rarityMin, rarityMax, DataManager.itemConsumeDB);
+            if (itemList.Count == 0) return;
+            item = itemList[Random.Range(0, itemList.Count)];
+            clone = Resources.Load<GameObject>("Prefabs/Items/" + item.name);
+            clone = Instantiate(clone, pos, Quaternion.identity);
+            ItemScript itemScript = clone.GetComponent<ItemScript>();
+            itemScript.item = item;
+            if (itemScript.skill != "")
+                item.skill = DataManager.skillDB[itemScript.skill];
+        }
+        Sprite sprite;
+        if (item.itemImage.Contains("_"))
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Sprites/Items");
+            sprite = sprites[int.Parse(item.itemImage.Substring(item.itemImage.IndexOf("_") + 1))];
+        }
+        else sprite = Resources.Load<Sprite>(item.itemImage);
+        clone.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
-    private void Filtering(int rarityMin, int rarityMax)
+    private void Filtering(int rarityMin, int rarityMax, Dictionary<string, Item> itemDB)
     {
-        for (int i = 0; i < DataManager.item.Count; i++)
+        itemList.Clear();
+        foreach(string key in itemDB.Keys)
         {
-            if (rarityMin <= (int)DataManager.item[i]["rarity"] &&
-                rarityMax >= (int)DataManager.item[i]["rarity"])
-                itemList.Add(DataManager.item[i]["name"].ToString());
+            if (rarityMin <= itemDB[key].rarity &&
+                rarityMax >= itemDB[key].rarity)
+                itemList.Add(itemDB[key]);
         }
     }
 
     private void RandomRarity(string type)
     {
-        rarity = DataManager.Find(DataManager.rarity, "Function", type);
+        rarity = DataManager.rarity.FindDic("Function", type);
         int[] sort = { (int)rarity["Legendary"], (int)rarity["Unique"], (int)rarity["Rare"], (int)rarity["Magic"], (int)rarity["HiQuality"], (int)rarity["Normal"] };
         string[] types = { "Legendary", "Unique", "Rare", "Magic", "HiQuality", "Normal" };
         for (int i = 0; i < sort.Length - 1; i++) {
@@ -76,14 +94,15 @@ public class ItemGenerator : MonoBehaviour
 
     private void ItemInit()
     {
-        item = DataManager.itemDB[itemList[Random.Range(0, itemList.Count)]];
+        item = itemList[Random.Range(0, itemList.Count)];
         item.rarityType = rarityType;
         item.stat = Random.Range(item.statMin, item.statMax);
     }
 
     private void Additional()
     {
-        rarityAdd = DataManager.Find(DataManager.rarity, "Function", "rarityAdd");
+        additionalList.Clear();
+        rarityAdd = DataManager.rarity.FindDic("Function", "rarityAdd");
         int rand = Random.Range(0, 100);
         int rarityAll = item.rarity + (int)rarityAdd[rarityType];
         if (rand > 25) Mathf.Max(1, rarityAll - 1);
@@ -95,8 +114,8 @@ public class ItemGenerator : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             rand = Random.Range(0, additionalList.Count);
-            Dictionary<string, object> additional = DataManager.Find(DataManager.additional, "code", additionalList[rand]);
-            item.nameAdd[i] = additional["Name"].ToString();
+            Dictionary<string, object> additional = DataManager.additional.FindDic("code", additionalList[rand]);
+            item.nameAdd[i] = additional["code"].ToString();
             item.statusAdd[i] = additional["status"].ToString();
             item.statAdd[i] = Random.Range((int)additional["statMin"], (int)additional["statMax"]);
             item.cost += (int)additional["cost"];
